@@ -64,8 +64,7 @@ body {
 /* Header Styles - Based on Original Design */
 .site-header {
     background: var(--background-pure-white);
-    position: sticky;
-    top: 0;
+    position: relative;
     z-index: 100;
     display: flex;
     flex-flow: column;
@@ -125,6 +124,65 @@ body {
     max-width: 1200px;
     overflow: visible;
     padding: 0 20px;
+    background: var(--background-pure-white);
+    transition: all 0.3s ease;
+}
+
+/* Sticky header behavior */
+.header-sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: var(--background-pure-white);
+}
+
+.header-sticky .header-menu-bar {
+    margin: 0 auto;
+    height: 80px; /* Reduced height when sticky */
+}
+
+/* Hide gray bar when scrolled */
+.header-scrolled .header-top-gray-bar {
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+/* Show only menu bar when scrolled */
+.header-scrolled .header-menu-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    height: 80px;
+    transition: all 0.3s ease;
+}
+
+/* Prevent content jump when header becomes sticky */
+body.header-sticky-active {
+    padding-top: 80px;
+}
+
+/* Smooth transitions for header elements */
+.header-top-gray-bar,
+.header-menu-bar {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Adjust logo and button sizes when sticky */
+.header-scrolled .menubar-logo {
+    height: 50px;
+}
+
+.header-scrolled .button {
+    padding: 8px 20px;
+    font-size: 1.1rem;
 }
 
 .header-content {

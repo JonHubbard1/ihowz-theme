@@ -66,15 +66,29 @@
             });
         }
 
-        // Header scroll effect
+        // Header scroll effect - Two-tier sticky behavior
         var header = $('.site-header');
+        var grayBar = $('.header-top-gray-bar');
+        var menuBar = $('.header-menu-bar');
+        var body = $('body');
+        var grayBarHeight = grayBar.length ? grayBar.outerHeight() : 80;
+
         $(window).scroll(function() {
-            if ($(this).scrollTop() > 100) {
-                header.addClass('scrolled');
+            var scrollTop = $(this).scrollTop();
+
+            if (scrollTop > grayBarHeight) {
+                // Hide gray bar and make menu bar sticky
+                header.addClass('header-scrolled');
+                body.addClass('header-sticky-active');
             } else {
-                header.removeClass('scrolled');
+                // Show gray bar and normal positioning
+                header.removeClass('header-scrolled');
+                body.removeClass('header-sticky-active');
             }
         });
+
+        // Initialize on page load in case user refreshes while scrolled
+        $(window).trigger('scroll');
 
     });
 
