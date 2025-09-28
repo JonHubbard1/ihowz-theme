@@ -12,15 +12,19 @@
 
 <div id="page" class="site">
     <header id="masthead" class="site-header ihowz-main-header">
-        <!-- Top Gray Bar with Social Icons -->
+        <!-- Top Gray Bar with Social Icons and Login Buttons -->
         <div class="header-top-gray-bar">
             <div class="header-top-bar">
                 <div class="header-top-row">
                     <div class="header-top-row-links">
-                        <!-- Social icons would go here -->
+                        <!-- Social icons -->
                         <a href="#" class="header-top-row-social-icon">f</a>
                         <a href="#" class="header-top-row-social-icon">t</a>
                         <a href="#" class="header-top-row-social-icon">in</a>
+                    </div>
+                    <div class="header-top-row-buttons">
+                        <a href="/login" class="button header-login">Login</a>
+                        <a href="/join" class="button header-join-today">Join Today</a>
                     </div>
                 </div>
             </div>
@@ -44,11 +48,6 @@
                         ));
                         ?>
                     </nav>
-
-                    <div class="header-buttons">
-                        <a href="/login" class="button menubar-login">Login</a>
-                        <a href="/join" class="button menubar-join-today">Join Today</a>
-                    </div>
                 </div>
             </div>
         </div>
