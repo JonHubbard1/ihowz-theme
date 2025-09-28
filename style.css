@@ -176,13 +176,52 @@ body.header-sticky-active {
 }
 
 /* Adjust logo and button sizes when sticky */
-.header-scrolled .menubar-logo {
+.header-scrolled .site-branding {
     height: 50px;
+}
+
+.header-scrolled .site-branding img,
+.header-scrolled .custom-logo {
+    height: 50px;
+    width: auto;
+    max-height: 50px;
+}
+
+.header-scrolled .site-title {
+    font-size: 1.5rem;
 }
 
 .header-scrolled .button {
     padding: 8px 20px;
     font-size: 1.1rem;
+}
+
+/* Ensure logo links are always clickable */
+.site-branding a,
+.custom-logo-link,
+.site-title {
+    display: block;
+    z-index: 1001;
+    position: relative;
+    text-decoration: none;
+    pointer-events: auto;
+}
+
+/* Ensure site-branding container doesn't block clicks */
+.site-branding {
+    position: relative;
+    z-index: 1001;
+    pointer-events: auto;
+}
+
+.custom-logo {
+    height: auto;
+    max-height: 60px;
+    width: auto;
+}
+
+.header-scrolled .custom-logo {
+    max-height: 50px;
 }
 
 .header-content {
@@ -191,6 +230,8 @@ body.header-sticky-active {
     align-items: center;
     width: 100%;
     max-width: 1200px;
+    position: relative;
+    z-index: 1000;
 }
 
 .site-title {
