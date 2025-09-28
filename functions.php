@@ -29,6 +29,8 @@ function ihowz_theme_setup() {
         'flex-width'  => true,
     ));
     add_theme_support('automatic-feed-links');
+    add_theme_support('widgets');
+    add_theme_support('customize-selective-refresh-widgets');
 
     // Register navigation menus
     register_nav_menus(array(
@@ -248,6 +250,11 @@ function ihowz_theme_plugin_styles() {
     }
     </style>';
 }
+
+/**
+ * Disable block-based widgets editor (use classic widgets)
+ */
+add_filter('use_widgets_block_editor', '__return_false');
 
 /**
  * Breadcrumb function
