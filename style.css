@@ -234,14 +234,16 @@ body.header-sticky-active {
 
 /* Adjust logo and button sizes when sticky */
 .header-scrolled .site-branding {
-    height: 50px;
+    height: auto;
+    display: flex;
+    align-items: center;
 }
 
 .header-scrolled .site-branding img,
 .header-scrolled .custom-logo {
-    height: 50px;
+    height: auto;
     width: auto;
-    max-height: 50px;
+    max-height: 60px;
 }
 
 .header-scrolled .site-title {
@@ -269,16 +271,15 @@ body.header-sticky-active {
     position: relative;
     z-index: 1001;
     pointer-events: auto;
+    display: flex;
+    align-items: center;
+    height: auto;
 }
 
 .custom-logo {
     height: auto;
     max-height: 60px;
     width: auto;
-}
-
-.header-scrolled .custom-logo {
-    max-height: 50px;
 }
 
 .header-content {
