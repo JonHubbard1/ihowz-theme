@@ -205,7 +205,7 @@ body {
 /* Show only menu bar when scrolled */
 .header-scrolled .header-menu-bar {
     position: fixed;
-    top: 0;
+    top: 10px;
     left: 0;
     right: 0;
     z-index: 1000;
