@@ -11,29 +11,45 @@
 <?php wp_body_open(); ?>
 
 <div id="page" class="site">
-    <header id="masthead" class="site-header">
-        <div class="container">
-            <div class="header-content">
+    <header id="masthead" class="site-header ihowz-main-header">
+        <!-- Top Gray Bar with Social Icons -->
+        <div class="header-top-gray-bar">
+            <div class="header-top-bar">
+                <div class="header-top-row">
+                    <div class="header-top-row-links">
+                        <!-- Social icons would go here -->
+                        <a href="#" class="header-top-row-social-icon">f</a>
+                        <a href="#" class="header-top-row-social-icon">t</a>
+                        <a href="#" class="header-top-row-social-icon">in</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <!-- Main Menu Bar -->
+        <div class="header-menu-bar">
+            <div class="header-content">
                 <div class="site-branding">
                     <?php ihowz_theme_logo(); ?>
                 </div>
 
-                <nav id="site-navigation" class="main-navigation">
-                    <?php
-                    wp_nav_menu(array(
-                        'theme_location' => 'primary',
-                        'menu_id'        => 'primary-menu',
-                        'container'      => false,
-                        'fallback_cb'    => 'ihowz_theme_fallback_menu',
-                    ));
-                    ?>
-                </nav>
+                <div class="menubar-menu">
+                    <nav id="site-navigation" class="main-navigation">
+                        <?php
+                        wp_nav_menu(array(
+                            'theme_location' => 'primary',
+                            'menu_id'        => 'primary-menu',
+                            'container'      => false,
+                            'fallback_cb'    => 'ihowz_theme_fallback_menu',
+                        ));
+                        ?>
+                    </nav>
 
-                <div class="header-search">
-                    <?php get_search_form(); ?>
+                    <div class="header-buttons">
+                        <a href="/login" class="button menubar-login">Login</a>
+                        <a href="/join" class="button menubar-join-today">Join Today</a>
+                    </div>
                 </div>
-
             </div>
         </div>
     </header>

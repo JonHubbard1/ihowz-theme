@@ -1,5 +1,5 @@
-    <footer id="colophon" class="site-footer">
-        <div class="container">
+    <footer id="colophon" class="site-footer footer-bar">
+        <div class="footer-container">
             <div class="footer-content">
 
                 <?php if (is_active_sidebar('footer-1')) : ?>
@@ -20,8 +20,8 @@
                     </div>
                 <?php endif; ?>
 
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
+                <div class="footer-section footer-resources-menu">
+                    <h3 class="foot-menu-header">Quick Links</h3>
                     <?php
                     wp_nav_menu(array(
                         'theme_location' => 'footer',
@@ -33,20 +33,17 @@
 
             </div>
 
+            <!-- Social Icons Section -->
+            <div class="footer-social-icons">
+                <a href="#" class="footer-social-icon">f</a>
+                <a href="#" class="footer-social-icon">t</a>
+                <a href="#" class="footer-social-icon">in</a>
+                <a href="#" class="footer-social-icon">ig</a>
+            </div>
+
+            <!-- Copyright Section -->
             <div class="footer-bottom">
-                <p>&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. All rights reserved.</p>
-                <?php if (has_nav_menu('footer')) : ?>
-                    <nav class="footer-navigation">
-                        <?php
-                        wp_nav_menu(array(
-                            'theme_location' => 'footer',
-                            'menu_class'     => 'footer-menu',
-                            'container'      => false,
-                            'depth'          => 1,
-                        ));
-                        ?>
-                    </nav>
-                <?php endif; ?>
+                <p class="footer-copyright-text">&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. All rights reserved.</p>
             </div>
         </div>
     </footer>
