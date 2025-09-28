@@ -133,7 +133,7 @@ function ihowz_theme_read_more_link() {
  * Add custom body classes
  */
 function ihowz_theme_body_classes($classes) {
-    if (!is_sidebar_active('sidebar-1')) {
+    if (!is_active_sidebar('sidebar-1')) {
         $classes[] = 'no-sidebar';
     }
 
