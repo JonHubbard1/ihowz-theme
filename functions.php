@@ -103,6 +103,17 @@ function ihowz_theme_widgets_init() {
         'before_title'  => '<h3 class="footer-widget-title">',
         'after_title'   => '</h3>',
     ));
+
+    // Advertising Bar Widget Area
+    register_sidebar(array(
+        'name'          => esc_html__('Advertising Bar', 'ihowz-theme'),
+        'id'            => 'advertising-bar',
+        'description'   => esc_html__('Advertising banner that appears above the footer on all pages.', 'ihowz-theme'),
+        'before_widget' => '<div class="advertising-widget">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h3 class="advertising-widget-title screen-reader-text">',
+        'after_title'   => '</h3>',
+    ));
 }
 add_action('widgets_init', 'ihowz_theme_widgets_init');
 

@@ -502,6 +502,43 @@ body.header-sticky-active {
     opacity: 0.9;
 }
 
+/* Advertising Bar Styles */
+.advertising-bar {
+    background: var(--background-light-gray);
+    padding: 2rem 0;
+    margin-top: 4rem;
+    border-top: 1px solid #ddd;
+}
+
+.advertising-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.advertising-widget {
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.advertising-widget img {
+    max-width: 100%;
+    height: auto;
+}
+
+.advertising-widget-title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}
+
 /* Footer Styles - Based on Original Design */
 .site-footer {
     background: var(--primary-charcoal);
@@ -509,7 +546,6 @@ body.header-sticky-active {
     display: flex;
     justify-content: center;
     align-items: start;
-    margin-top: 4rem;
 }
 
 .footer-content {
@@ -517,7 +553,7 @@ body.header-sticky-active {
     max-width: 1280px;
     margin-top: 30px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
     padding: 0 20px;
 }
@@ -543,6 +579,33 @@ body.header-sticky-active {
 
 .footer-resources-menu {
     display: grid;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: flex-start;
+}
+
+.footer-logo img,
+.footer-logo .footer-logo-img {
+    max-height: 80px;
+    width: auto;
+}
+
+.footer-logo a {
+    display: inline-block;
+    opacity: 1;
+}
+
+.footer-logo a:hover {
+    opacity: 0.9;
+}
+
+.footer-logo h2 {
+    color: var(--primary-white);
+    font-size: 1.75rem;
+    font-weight: var(--bold);
+    margin: 0;
 }
 
 .footer-social-icons {
@@ -640,6 +703,10 @@ body.header-sticky-active {
     .single-post-title {
         font-size: 1.8rem;
     }
+
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 768px) {
@@ -649,6 +716,15 @@ body.header-sticky-active {
 
     .post-card h2 {
         font-size: 1.5rem;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-logo {
+        justify-content: center;
+        margin-bottom: 1rem;
     }
 }
 

@@ -1,27 +1,50 @@
+    <!-- Advertising Bar Section -->
+    <?php if (is_active_sidebar('advertising-bar')) : ?>
+        <section class="advertising-bar">
+            <div class="advertising-container">
+                <?php dynamic_sidebar('advertising-bar'); ?>
+            </div>
+        </section>
+    <?php endif; ?>
+
     <footer id="colophon" class="site-footer footer-bar">
         <div class="footer-container">
             <div class="footer-content">
 
-                <?php if (is_active_sidebar('footer-1')) : ?>
-                    <div class="footer-section">
-                        <?php dynamic_sidebar('footer-1'); ?>
-                    </div>
-                <?php endif; ?>
+                <!-- Logo Column -->
+                <div class="footer-section footer-logo">
+                    <a href="<?php echo esc_url(home_url('/')); ?>" rel="home">
+                        <img src="<?php echo esc_url(home_url('/wp-content/uploads/2025/07/short-ihowz-logobmp-6cm-244-80.jpg')); ?>" alt="<?php bloginfo('name'); ?>" class="footer-logo-img">
+                    </a>
+                </div>
 
-                <?php if (is_active_sidebar('footer-2')) : ?>
-                    <div class="footer-section">
-                        <?php dynamic_sidebar('footer-2'); ?>
-                    </div>
-                <?php endif; ?>
-
-                <?php if (is_active_sidebar('footer-3')) : ?>
-                    <div class="footer-section">
-                        <?php dynamic_sidebar('footer-3'); ?>
-                    </div>
-                <?php endif; ?>
-
+                <!-- Column 2 - Quick Links -->
                 <div class="footer-section footer-resources-menu">
                     <h3 class="foot-menu-header">Quick Links</h3>
+                    <?php
+                    wp_nav_menu(array(
+                        'theme_location' => 'footer',
+                        'container'      => false,
+                        'fallback_cb'    => 'ihowz_theme_footer_fallback_menu',
+                    ));
+                    ?>
+                </div>
+
+                <!-- Column 3 - Resources -->
+                <div class="footer-section footer-resources-menu">
+                    <h3 class="foot-menu-header">Resources</h3>
+                    <?php
+                    wp_nav_menu(array(
+                        'theme_location' => 'footer',
+                        'container'      => false,
+                        'fallback_cb'    => 'ihowz_theme_footer_fallback_menu',
+                    ));
+                    ?>
+                </div>
+
+                <!-- Column 4 - Information -->
+                <div class="footer-section footer-resources-menu">
+                    <h3 class="foot-menu-header">Information</h3>
                     <?php
                     wp_nav_menu(array(
                         'theme_location' => 'footer',
