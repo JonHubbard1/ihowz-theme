@@ -9,12 +9,21 @@ get_header(); ?>
 
     <?php while (have_posts()) : the_post(); ?>
 
-        <!-- Page Header - Above Container -->
+        <!-- Page Header -->
         <div class="container">
             <header class="page-header">
                 <h1 class="page-title"><?php the_title(); ?></h1>
             </header>
         </div>
+
+        <!-- Breadcrumb -->
+        <?php
+        if (!is_front_page() && !is_home()) {
+            echo '<div class="container">';
+            ihowz_theme_breadcrumb();
+            echo '</div>';
+        }
+        ?>
 
         <div class="container">
             <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>

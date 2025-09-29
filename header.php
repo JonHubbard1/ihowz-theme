@@ -53,15 +53,6 @@
         </div>
     </header>
 
-    <?php
-    // Add breadcrumb on non-front pages
-    if (!is_front_page() && !is_home()) {
-        echo '<div class="container">';
-        ihowz_theme_breadcrumb();
-        echo '</div>';
-    }
-    ?>
-
 <?php
 /**
  * Fallback menu if no menu is assigned
