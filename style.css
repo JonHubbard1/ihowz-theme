@@ -486,7 +486,7 @@ body.header-sticky-active {
 /* Page Styles */
 .page-header {
     text-align: left;
-    margin-bottom: 3rem;
+    margin-bottom: 0;
     padding: 0;
     background: none;
     color: #333;
@@ -494,7 +494,7 @@ body.header-sticky-active {
 
 .page-title {
     font-size: 3rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0;
     font-weight: 600;
     color: #333;
 }
@@ -882,7 +882,7 @@ body.header-sticky-active {
 
 /* Breadcrumbs */
 .breadcrumb {
-    padding: 1rem 0;
+    padding: 10px 0 1rem 0;
     font-size: 0.875rem;
     color: #666;
 }
