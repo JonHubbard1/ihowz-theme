@@ -920,15 +920,19 @@ body.header-sticky-active {
     text-decoration: none;
     color: #555;
     border-bottom: 3px solid transparent;
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .ihowz-dashboard-nav a.active {
-    color: #0073aa;
-    border-bottom-color: #0073aa;
+    color: var(--primary-white);
+    background-color: var(--primary-green);
+    border-bottom-color: transparent;
 }
 
 .ihowz-dashboard-nav a:hover {
-    color: #0073aa;
+    background-color: var(--primary-green);
+    color: var(--primary-white);
 }
 
 /* Loading States */
