@@ -485,16 +485,18 @@ body.header-sticky-active {
 
 /* Page Styles */
 .page-header {
-    text-align: center;
+    text-align: left;
     margin-bottom: 3rem;
-    padding: 2rem 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    padding: 0;
+    background: none;
+    color: #333;
 }
 
 .page-title {
     font-size: 3rem;
     margin-bottom: 1rem;
+    font-weight: 600;
+    color: #333;
 }
 
 .page-description {
