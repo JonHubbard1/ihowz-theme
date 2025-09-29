@@ -347,7 +347,7 @@ body.header-sticky-active {
 /* Main Content Area */
 .site-main {
     min-height: calc(100vh - 200px);
-    padding: 2rem 0;
+    padding: 0;
 }
 
 /* News/Posts Grid - Based on Original Design */
