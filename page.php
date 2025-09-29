@@ -6,15 +6,18 @@
 get_header(); ?>
 
 <main class="site-main">
-    <div class="container">
 
-        <?php while (have_posts()) : the_post(); ?>
+    <?php while (have_posts()) : the_post(); ?>
 
+        <!-- Page Header - Above Container -->
+        <div class="container">
+            <header class="page-header">
+                <h1 class="page-title"><?php the_title(); ?></h1>
+            </header>
+        </div>
+
+        <div class="container">
             <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-
-                <header class="page-header">
-                    <h1 class="page-title"><?php the_title(); ?></h1>
-                </header>
 
                 <?php if (has_post_thumbnail()) : ?>
                     <div class="page-thumbnail">
