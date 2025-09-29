@@ -896,6 +896,41 @@ body.header-sticky-active {
     text-decoration: underline;
 }
 
+/* Dashboard Navigation Tabs */
+.ihowz-dashboard-nav {
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e5e5e5;
+}
+
+.ihowz-dashboard-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 10px;
+}
+
+.ihowz-dashboard-nav li {
+    margin: 0;
+}
+
+.ihowz-dashboard-nav a {
+    display: inline-block;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #555;
+    border-bottom: 3px solid transparent;
+}
+
+.ihowz-dashboard-nav a.active {
+    color: #0073aa;
+    border-bottom-color: #0073aa;
+}
+
+.ihowz-dashboard-nav a:hover {
+    color: #0073aa;
+}
+
 /* Loading States */
 .loading {
     display: flex;
