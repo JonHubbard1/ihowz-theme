@@ -920,7 +920,7 @@ body.header-sticky-active {
     text-decoration: none;
     color: #555;
     border-bottom: 3px solid transparent;
-    background-color: transparent;
+    background-color: rgba(156, 193, 48, 0.25);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
