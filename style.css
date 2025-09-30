@@ -55,6 +55,17 @@ body {
     background-color: var(--background-pure-white);
 }
 
+p {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+article .page-content > p:first-of-type,
+.entry-content > p:first-of-type {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -497,11 +508,44 @@ body.header-sticky-active {
     margin-bottom: 0;
     font-weight: 100;
     color: #333;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
 }
 
 .page-description {
     font-size: 1.2rem;
     opacity: 0.9;
+}
+
+/* Page Sidebar Layout */
+.page-container-with-sidebar {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.page-main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.page-sidebar {
+    width: 300px;
+    flex-shrink: 0;
+}
+
+.page-sidebar .widget {
+    background: var(--background-subtle);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.page-sidebar .widget h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.25rem;
+    color: var(--primary-charcoal);
 }
 
 /* Advertising Bar Styles */
@@ -748,6 +792,17 @@ body.header-sticky-active {
 
     .footer-content {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Stack sidebar below content on tablets and mobile */
+    .page-container-with-sidebar {
+        flex-direction: column;
+    }
+
+    .page-sidebar {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 30px;
     }
 }
 

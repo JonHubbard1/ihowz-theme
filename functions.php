@@ -116,6 +116,17 @@ function ihowz_theme_widgets_init() {
         'before_title'  => '<h3 class="advertising-widget-title screen-reader-text">',
         'after_title'   => '</h3>',
     ));
+
+    // Page Sidebar Widget Area
+    register_sidebar(array(
+        'name'          => esc_html__('Page Sidebar', 'ihowz-theme'),
+        'id'            => 'page-sidebar',
+        'description'   => esc_html__('Sidebar that appears on the right side of pages.', 'ihowz-theme'),
+        'before_widget' => '<div class="widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h3 class="widget-title">',
+        'after_title'   => '</h3>',
+    ));
 }
 add_action('widgets_init', 'ihowz_theme_widgets_init');
 
