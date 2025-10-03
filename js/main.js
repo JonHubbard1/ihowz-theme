@@ -10,7 +10,12 @@
 
         // Mobile menu toggle
         $('.menu-toggle').on('click', function() {
+            $(this).toggleClass('toggled');
             $('.main-navigation').toggleClass('toggled');
+
+            // Update aria-expanded attribute
+            var expanded = $(this).attr('aria-expanded') === 'true';
+            $(this).attr('aria-expanded', !expanded);
         });
 
         // Smooth scrolling for anchor links

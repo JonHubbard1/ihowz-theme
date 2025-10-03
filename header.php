@@ -38,6 +38,13 @@
                 </div>
 
                 <div class="menubar-menu">
+                    <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
+                        <span class="hamburger-icon">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </button>
                     <nav id="site-navigation" class="main-navigation">
                         <?php
                         wp_nav_menu(array(
