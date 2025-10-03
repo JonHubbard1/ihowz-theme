@@ -95,6 +95,29 @@
         // Initialize on page load in case user refreshes while scrolled
         $(window).trigger('scroll');
 
+        // Hero video loading
+        var heroVideo = $('.hero-video');
+        if (heroVideo.length) {
+            var video = heroVideo[0];
+
+            // Try to play the video once it's loaded enough
+            video.addEventListener('loadeddata', function() {
+                console.log('Video loaded, attempting to play');
+                video.play().catch(function(error) {
+                    console.log('Video autoplay prevented:', error);
+                });
+            });
+
+            // Log video errors
+            video.addEventListener('error', function(e) {
+                console.error('Video error:', e);
+                console.error('Video error code:', video.error ? video.error.code : 'unknown');
+            });
+
+            // Force load the video
+            video.load();
+        }
+
     });
 
     // Window load

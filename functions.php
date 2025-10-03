@@ -293,3 +293,263 @@ function ihowz_theme_breadcrumb() {
         echo '</nav>';
     }
 }
+
+/**
+ * Customizer - Hero Section Settings
+ */
+function ihowz_theme_customize_register($wp_customize) {
+    // Add Hero Section
+    $wp_customize->add_section('ihowz_hero_section', array(
+        'title'    => __('Hero Section', 'ihowz-theme'),
+        'priority' => 30,
+    ));
+
+    // Hero Title
+    $wp_customize->add_setting('ihowz_hero_title', array(
+        'default'           => 'Welcome to iHowz',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('ihowz_hero_title', array(
+        'label'    => __('Hero Title', 'ihowz-theme'),
+        'section'  => 'ihowz_hero_section',
+        'type'     => 'text',
+    ));
+
+    // Hero Subtitle
+    $wp_customize->add_setting('ihowz_hero_subtitle', array(
+        'default'           => 'Connecting landlords and tenants for better housing solutions',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('ihowz_hero_subtitle', array(
+        'label'    => __('Hero Subtitle', 'ihowz-theme'),
+        'section'  => 'ihowz_hero_section',
+        'type'     => 'textarea',
+    ));
+
+    // Primary Button Text
+    $wp_customize->add_setting('ihowz_hero_button_primary_text', array(
+        'default'           => 'Join Today',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('ihowz_hero_button_primary_text', array(
+        'label'    => __('Primary Button Text', 'ihowz-theme'),
+        'section'  => 'ihowz_hero_section',
+        'type'     => 'text',
+    ));
+
+    // Primary Button URL
+    $wp_customize->add_setting('ihowz_hero_button_primary_url', array(
+        'default'           => '/join',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('ihowz_hero_button_primary_url', array(
+        'label'    => __('Primary Button URL', 'ihowz-theme'),
+        'section'  => 'ihowz_hero_section',
+        'type'     => 'url',
+    ));
+
+    // Secondary Button Text
+    $wp_customize->add_setting('ihowz_hero_button_secondary_text', array(
+        'default'           => 'Learn More',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('ihowz_hero_button_secondary_text', array(
+        'label'    => __('Secondary Button Text', 'ihowz-theme'),
+        'section'  => 'ihowz_hero_section',
+        'type'     => 'text',
+    ));
+
+    // Secondary Button URL
+    $wp_customize->add_setting('ihowz_hero_button_secondary_url', array(
+        'default'           => '/about',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('ihowz_hero_button_secondary_url', array(
+        'label'    => __('Secondary Button URL', 'ihowz-theme'),
+        'section'  => 'ihowz_hero_section',
+        'type'     => 'url',
+    ));
+
+    // Hero Description
+    $wp_customize->add_setting('ihowz_hero_description', array(
+        'default'           => '',
+        'sanitize_callback' => 'wp_kses_post',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('ihowz_hero_description', array(
+        'label'       => __('Hero Description', 'ihowz-theme'),
+        'description' => __('Additional description text that appears below the buttons', 'ihowz-theme'),
+        'section'     => 'ihowz_hero_section',
+        'type'        => 'textarea',
+    ));
+
+    // Title Font Size
+    $wp_customize->add_setting('ihowz_hero_title_font_size', array(
+        'default'           => '5',
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('ihowz_hero_title_font_size', array(
+        'label'       => __('Title Font Size (rem)', 'ihowz-theme'),
+        'description' => __('Default: 5rem', 'ihowz-theme'),
+        'section'     => 'ihowz_hero_section',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min'  => 1,
+            'max'  => 10,
+            'step' => 0.5,
+        ),
+    ));
+
+    // Title Font Weight
+    $wp_customize->add_setting('ihowz_hero_title_font_weight', array(
+        'default'           => '200',
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('ihowz_hero_title_font_weight', array(
+        'label'       => __('Title Font Weight', 'ihowz-theme'),
+        'description' => __('100=Thin, 300=Light, 400=Regular, 700=Bold', 'ihowz-theme'),
+        'section'     => 'ihowz_hero_section',
+        'type'        => 'select',
+        'choices'     => array(
+            '100' => '100 - Thin',
+            '200' => '200 - Extra Light',
+            '300' => '300 - Light',
+            '400' => '400 - Regular',
+            '500' => '500 - Medium',
+            '600' => '600 - Semi Bold',
+            '700' => '700 - Bold',
+        ),
+    ));
+
+    // Subtitle Font Size
+    $wp_customize->add_setting('ihowz_hero_subtitle_font_size', array(
+        'default'           => '2.5',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('ihowz_hero_subtitle_font_size', array(
+        'label'       => __('Subtitle Font Size (rem)', 'ihowz-theme'),
+        'description' => __('Default: 2.5rem', 'ihowz-theme'),
+        'section'     => 'ihowz_hero_section',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min'  => 1,
+            'max'  => 8,
+            'step' => 0.5,
+        ),
+    ));
+
+    // Subtitle Font Weight
+    $wp_customize->add_setting('ihowz_hero_subtitle_font_weight', array(
+        'default'           => '300',
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('ihowz_hero_subtitle_font_weight', array(
+        'label'       => __('Subtitle Font Weight', 'ihowz-theme'),
+        'description' => __('100=Thin, 300=Light, 400=Regular, 700=Bold', 'ihowz-theme'),
+        'section'     => 'ihowz_hero_section',
+        'type'        => 'select',
+        'choices'     => array(
+            '100' => '100 - Thin',
+            '200' => '200 - Extra Light',
+            '300' => '300 - Light',
+            '400' => '400 - Regular',
+            '500' => '500 - Medium',
+            '600' => '600 - Semi Bold',
+            '700' => '700 - Bold',
+        ),
+    ));
+
+    // Description Font Size
+    $wp_customize->add_setting('ihowz_hero_description_font_size', array(
+        'default'           => '1.5',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('ihowz_hero_description_font_size', array(
+        'label'       => __('Description Font Size (rem)', 'ihowz-theme'),
+        'description' => __('Default: 1.5rem', 'ihowz-theme'),
+        'section'     => 'ihowz_hero_section',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min'  => 0.5,
+            'max'  => 5,
+            'step' => 0.25,
+        ),
+    ));
+
+    // Description Font Weight
+    $wp_customize->add_setting('ihowz_hero_description_font_weight', array(
+        'default'           => '300',
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('ihowz_hero_description_font_weight', array(
+        'label'       => __('Description Font Weight', 'ihowz-theme'),
+        'description' => __('100=Thin, 300=Light, 400=Regular, 700=Bold', 'ihowz-theme'),
+        'section'     => 'ihowz_hero_section',
+        'type'        => 'select',
+        'choices'     => array(
+            '100' => '100 - Thin',
+            '200' => '200 - Extra Light',
+            '300' => '300 - Light',
+            '400' => '400 - Regular',
+            '500' => '500 - Medium',
+            '600' => '600 - Semi Bold',
+            '700' => '700 - Bold',
+        ),
+    ));
+}
+add_action('customize_register', 'ihowz_theme_customize_register');
+
+/**
+ * Output Hero Section Custom Styles
+ */
+function ihowz_hero_custom_styles() {
+    $title_size = get_theme_mod('ihowz_hero_title_font_size', '5');
+    $title_weight = get_theme_mod('ihowz_hero_title_font_weight', '200');
+    $subtitle_size = get_theme_mod('ihowz_hero_subtitle_font_size', '2.5');
+    $subtitle_weight = get_theme_mod('ihowz_hero_subtitle_font_weight', '300');
+    $description_size = get_theme_mod('ihowz_hero_description_font_size', '1.5');
+    $description_weight = get_theme_mod('ihowz_hero_description_font_weight', '300');
+
+    $custom_css = "
+        .hero-title {
+            font-size: {$title_size}rem !important;
+            font-weight: {$title_weight} !important;
+        }
+        .hero-subtitle {
+            font-size: {$subtitle_size}rem !important;
+            font-weight: {$subtitle_weight} !important;
+        }
+        .hero-description {
+            font-size: {$description_size}rem !important;
+            font-weight: {$description_weight} !important;
+        }
+    ";
+
+    wp_add_inline_style('ihowz-style', $custom_css);
+}
+add_action('wp_enqueue_scripts', 'ihowz_hero_custom_styles');
