@@ -43,7 +43,38 @@
                 // Desktop - remove mobile classes and inline styles
                 $('.menu-item-has-children, .megamenu-enabled').removeClass('menu-open');
                 $('.sub-menu, .megamenu-dropdown').removeAttr('style');
+
+                // Recalculate MegaMenu positions
+                positionMegaMenus();
             }
+        });
+
+        // Position MegaMenus to start at viewport left edge
+        function positionMegaMenus() {
+            if ($(window).width() >= 1024) {
+                $('.megamenu-enabled').each(function() {
+                    var $menuItem = $(this);
+                    var $dropdown = $menuItem.children('.megamenu-dropdown');
+
+                    // Get the menu item's offset from the left edge of the viewport
+                    var offsetLeft = $menuItem.offset().left;
+
+                    // Apply negative left to position dropdown at viewport left: 0
+                    $dropdown.css('left', -offsetLeft + 'px');
+                });
+            }
+        }
+
+        // Initialize MegaMenu positioning on page load
+        positionMegaMenus();
+
+        // Recalculate on window resize (debounced)
+        var resizeTimer;
+        $(window).on('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                positionMegaMenus();
+            }, 250);
         });
 
         // Smooth scrolling for anchor links
