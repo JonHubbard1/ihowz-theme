@@ -1478,3 +1478,330 @@ select:focus {
     outline: 2px solid #3498db;
     outline-offset: 2px;
 }
+/* ================================
+   MEGAMENU STYLES
+   ================================ */
+
+/* MegaMenu Base Styles */
+.main-navigation {
+    position: relative;
+}
+
+.main-navigation ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.main-navigation li {
+    position: relative;
+    margin: 0;
+}
+
+.main-navigation a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    text-decoration: none;
+    color: var(--primary-charcoal);
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+}
+
+.main-navigation a:hover {
+    color: var(--primary-green);
+    background-color: var(--background-light-green);
+}
+
+/* Menu Icons */
+.menu-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+/* Dropdown Indicator */
+.dropdown-indicator {
+    margin-left: 0.25rem;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid currentColor;
+    transition: transform 0.3s ease;
+}
+
+.menu-item-has-children:hover > a .dropdown-indicator {
+    transform: rotate(180deg);
+}
+
+/* Menu Description (shows in megamenu) */
+.menu-description {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--neutral-gray);
+    margin-top: 0.25rem;
+    line-height: 1.4;
+}
+
+/* Sub-menu Base (Regular Dropdown) */
+.sub-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 220px;
+    background: var(--background-pure-white);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    z-index: 1000;
+    margin-top: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.menu-item-has-children:hover > .sub-menu {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.sub-menu li {
+    display: block;
+}
+
+.sub-menu a {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0;
+    white-space: nowrap;
+}
+
+.sub-menu a:hover {
+    background-color: var(--background-light-green);
+    color: var(--primary-green);
+}
+
+/* MegaMenu Dropdown Styles */
+.megamenu-enabled > .megamenu-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 600px;
+    max-width: 1000px;
+    width: auto;
+    background: var(--background-pure-white);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    padding: 2rem;
+    z-index: 1000;
+    margin-top: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.megamenu-enabled:hover > .megamenu-dropdown {
+    display: grid;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* MegaMenu Column Layouts */
+.megamenu-cols-2 > .megamenu-dropdown {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.megamenu-cols-3 > .megamenu-dropdown {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.megamenu-cols-4 > .megamenu-dropdown {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+/* MegaMenu Items */
+.megamenu-dropdown > li {
+    display: flex;
+    flex-direction: column;
+}
+
+.megamenu-dropdown > li > a {
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0.5rem 0;
+    margin-bottom: 0.75rem;
+    border-bottom: 2px solid var(--background-light-gray);
+    border-radius: 0;
+}
+
+.megamenu-dropdown > li > a:hover {
+    background-color: transparent;
+    color: var(--primary-green);
+    border-bottom-color: var(--primary-green);
+}
+
+/* Nested items in megamenu */
+.megamenu-dropdown .sub-menu {
+    position: static;
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+    background: transparent;
+}
+
+.megamenu-dropdown .sub-menu a {
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--primary-charcoal);
+}
+
+.megamenu-dropdown .sub-menu a:hover {
+    background-color: transparent;
+    color: var(--primary-green);
+    padding-left: 0.5rem;
+}
+
+/* Featured Items */
+.megamenu-featured > a {
+    background-color: var(--background-light-green);
+    color: var(--secondary-forest-green) !important;
+    font-weight: 700;
+}
+
+.megamenu-featured:hover > a {
+    background-color: var(--primary-green);
+    color: var(--primary-white) !important;
+}
+
+/* Menu Icons in MegaMenu */
+.megamenu-dropdown .menu-icon {
+    font-size: 1.5rem;
+}
+
+/* Current Menu Item Styling */
+.current-menu-item > a,
+.current-menu-parent > a {
+    color: var(--primary-green);
+    background-color: var(--background-light-green);
+}
+
+/* MegaMenu Mobile Adjustments */
+@media (max-width: 1023px) {
+    /* Mobile - Disable MegaMenu, use standard dropdown */
+    .megamenu-enabled > .megamenu-dropdown {
+        position: static;
+        transform: none;
+        min-width: 100%;
+        max-width: 100%;
+        grid-template-columns: 1fr !important;
+        gap: 0;
+        padding: 0;
+        box-shadow: none;
+        border-radius: 0;
+        margin-top: 0;
+    }
+
+    .megamenu-enabled:hover > .megamenu-dropdown {
+        display: block;
+    }
+
+    .megamenu-dropdown > li {
+        border-bottom: 1px solid var(--background-light-gray);
+    }
+
+    .megamenu-dropdown > li:last-child {
+        border-bottom: none;
+    }
+
+    .megamenu-dropdown > li > a {
+        border-bottom: none;
+        padding: 0.75rem 1.5rem;
+        margin-bottom: 0;
+    }
+
+    .megamenu-dropdown .sub-menu {
+        padding-left: 1rem;
+    }
+
+    .dropdown-indicator {
+        margin-left: auto;
+    }
+
+    /* Mobile dropdown toggle */
+    .menu-item-has-children > a {
+        position: relative;
+    }
+
+    .menu-item-has-children > .sub-menu,
+    .megamenu-enabled > .megamenu-dropdown {
+        display: none;
+    }
+
+    .menu-item-has-children.menu-open > .sub-menu,
+    .megamenu-enabled.menu-open > .megamenu-dropdown {
+        display: block;
+    }
+}
+
+/* Tablet Adjustments */
+@media (max-width: 1200px) and (min-width: 1024px) {
+    .megamenu-cols-4 > .megamenu-dropdown {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .megamenu-enabled > .megamenu-dropdown {
+        max-width: 800px;
+    }
+}
+
+/* Accessibility Improvements */
+.main-navigation a:focus-visible {
+    outline: 2px solid var(--primary-green);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Animation for menu items */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.menu-item-has-children:hover > .sub-menu,
+.megamenu-enabled:hover > .megamenu-dropdown {
+    animation: slideDown 0.3s ease;
+}
+
+/* Ensure dropdowns don't overflow viewport */
+@media (min-width: 1024px) {
+    .main-navigation li:nth-last-child(-n+2) .sub-menu:not(.megamenu-dropdown) {
+        left: auto;
+        right: 0;
+    }
+}

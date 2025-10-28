@@ -9,6 +9,11 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * Load MegaMenu Walker
+ */
+require_once get_template_directory() . '/inc/class-megamenu-walker.php';
+
+/**
  * Theme setup
  */
 function ihowz_theme_setup() {
@@ -50,10 +55,10 @@ add_action('after_setup_theme', 'ihowz_theme_setup');
  */
 function ihowz_theme_scripts() {
     // Main stylesheet
-    wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), '1.0.5');
+    wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), '1.0.7');
 
     // Custom JavaScript
-    wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/js/main.js', array('jquery'), '1.0.6', true);
+    wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/js/main.js', array('jquery'), '1.0.7', true);
 
     // Comment reply script
     if (is_singular() && comments_open() && get_option('thread_comments')) {
@@ -523,6 +528,91 @@ function ihowz_theme_customize_register($wp_customize) {
     ));
 }
 add_action('customize_register', 'ihowz_theme_customize_register');
+
+/**
+ * Add MegaMenu Custom Fields to Menu Items
+ */
+function ihowz_megamenu_custom_fields($item_id, $item, $depth, $args) {
+    ?>
+    <div class="megamenu-options" style="margin: 15px 0; padding: 15px; background: #f5f5f5; border-radius: 4px;">
+        <h4 style="margin-top: 0;">MegaMenu Settings</h4>
+
+        <p class="description" style="margin-bottom: 15px;">
+            <label>
+                <input type="checkbox" name="menu-item-megamenu-enabled[<?php echo $item_id; ?>]" value="1" <?php checked(get_post_meta($item_id, '_megamenu_enabled', true), '1'); ?>>
+                Enable MegaMenu for this item
+            </label>
+        </p>
+
+        <p class="description">
+            <label>
+                Column Count:
+                <select name="menu-item-megamenu-columns[<?php echo $item_id; ?>]">
+                    <?php
+                    $columns = get_post_meta($item_id, '_megamenu_columns', true);
+                    for ($i = 2; $i <= 4; $i++) {
+                        echo '<option value="' . $i . '" ' . selected($columns, $i, false) . '>' . $i . ' Columns</option>';
+                    }
+                    ?>
+                </select>
+            </label>
+        </p>
+
+        <p class="description">
+            <label>
+                <input type="checkbox" name="menu-item-megamenu-featured[<?php echo $item_id; ?>]" value="1" <?php checked(get_post_meta($item_id, '_megamenu_featured', true), '1'); ?>>
+                Featured item (highlighted)
+            </label>
+        </p>
+
+        <p class="description">
+            <label style="display: block; margin-bottom: 5px;">
+                Icon/Emoji (optional):
+                <input type="text" name="menu-item-megamenu-icon[<?php echo $item_id; ?>]" value="<?php echo esc_attr(get_post_meta($item_id, '_megamenu_icon', true)); ?>" placeholder="e.g., 🏠 or text" style="width: 100%;">
+            </label>
+            <small>Add an emoji or text that appears before the menu item</small>
+        </p>
+
+        <p class="description">
+            <label style="display: block; margin-bottom: 5px;">
+                Description (optional):
+                <textarea name="menu-item-megamenu-description[<?php echo $item_id; ?>]" rows="2" style="width: 100%;"><?php echo esc_textarea(get_post_meta($item_id, '_megamenu_description', true)); ?></textarea>
+            </label>
+            <small>Short description that appears below the menu item</small>
+        </p>
+    </div>
+    <?php
+}
+add_action('wp_nav_menu_item_custom_fields', 'ihowz_megamenu_custom_fields', 10, 4);
+
+/**
+ * Save MegaMenu Custom Fields
+ */
+function ihowz_save_megamenu_custom_fields($menu_id, $menu_item_db_id) {
+    // Save megamenu enabled
+    $megamenu_enabled = isset($_POST['menu-item-megamenu-enabled'][$menu_item_db_id]) ? '1' : '0';
+    update_post_meta($menu_item_db_id, '_megamenu_enabled', $megamenu_enabled);
+
+    // Save column count
+    if (isset($_POST['menu-item-megamenu-columns'][$menu_item_db_id])) {
+        update_post_meta($menu_item_db_id, '_megamenu_columns', sanitize_text_field($_POST['menu-item-megamenu-columns'][$menu_item_db_id]));
+    }
+
+    // Save featured
+    $megamenu_featured = isset($_POST['menu-item-megamenu-featured'][$menu_item_db_id]) ? '1' : '0';
+    update_post_meta($menu_item_db_id, '_megamenu_featured', $megamenu_featured);
+
+    // Save icon
+    if (isset($_POST['menu-item-megamenu-icon'][$menu_item_db_id])) {
+        update_post_meta($menu_item_db_id, '_megamenu_icon', sanitize_text_field($_POST['menu-item-megamenu-icon'][$menu_item_db_id]));
+    }
+
+    // Save description
+    if (isset($_POST['menu-item-megamenu-description'][$menu_item_db_id])) {
+        update_post_meta($menu_item_db_id, '_megamenu_description', sanitize_textarea_field($_POST['menu-item-megamenu-description'][$menu_item_db_id]));
+    }
+}
+add_action('wp_update_nav_menu_item', 'ihowz_save_megamenu_custom_fields', 10, 2);
 
 /**
  * Output Hero Section Custom Styles

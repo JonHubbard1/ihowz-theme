@@ -18,6 +18,34 @@
             $(this).attr('aria-expanded', !expanded);
         });
 
+        // MegaMenu Mobile Dropdown Toggle
+        if ($(window).width() < 1024) {
+            $('.menu-item-has-children > a, .megamenu-enabled > a').on('click', function(e) {
+                // Only prevent default on mobile
+                var $parent = $(this).parent();
+
+                if ($parent.hasClass('menu-item-has-children') || $parent.hasClass('megamenu-enabled')) {
+                    e.preventDefault();
+
+                    // Close other open menus at the same level
+                    $parent.siblings('.menu-open').removeClass('menu-open').find('.sub-menu, .megamenu-dropdown').slideUp(200);
+
+                    // Toggle this menu
+                    $parent.toggleClass('menu-open');
+                    $parent.children('.sub-menu, .megamenu-dropdown').slideToggle(200);
+                }
+            });
+        }
+
+        // Re-initialize mobile menu on window resize
+        $(window).on('resize', function() {
+            if ($(window).width() >= 1024) {
+                // Desktop - remove mobile classes and inline styles
+                $('.menu-item-has-children, .megamenu-enabled').removeClass('menu-open');
+                $('.sub-menu, .megamenu-dropdown').removeAttr('style');
+            }
+        });
+
         // Smooth scrolling for anchor links
         $('a[href*="#"]:not([href="#"])').click(function() {
             if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {

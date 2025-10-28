@@ -52,6 +52,7 @@
                             'menu_id'        => 'primary-menu',
                             'container'      => false,
                             'fallback_cb'    => 'ihowz_theme_fallback_menu',
+                            'walker'         => new IHowz_MegaMenu_Walker(),
                         ));
                         ?>
                     </nav>
