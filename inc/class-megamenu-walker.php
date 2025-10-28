@@ -145,9 +145,9 @@ class IHowz_MegaMenu_Walker extends Walker_Nav_Menu {
         $item_output .= '</a>';
         $item_output .= $args->after;
 
-        // Add description if exists and is top level with megamenu
+        // Add description if exists and is inside dropdown (not on menu bar)
         $description = get_post_meta($item->ID, '_megamenu_description', true);
-        if ($description && $depth === 0) {
+        if ($description && $depth > 0) {
             $item_output .= '<span class="menu-description">' . esc_html($description) . '</span>';
         }
 

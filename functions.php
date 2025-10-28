@@ -55,10 +55,10 @@ add_action('after_setup_theme', 'ihowz_theme_setup');
  */
 function ihowz_theme_scripts() {
     // Main stylesheet
-    wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), '1.0.7');
+    wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), '1.0.8');
 
     // Custom JavaScript
-    wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/js/main.js', array('jquery'), '1.0.7', true);
+    wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/js/main.js', array('jquery'), '1.0.8', true);
 
     // Comment reply script
     if (is_singular() && comments_open() && get_option('thread_comments')) {
