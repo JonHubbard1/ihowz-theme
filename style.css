@@ -1598,8 +1598,7 @@ select:focus {
     display: none;
     position: absolute;
     top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
     width: 100vw;
     max-width: 100vw;
     background: var(--background-pure-white);
