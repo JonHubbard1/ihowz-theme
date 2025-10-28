@@ -1555,11 +1555,11 @@ select:focus {
     position: absolute;
     top: 100%;
     left: 0;
-    min-width: 220px;
+    min-width: 240px;
     background: var(--background-pure-white);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     border-radius: 8px;
-    padding: 1rem 0;
+    padding: 1.5rem 0;
     z-index: 1000;
     margin-top: 0.5rem;
     opacity: 0;
@@ -1581,9 +1581,11 @@ select:focus {
 
 .sub-menu a {
     display: block;
-    padding: 0.75rem 1.5rem;
+    padding: 1rem 1.75rem;
     border-radius: 0;
     white-space: nowrap;
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
 .sub-menu a:hover {
