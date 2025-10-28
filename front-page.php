@@ -8,7 +8,7 @@ get_header(); ?>
 <!-- Hero Video Section -->
 <section class="hero-video-section">
     <div class="hero-video-container">
-        <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="<?php echo esc_url(home_url('/wp-content/uploads/2025/10/starterBackdrop.png')); ?>">
+        <video id="hero-background-video" class="hero-video" autoplay muted loop playsinline preload="auto" poster="<?php echo esc_url(home_url('/wp-content/uploads/2025/10/starterBackdrop.png')); ?>">
             <source src="<?php echo esc_url(home_url('/wp-content/uploads/2025/10/backgroundVideo.mp4')); ?>" type="video/mp4">
             Your browser does not support the video tag.
         </video>

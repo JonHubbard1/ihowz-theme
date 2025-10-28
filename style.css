@@ -127,7 +127,7 @@ article .page-content > p:first-of-type,
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .header-top-row-social-icon {
@@ -397,12 +397,51 @@ body.header-sticky-active {
     background-color: var(--primary-charcoal);
 }
 
-/* Show poster image properly */
+/* Hide all video controls completely - Safari specific */
 .hero-video::-webkit-media-controls {
     display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
 }
 
 .hero-video::-webkit-media-controls-enclosure {
+    display: none !important;
+    opacity: 0 !important;
+}
+
+.hero-video::-webkit-media-controls-panel {
+    display: none !important;
+}
+
+.hero-video::-webkit-media-controls-play-button {
+    display: none !important;
+}
+
+.hero-video::-webkit-media-controls-start-playback-button {
+    display: none !important;
+}
+
+.hero-video::-webkit-media-controls-timeline {
+    display: none !important;
+}
+
+.hero-video::-webkit-media-controls-current-time-display {
+    display: none !important;
+}
+
+.hero-video::-webkit-media-controls-time-remaining-display {
+    display: none !important;
+}
+
+.hero-video::-webkit-media-controls-mute-button {
+    display: none !important;
+}
+
+.hero-video::-webkit-media-controls-volume-slider {
+    display: none !important;
+}
+
+.hero-video::-webkit-media-controls-fullscreen-button {
     display: none !important;
 }
 
