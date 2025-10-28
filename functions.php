@@ -55,7 +55,7 @@ add_action('after_setup_theme', 'ihowz_theme_setup');
  */
 function ihowz_theme_scripts() {
     // Main stylesheet
-    wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), '1.1.5');
+    wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), '1.2.0');
 
     // Custom JavaScript
     wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/js/main.js', array('jquery'), '1.0.9', true);
@@ -131,6 +131,85 @@ function ihowz_theme_widgets_init() {
         'after_widget'  => '</div>',
         'before_title'  => '<h3 class="widget-title">',
         'after_title'   => '</h3>',
+    ));
+
+    // Template-Specific Advertisement Widget Areas
+
+    // Home Page - Sponsor Showcase (4x 250x250)
+    register_sidebar(array(
+        'name'          => esc_html__('Home - Sponsor Showcase', 'ihowz-theme'),
+        'id'            => 'home-sponsors',
+        'description'   => esc_html__('Sponsor cards on home page (250x250). Recommended: 4 widgets.', 'ihowz-theme'),
+        'before_widget' => '<div class="sponsor-card">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4 class="sponsor-title screen-reader-text">',
+        'after_title'   => '</h4>',
+    ));
+
+    // Article Template - Sidebar Top (300x250)
+    register_sidebar(array(
+        'name'          => esc_html__('Article - Sidebar Top', 'ihowz-theme'),
+        'id'            => 'article-sidebar-top',
+        'description'   => esc_html__('Advertisement in article sidebar (300x250 recommended).', 'ihowz-theme'),
+        'before_widget' => '<div class="sidebar-ad-widget">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4 class="ad-title screen-reader-text">',
+        'after_title'   => '</h4>',
+    ));
+
+    // Article Template - Sponsor Content (2x horizontal)
+    register_sidebar(array(
+        'name'          => esc_html__('Article - Sponsors', 'ihowz-theme'),
+        'id'            => 'article-sponsors',
+        'description'   => esc_html__('Relevant sponsor content below article. Recommended: 2 widgets.', 'ihowz-theme'),
+        'before_widget' => '<div class="sponsor-content-card">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4 class="sponsor-title">',
+        'after_title'   => '</h4>',
+    ));
+
+    // Guide Template - Services (3x)
+    register_sidebar(array(
+        'name'          => esc_html__('Guide - Services', 'ihowz-theme'),
+        'id'            => 'guide-services',
+        'description'   => esc_html__('Relevant services for guides. Recommended: 3 widgets.', 'ihowz-theme'),
+        'before_widget' => '<div class="service-card">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4 class="service-title">',
+        'after_title'   => '</h4>',
+    ));
+
+    // Resources Template - Services (2x)
+    register_sidebar(array(
+        'name'          => esc_html__('Resources - Services', 'ihowz-theme'),
+        'id'            => 'resources-services',
+        'description'   => esc_html__('Professional services for resource hub. Recommended: 2 widgets.', 'ihowz-theme'),
+        'before_widget' => '<div class="service-card">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4 class="service-title">',
+        'after_title'   => '</h4>',
+    ));
+
+    // Events Template - Sponsors (3x)
+    register_sidebar(array(
+        'name'          => esc_html__('Events - Sponsors', 'ihowz-theme'),
+        'id'            => 'event-sponsors',
+        'description'   => esc_html__('Event sponsors and partners. Recommended: 3 widgets.', 'ihowz-theme'),
+        'before_widget' => '<div class="sponsor-card">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4 class="sponsor-title">',
+        'after_title'   => '</h4>',
+    ));
+
+    // Campaigns Template - Supporters (4x)
+    register_sidebar(array(
+        'name'          => esc_html__('Campaigns - Supporters', 'ihowz-theme'),
+        'id'            => 'campaign-supporters',
+        'description'   => esc_html__('Campaign supporters and allies. Recommended: 4 widgets.', 'ihowz-theme'),
+        'before_widget' => '<div class="supporter-card">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4 class="supporter-title">',
+        'after_title'   => '</h4>',
     ));
 }
 add_action('widgets_init', 'ihowz_theme_widgets_init');
