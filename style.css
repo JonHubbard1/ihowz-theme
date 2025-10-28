@@ -1606,7 +1606,7 @@ select:focus {
     border-radius: 0;
     padding: 2rem 1rem;
     z-index: 1000;
-    margin-top: 0.5rem;
+    margin-top: 0;
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
