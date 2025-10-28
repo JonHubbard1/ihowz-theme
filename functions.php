@@ -55,7 +55,7 @@ add_action('after_setup_theme', 'ihowz_theme_setup');
  */
 function ihowz_theme_scripts() {
     // Main stylesheet
-    wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), '1.0.8');
+    wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), '1.0.9');
 
     // Custom JavaScript
     wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/js/main.js', array('jquery'), '1.0.8', true);
