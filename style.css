@@ -1649,14 +1649,14 @@ select:focus {
 .megamenu-dropdown > li > a {
     font-weight: 600;
     font-size: 1.1rem;
-    padding: 0.5rem 0;
+    padding: 1rem 1.75rem;
     margin-bottom: 0.75rem;
     border-bottom: 2px solid var(--background-light-gray);
     border-radius: 0;
 }
 
 .megamenu-dropdown > li > a:hover {
-    background-color: transparent;
+    background-color: var(--background-light-green);
     color: var(--primary-green);
     border-bottom-color: var(--primary-green);
 }
@@ -1676,16 +1676,15 @@ select:focus {
 }
 
 .megamenu-dropdown .sub-menu a {
-    padding: 0.5rem 0;
+    padding: 0.75rem 1.75rem;
     font-size: 0.95rem;
     font-weight: 400;
     color: var(--primary-charcoal);
 }
 
 .megamenu-dropdown .sub-menu a:hover {
-    background-color: transparent;
+    background-color: var(--background-light-green);
     color: var(--primary-green);
-    padding-left: 0.5rem;
 }
 
 /* Featured Items */
