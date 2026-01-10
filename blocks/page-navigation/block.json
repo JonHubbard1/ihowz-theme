@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "ihowz/page-navigation",
+    "version": "1.0.0",
+    "title": "Page Navigation",
+    "category": "widgets",
+    "icon": "list-view",
+    "description": "Display a navigation list of pages with configurable depth levels.",
+    "keywords": ["pages", "navigation", "menu", "sidebar", "list"],
+    "textdomain": "ihowz-theme",
+    "attributes": {
+        "depth": {
+            "type": "number",
+            "default": 2
+        },
+        "showOnlyChildren": {
+            "type": "boolean",
+            "default": false
+        },
+        "parentPage": {
+            "type": "number",
+            "default": 0
+        },
+        "excludeIds": {
+            "type": "string",
+            "default": ""
+        },
+        "title": {
+            "type": "string",
+            "default": ""
+        },
+        "showTitle": {
+            "type": "boolean",
+            "default": false
+        }
+    },
+    "supports": {
+        "html": false,
+        "className": true
+    },
+    "render": "file:./render.php"
+}

@@ -10,8 +10,8 @@
     display: grid;
     grid-template-columns: 70fr 30fr;
     gap: 40px;
-    width: 100%;
-    max-width: 1200px;
+    width: 90%;
+    max-width: 1600px;
     margin: 60px auto;
     padding: 0 20px;
 }
