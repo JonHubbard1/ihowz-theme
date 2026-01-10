@@ -833,6 +833,29 @@ function ihowz_register_blocks() {
         'editor_script' => 'ihowz-page-navigation-editor',
         'style' => 'ihowz-page-navigation-style',
     ));
+
+    // Hero block
+    $hero_version = '1.0.' . filemtime(get_template_directory() . '/blocks/hero/style.css');
+
+    wp_register_script(
+        'ihowz-hero-editor',
+        get_template_directory_uri() . '/blocks/hero/index.js',
+        array('wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-server-side-render', 'wp-media-utils'),
+        $hero_version,
+        true
+    );
+
+    wp_register_style(
+        'ihowz-hero-style',
+        get_template_directory_uri() . '/blocks/hero/style.css',
+        array(),
+        $hero_version
+    );
+
+    register_block_type(get_template_directory() . '/blocks/hero', array(
+        'editor_script' => 'ihowz-hero-editor',
+        'style' => 'ihowz-hero-style',
+    ));
 }
 add_action('init', 'ihowz_register_blocks');
 

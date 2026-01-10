@@ -1,0 +1,281 @@
+/**
+ * Hero Section Block - Frontend Styles
+ *
+ * @package iHowz Theme
+ */
+
+/* Hero Container */
+.wp-block-ihowz-hero,
+.ihowz-hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    min-height: 600px;
+    padding: 80px 40px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+/* Full width alignment */
+.wp-block-ihowz-hero.alignfull {
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    max-width: 100vw;
+    width: 100vw;
+}
+
+/* Video Background */
+.ihowz-hero .hero-video-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.ihowz-hero .hero-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+}
+
+/* Overlay */
+.ihowz-hero .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+/* Content Container */
+.ihowz-hero .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    text-align: center;
+    padding: 0 20px;
+}
+
+/* Heading */
+.ihowz-hero .hero-heading {
+    font-family: var(--primary-font, "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: #fff;
+    margin: 0 0 24px 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Subheading */
+.ihowz-hero .hero-subheading {
+    font-family: var(--primary-font);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 400;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 32px 0;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Buttons Container */
+.ihowz-hero .hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+}
+
+/* Base Button Styles */
+.ihowz-hero .hero-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    font-family: var(--primary-font);
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.ihowz-hero .hero-btn-icon {
+    width: 18px;
+    height: 18px;
+}
+
+/* Primary Button - Orange */
+.ihowz-hero .hero-btn-primary {
+    background: var(--accent-gold, #FF8F00);
+    color: #fff;
+    border: 2px solid var(--accent-gold, #FF8F00);
+}
+
+.ihowz-hero .hero-btn-primary:hover {
+    background: #e67e00;
+    border-color: #e67e00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 143, 0, 0.3);
+}
+
+/* Secondary Button - White Outline */
+.ihowz-hero .hero-btn-secondary {
+    background: transparent;
+    color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.ihowz-hero .hero-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+    transform: translateY(-2px);
+}
+
+/* Floating Cards - Shared */
+.ihowz-hero .hero-card {
+    position: absolute;
+    z-index: 3;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+/* Left Card */
+.ihowz-hero .hero-card-left {
+    bottom: 40px;
+    left: 40px;
+    max-width: 420px;
+    display: flex;
+    gap: 0;
+}
+
+.ihowz-hero .hero-card-left .hero-card-image {
+    width: 135px;
+    flex-shrink: 0;
+}
+
+.ihowz-hero .hero-card-left .hero-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ihowz-hero .hero-card-left .hero-card-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ihowz-hero .hero-card-title {
+    font-family: var(--primary-font);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--primary-charcoal, #263238);
+    margin: 0 0 8px 0;
+    line-height: 1.3;
+}
+
+.ihowz-hero .hero-card-text {
+    font-family: var(--primary-font);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--neutral-gray, #757575);
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Right Card - Image + Text */
+.ihowz-hero .hero-card-right {
+    bottom: 40px;
+    right: 40px;
+    max-width: 420px;
+    display: flex;
+    gap: 0;
+}
+
+.ihowz-hero .hero-card-right .hero-card-image {
+    width: 135px;
+    flex-shrink: 0;
+}
+
+.ihowz-hero .hero-card-right .hero-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ihowz-hero .hero-card-right .hero-card-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .ihowz-hero .hero-card-left {
+        left: 20px;
+        bottom: 20px;
+        max-width: 350px;
+    }
+
+    .ihowz-hero .hero-card-right {
+        right: 20px;
+        bottom: 20px;
+        max-width: 350px;
+    }
+}
+
+@media (max-width: 992px) {
+    .ihowz-hero .hero-card {
+        display: none;
+    }
+
+    .wp-block-ihowz-hero,
+    .ihowz-hero {
+        padding: 60px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ihowz-hero .hero-heading {
+        font-size: 2rem;
+    }
+
+    .ihowz-hero .hero-subheading {
+        font-size: 1rem;
+    }
+
+    .ihowz-hero .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .ihowz-hero .hero-btn {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+    }
+}

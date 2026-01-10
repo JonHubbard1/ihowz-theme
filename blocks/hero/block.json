@@ -1,0 +1,115 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "ihowz/hero",
+    "version": "1.0.0",
+    "title": "Hero Section",
+    "category": "design",
+    "icon": "cover-image",
+    "description": "A full-width hero section with background image, heading, buttons, and optional floating cards.",
+    "keywords": ["hero", "banner", "header", "cover", "cta"],
+    "textdomain": "ihowz-theme",
+    "attributes": {
+        "backgroundType": {
+            "type": "string",
+            "default": "image",
+            "enum": ["image", "video"]
+        },
+        "backgroundImage": {
+            "type": "string",
+            "default": ""
+        },
+        "backgroundImageId": {
+            "type": "number",
+            "default": 0
+        },
+        "backgroundVideo": {
+            "type": "string",
+            "default": ""
+        },
+        "overlayOpacity": {
+            "type": "number",
+            "default": 30
+        },
+        "overlayColor": {
+            "type": "string",
+            "default": "#1a365d"
+        },
+        "heading": {
+            "type": "string",
+            "default": "Power Your Future with Clean Solar Energy"
+        },
+        "subheading": {
+            "type": "string",
+            "default": "Experience clean, renewable, and affordable solar energy that lowers your electricity bills, increases savings, and helps protect our planet for a greener, sustainable future ahead."
+        },
+        "primaryButtonText": {
+            "type": "string",
+            "default": "Get a Free Quote"
+        },
+        "primaryButtonUrl": {
+            "type": "string",
+            "default": "#"
+        },
+        "secondaryButtonText": {
+            "type": "string",
+            "default": "See How It Works"
+        },
+        "secondaryButtonUrl": {
+            "type": "string",
+            "default": "#"
+        },
+        "showLeftCard": {
+            "type": "boolean",
+            "default": false
+        },
+        "leftCardImage": {
+            "type": "string",
+            "default": ""
+        },
+        "leftCardImageId": {
+            "type": "number",
+            "default": 0
+        },
+        "leftCardTitle": {
+            "type": "string",
+            "default": "View our success stories in Green Energy"
+        },
+        "leftCardText": {
+            "type": "string",
+            "default": "Clean, renewable, and affordable solar energy reduce your bills and protect the planet for"
+        },
+        "showRightCard": {
+            "type": "boolean",
+            "default": false
+        },
+        "rightCardImage": {
+            "type": "string",
+            "default": ""
+        },
+        "rightCardImageId": {
+            "type": "number",
+            "default": 0
+        },
+        "rightCardTitle": {
+            "type": "string",
+            "default": ""
+        },
+        "rightCardText": {
+            "type": "string",
+            "default": ""
+        },
+        "minHeight": {
+            "type": "number",
+            "default": 600
+        }
+    },
+    "supports": {
+        "html": false,
+        "align": ["full", "wide"],
+        "spacing": {
+            "padding": true
+        }
+    },
+    "render": "file:./render.php"
+}
