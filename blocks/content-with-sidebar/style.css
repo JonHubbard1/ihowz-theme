@@ -8,9 +8,11 @@
 .wp-block-ihowz-content-with-sidebar,
 .ihowz-content-with-sidebar {
     display: grid;
+    grid-template-columns: 70fr 30fr;
+    gap: 40px;
     width: 100%;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 60px auto;
     padding: 0 20px;
 }
 
@@ -32,11 +34,14 @@
 .ihowz-content-with-sidebar .sidebar-area,
 .ihowz-content-with-sidebar > .wp-block-group.sidebar-area {
     min-width: 0; /* Prevent grid blowout */
+    background: rgba(156, 193, 48, 0.25); /* 25% primary green */
+    padding: 25px;
+    border-radius: 12px;
 }
 
 /* Widget Sidebar Styling */
 .ihowz-content-with-sidebar .widget-sidebar {
-    background: var(--background-subtle, #FAFAFA);
+    background: rgba(156, 193, 48, 0.25); /* 25% primary green */
     padding: 25px;
     border-radius: 12px;
 }
