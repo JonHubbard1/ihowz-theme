@@ -12,19 +12,19 @@
     "attributes": {
         "eyebrowText": {
             "type": "string",
-            "default": "Our Services"
+            "default": ""
         },
         "heading": {
             "type": "string",
-            "default": "Experience the future of housing."
+            "default": ""
         },
         "imageCardTitle": {
             "type": "string",
-            "default": "Making Everything Better"
+            "default": ""
         },
         "imageCardSubtitle": {
             "type": "string",
-            "default": "From the start"
+            "default": ""
         },
         "imageId": {
             "type": "number",
@@ -36,18 +36,7 @@
         },
         "features": {
             "type": "array",
-            "default": [
-                {
-                    "icon": "lightbulb",
-                    "title": "Expert Knowledge",
-                    "description": "We provide expert knowledge and guidance to help you make informed decisions about your property investments."
-                },
-                {
-                    "icon": "home",
-                    "title": "Better Housing",
-                    "description": "We believe in a brighter future. Our solutions are designed to improve housing standards for everyone."
-                }
-            ]
+            "default": []
         },
         "backgroundColor": {
             "type": "string",

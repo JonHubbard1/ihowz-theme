@@ -37,27 +37,27 @@
         },
         "heading": {
             "type": "string",
-            "default": "Power Your Future with Clean Solar Energy"
+            "default": ""
         },
         "subheading": {
             "type": "string",
-            "default": "Experience clean, renewable, and affordable solar energy that lowers your electricity bills, increases savings, and helps protect our planet for a greener, sustainable future ahead."
+            "default": ""
         },
         "primaryButtonText": {
             "type": "string",
-            "default": "Get a Free Quote"
+            "default": ""
         },
         "primaryButtonUrl": {
             "type": "string",
-            "default": "#"
+            "default": ""
         },
         "secondaryButtonText": {
             "type": "string",
-            "default": "See How It Works"
+            "default": ""
         },
         "secondaryButtonUrl": {
             "type": "string",
-            "default": "#"
+            "default": ""
         },
         "showLeftCard": {
             "type": "boolean",
@@ -73,11 +73,11 @@
         },
         "leftCardTitle": {
             "type": "string",
-            "default": "View our success stories in Green Energy"
+            "default": ""
         },
         "leftCardText": {
             "type": "string",
-            "default": "Clean, renewable, and affordable solar energy reduce your bills and protect the planet for"
+            "default": ""
         },
         "showRightCard": {
             "type": "boolean",
