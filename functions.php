@@ -879,6 +879,38 @@ function ihowz_register_blocks() {
         'editor_script' => 'ihowz-solutions-grid-editor',
         'style' => 'ihowz-solutions-grid-style',
     ));
+
+    // About Stats block
+    $as_version = '1.0.' . filemtime(get_template_directory() . '/blocks/about-stats/style.css');
+
+    wp_register_script(
+        'ihowz-about-stats-editor',
+        get_template_directory_uri() . '/blocks/about-stats/index.js',
+        array('wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-server-side-render', 'wp-media-utils'),
+        $as_version,
+        true
+    );
+
+    wp_register_script(
+        'ihowz-about-stats-frontend',
+        get_template_directory_uri() . '/blocks/about-stats/script.js',
+        array(),
+        $as_version,
+        true
+    );
+
+    wp_register_style(
+        'ihowz-about-stats-style',
+        get_template_directory_uri() . '/blocks/about-stats/style.css',
+        array(),
+        $as_version
+    );
+
+    register_block_type(get_template_directory() . '/blocks/about-stats', array(
+        'editor_script' => 'ihowz-about-stats-editor',
+        'style' => 'ihowz-about-stats-style',
+        'view_script' => 'ihowz-about-stats-frontend',
+    ));
 }
 add_action('init', 'ihowz_register_blocks');
 

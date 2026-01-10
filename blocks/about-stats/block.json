@@ -1,0 +1,59 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "ihowz/about-stats",
+    "version": "1.0.0",
+    "title": "About Stats",
+    "category": "design",
+    "icon": "chart-bar",
+    "description": "An about section with stats, text content, CTA button, and overlapping images.",
+    "keywords": ["about", "stats", "statistics", "numbers", "mission"],
+    "textdomain": "ihowz-theme",
+    "attributes": {
+        "eyebrowText": {
+            "type": "string",
+            "default": ""
+        },
+        "mainText": {
+            "type": "string",
+            "default": ""
+        },
+        "stats": {
+            "type": "array",
+            "default": []
+        },
+        "secondaryText": {
+            "type": "string",
+            "default": ""
+        },
+        "showButton": {
+            "type": "boolean",
+            "default": false
+        },
+        "buttonText": {
+            "type": "string",
+            "default": ""
+        },
+        "buttonUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "image1Url": {
+            "type": "string",
+            "default": ""
+        },
+        "image2Url": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"],
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "render": "file:./render.php"
+}
