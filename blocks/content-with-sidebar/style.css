@@ -1,0 +1,109 @@
+/**
+ * Content with Sidebar Block - Frontend Styles
+ *
+ * @package iHowz Theme
+ */
+
+/* Block Container */
+.wp-block-ihowz-content-with-sidebar,
+.ihowz-content-with-sidebar {
+    display: grid;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Content Area */
+.ihowz-content-with-sidebar .content-area,
+.ihowz-content-with-sidebar > .wp-block-group.content-area {
+    min-width: 0; /* Prevent grid blowout */
+}
+
+.ihowz-content-with-sidebar .content-area > *:first-child {
+    margin-top: 0;
+}
+
+.ihowz-content-with-sidebar .content-area > *:last-child {
+    margin-bottom: 0;
+}
+
+/* Sidebar Area */
+.ihowz-content-with-sidebar .sidebar-area,
+.ihowz-content-with-sidebar > .wp-block-group.sidebar-area {
+    min-width: 0; /* Prevent grid blowout */
+}
+
+/* Widget Sidebar Styling */
+.ihowz-content-with-sidebar .widget-sidebar {
+    background: var(--background-subtle, #FAFAFA);
+    padding: 25px;
+    border-radius: 12px;
+}
+
+.ihowz-content-with-sidebar .widget-sidebar .widget {
+    margin-bottom: 25px;
+}
+
+.ihowz-content-with-sidebar .widget-sidebar .widget:last-child {
+    margin-bottom: 0;
+}
+
+.ihowz-content-with-sidebar .widget-sidebar .widget-title {
+    font-family: var(--primary-font, "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary-green, #9cc130);
+}
+
+.ihowz-content-with-sidebar .no-widgets {
+    color: var(--neutral-gray, #757575);
+    font-size: 0.875rem;
+    font-style: italic;
+}
+
+/* Alignment Support */
+.wp-block-ihowz-content-with-sidebar.alignwide,
+.ihowz-content-with-sidebar.alignwide {
+    max-width: 1400px;
+}
+
+.wp-block-ihowz-content-with-sidebar.alignfull,
+.ihowz-content-with-sidebar.alignfull {
+    max-width: none;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .wp-block-ihowz-content-with-sidebar,
+    .ihowz-content-with-sidebar {
+        grid-template-columns: 1fr !important;
+    }
+
+    .ihowz-content-with-sidebar.sidebar-left .sidebar-area,
+    .ihowz-content-with-sidebar.sidebar-left > .wp-block-group.sidebar-area {
+        order: 2;
+    }
+
+    .ihowz-content-with-sidebar.sidebar-left .content-area,
+    .ihowz-content-with-sidebar.sidebar-left > .wp-block-group.content-area {
+        order: 1;
+    }
+
+    .ihowz-content-with-sidebar .sidebar-area,
+    .ihowz-content-with-sidebar > .wp-block-group.sidebar-area {
+        margin-top: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .wp-block-ihowz-content-with-sidebar.alignfull,
+    .ihowz-content-with-sidebar.alignfull {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}

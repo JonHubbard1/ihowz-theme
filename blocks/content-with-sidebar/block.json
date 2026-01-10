@@ -1,0 +1,50 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "ihowz/content-with-sidebar",
+    "version": "1.0.0",
+    "title": "Content with Sidebar",
+    "category": "design",
+    "icon": "columns",
+    "description": "A two-column layout with main content area and sidebar. Sidebar can use widgets or blocks.",
+    "keywords": ["sidebar", "columns", "layout", "content"],
+    "textdomain": "ihowz-theme",
+    "attributes": {
+        "sidebarSource": {
+            "type": "string",
+            "default": "blocks",
+            "enum": ["blocks", "widgets"]
+        },
+        "widgetArea": {
+            "type": "string",
+            "default": "page-sidebar"
+        },
+        "contentWidth": {
+            "type": "number",
+            "default": 70
+        },
+        "gapSize": {
+            "type": "number",
+            "default": 40
+        },
+        "sidebarPosition": {
+            "type": "string",
+            "default": "right",
+            "enum": ["left", "right"]
+        },
+        "verticalAlignment": {
+            "type": "string",
+            "default": "top",
+            "enum": ["top", "center", "stretch"]
+        }
+    },
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"],
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "render": "file:./render.php"
+}

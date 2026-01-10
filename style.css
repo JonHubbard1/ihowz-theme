@@ -810,6 +810,50 @@ body.header-sticky-active {
     color: var(--primary-charcoal);
 }
 
+/* Full Width Template Styles */
+.site-main-fullwidth {
+    width: 100%;
+}
+
+.fullwidth-article {
+    width: 100%;
+}
+
+.fullwidth-content {
+    width: 100%;
+}
+
+/* Allow full-width and wide blocks to break out */
+.fullwidth-content > .alignfull {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+}
+
+.fullwidth-content > .alignwide {
+    width: 100%;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Default block content gets container width */
+.fullwidth-content > *:not(.alignfull):not(.alignwide) {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Gutenberg blocks that handle their own width */
+.fullwidth-content > .wp-block-ihowz-features-banner,
+.fullwidth-content > .wp-block-ihowz-content-with-sidebar {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 /* Advertising Bar Styles */
 .advertising-bar {
     background: var(--background-light-gray);
