@@ -24,6 +24,11 @@ get_header(); ?>
         </div>
     </section>
 
+    <!-- Breadcrumb -->
+    <div class="container">
+        <?php ihowz_theme_breadcrumb(); ?>
+    </div>
+
     <!-- Filter & Search Bar -->
     <section class="filter-search-section">
         <div class="container">

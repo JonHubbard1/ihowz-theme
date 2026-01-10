@@ -44,6 +44,11 @@ get_header(); ?>
         </div>
     </section>
 
+    <!-- Breadcrumb -->
+    <div class="container">
+        <?php ihowz_theme_breadcrumb(); ?>
+    </div>
+
     <!-- Calendar & Live Events -->
     <section class="calendar-live-section">
         <div class="container">

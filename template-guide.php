@@ -39,6 +39,7 @@ get_header(); ?>
 
     <!-- Guide Content -->
     <div class="container">
+        <?php ihowz_theme_breadcrumb(); ?>
         <div class="guide-layout">
 
             <!-- Step Navigation Sidebar -->

@@ -13,6 +13,8 @@ get_header(); ?>
             <p class="page-description">Stay updated with the latest industry news and insights</p>
         </div>
 
+        <?php ihowz_theme_breadcrumb(); ?>
+
         <?php
         // Custom query for news posts
         $news_query = new WP_Query(array(

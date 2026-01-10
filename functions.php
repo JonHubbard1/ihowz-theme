@@ -55,7 +55,7 @@ add_action('after_setup_theme', 'ihowz_theme_setup');
  */
 function ihowz_theme_scripts() {
     // Main stylesheet
-    wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), '1.2.0');
+    wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), '1.3.3');
 
     // Custom JavaScript
     wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/js/main.js', array('jquery'), '1.0.9', true);
@@ -356,22 +356,36 @@ add_filter('use_widgets_block_editor', '__return_false');
  */
 function ihowz_theme_breadcrumb() {
     if (!is_home() && !is_front_page()) {
+        // Home icon SVG (monochrome)
+        $home_icon = '<svg class="breadcrumb-home-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>';
+
         echo '<nav class="breadcrumb">';
-        echo '<a href="' . home_url() . '">Home</a>';
+        echo '<a href="' . home_url() . '" class="breadcrumb-pill breadcrumb-home">' . $home_icon . '<span>Home</span></a>';
 
         if (is_category() || is_single()) {
-            echo ' / ';
             if (is_single()) {
                 $category = get_the_category();
                 if ($category) {
-                    echo '<a href="' . get_category_link($category[0]->term_id) . '">' . $category[0]->name . '</a> / ';
+                    echo '<a href="' . get_category_link($category[0]->term_id) . '" class="breadcrumb-pill">' . esc_html($category[0]->name) . '</a>';
                 }
-                echo get_the_title();
+                echo '<span class="breadcrumb-pill breadcrumb-current">' . get_the_title() . '</span>';
             } else {
-                echo single_cat_title();
+                echo '<span class="breadcrumb-pill breadcrumb-current">' . single_cat_title('', false) . '</span>';
             }
         } elseif (is_page()) {
-            echo ' / ' . get_the_title();
+            global $post;
+            $ancestors = get_post_ancestors($post->ID);
+
+            if ($ancestors) {
+                // Reverse to get top-level first
+                $ancestors = array_reverse($ancestors);
+
+                foreach ($ancestors as $ancestor_id) {
+                    echo '<a href="' . get_permalink($ancestor_id) . '" class="breadcrumb-pill">' . esc_html(get_the_title($ancestor_id)) . '</a>';
+                }
+            }
+
+            echo '<span class="breadcrumb-pill breadcrumb-current">' . get_the_title() . '</span>';
         }
 
         echo '</nav>';

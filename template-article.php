@@ -13,6 +13,7 @@ get_header(); ?>
 <main id="primary" class="site-main template-article">
 
     <div class="container">
+        <?php ihowz_theme_breadcrumb(); ?>
         <div class="article-layout">
 
             <!-- Main Article Content -->
