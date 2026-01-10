@@ -1,0 +1,180 @@
+/**
+ * Solutions Grid Block - Frontend Styles
+ *
+ * @package iHowz Theme
+ */
+
+/* Container */
+.wp-block-ihowz-solutions-grid,
+.ihowz-solutions-grid {
+    width: 90%;
+    max-width: 1600px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.solutions-grid-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.solutions-grid-header-content {
+    flex: 1;
+}
+
+.solutions-grid-eyebrow {
+    display: block;
+    font-family: var(--primary-font, "Mona Sans", sans-serif);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--primary-green, #9cc130);
+    margin-bottom: 8px;
+}
+
+.solutions-grid-heading {
+    font-family: var(--primary-font, "Mona Sans", sans-serif);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    color: var(--primary-charcoal, #263238);
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* Top Button */
+.solutions-grid-top-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    font-family: var(--primary-font);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--accent-gold, #FF8F00);
+    color: #fff;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.solutions-grid-top-btn:hover {
+    background: #e67e00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 143, 0, 0.3);
+}
+
+.solutions-grid-top-btn .btn-icon {
+    width: 18px;
+    height: 18px;
+}
+
+/* Rows Container */
+.solutions-grid-rows {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Single Row */
+.solutions-grid-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Card */
+.solutions-grid-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: var(--background-light-gray, #EAEAEA);
+    overflow: hidden;
+}
+
+/* Card Overlay */
+.solutions-grid-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0) 100%);
+    pointer-events: none;
+}
+
+/* Card Content */
+.solutions-grid-card-content {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+}
+
+.solutions-grid-card-title {
+    font-family: var(--primary-font, "Mona Sans", sans-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 12px 0;
+    line-height: 1.3;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Card Button */
+.solutions-grid-card-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    font-family: var(--primary-font);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: #fff;
+    color: var(--primary-charcoal, #263238);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.solutions-grid-card-btn:hover {
+    background: var(--primary-green, #9cc130);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.solutions-grid-card-btn .btn-icon {
+    width: 14px;
+    height: 14px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .solutions-grid-row {
+        flex-direction: column;
+    }
+
+    .solutions-grid-card {
+        flex: 1 1 100% !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .solutions-grid-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .solutions-grid-top-btn {
+        align-self: flex-start;
+    }
+
+    .solutions-grid-card-title {
+        font-size: 1.125rem;
+    }
+}

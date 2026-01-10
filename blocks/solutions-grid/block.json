@@ -1,0 +1,59 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "ihowz/solutions-grid",
+    "version": "1.0.0",
+    "title": "Solutions Grid",
+    "category": "design",
+    "icon": "grid-view",
+    "description": "A flexible grid of image cards with titles and links. Supports up to 4 rows with up to 5 items each.",
+    "keywords": ["solutions", "grid", "cards", "services", "gallery"],
+    "textdomain": "ihowz-theme",
+    "attributes": {
+        "eyebrowText": {
+            "type": "string",
+            "default": ""
+        },
+        "heading": {
+            "type": "string",
+            "default": ""
+        },
+        "showTopButton": {
+            "type": "boolean",
+            "default": false
+        },
+        "topButtonText": {
+            "type": "string",
+            "default": ""
+        },
+        "topButtonUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "rows": {
+            "type": "array",
+            "default": []
+        },
+        "gap": {
+            "type": "number",
+            "default": 20
+        },
+        "cardBorderRadius": {
+            "type": "number",
+            "default": 16
+        },
+        "cardMinHeight": {
+            "type": "number",
+            "default": 250
+        }
+    },
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"],
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "render": "file:./render.php"
+}

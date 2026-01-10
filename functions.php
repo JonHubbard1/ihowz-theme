@@ -856,6 +856,29 @@ function ihowz_register_blocks() {
         'editor_script' => 'ihowz-hero-editor',
         'style' => 'ihowz-hero-style',
     ));
+
+    // Solutions Grid block
+    $sg_version = '1.0.' . filemtime(get_template_directory() . '/blocks/solutions-grid/style.css');
+
+    wp_register_script(
+        'ihowz-solutions-grid-editor',
+        get_template_directory_uri() . '/blocks/solutions-grid/index.js',
+        array('wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-server-side-render', 'wp-media-utils'),
+        $sg_version,
+        true
+    );
+
+    wp_register_style(
+        'ihowz-solutions-grid-style',
+        get_template_directory_uri() . '/blocks/solutions-grid/style.css',
+        array(),
+        $sg_version
+    );
+
+    register_block_type(get_template_directory() . '/blocks/solutions-grid', array(
+        'editor_script' => 'ihowz-solutions-grid-editor',
+        'style' => 'ihowz-solutions-grid-style',
+    ));
 }
 add_action('init', 'ihowz_register_blocks');
 
