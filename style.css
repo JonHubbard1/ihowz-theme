@@ -26,8 +26,8 @@ Text Domain: ihowz-theme
     --background-light-green: #F7FCF0;
     --background-dark: #37474F;
     --background-light-gray: #EAEAEA;
-    --primary-font: "Inter", sans-serif;
-    --secondary-font: "Gelasio", serif;
+    --primary-font: "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --secondary-font: "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     --light: 300;
     --regular: 400;
     --medium: 500;
@@ -37,8 +37,54 @@ Text Domain: ihowz-theme
     --border-width: 2px;
 }
 
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Gelasio:wght@300;400;500;600;700&display=swap');
+/* Import Mona Sans from GitHub */
+@font-face {
+    font-family: 'Mona Sans';
+    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Mona Sans';
+    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Mona Sans';
+    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Mona Sans';
+    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Mona Sans';
+    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Mona Sans';
+    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-Black.woff2') format('woff2');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
 
 /* Reset and Base Styles */
 * {

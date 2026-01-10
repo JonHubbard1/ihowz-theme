@@ -1,0 +1,76 @@
+/**
+ * iHowz Blocks - Global Editor Styles
+ *
+ * @package iHowz Theme
+ */
+
+/* Import Mona Sans from GitHub */
+@font-face {
+    font-family: 'Mona Sans';
+    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Mona Sans';
+    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Mona Sans';
+    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Mona Sans';
+    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Mona Sans';
+    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Mona Sans';
+    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-Black.woff2') format('woff2');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Editor wrapper styling */
+.editor-styles-wrapper {
+    --primary-font: "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --secondary-font: "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --ihowz-orange: #F26522;
+    --ihowz-blue: #1E3A5F;
+    --ihowz-charcoal: #1a1a1a;
+    --ihowz-gray: #666;
+    --ihowz-light-gray: #f5f5f5;
+}
+
+/* Block category styling */
+.block-editor-inserter__panel-header[data-category="ihowz-blocks"] {
+    color: var(--ihowz-orange);
+}
+
+/* Common block spacing */
+.editor-styles-wrapper [class^="wp-block-ihowz-"] {
+    margin-top: 0;
+    margin-bottom: 0;
+}

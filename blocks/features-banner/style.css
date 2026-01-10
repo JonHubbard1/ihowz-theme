@@ -1,0 +1,192 @@
+/**
+ * Features Banner Block - Frontend Styles
+ *
+ * @package iHowz Theme
+ */
+
+/* Block Container */
+.wp-block-ihowz-features-banner,
+.ihowz-features-banner {
+    padding: 80px 0;
+    background-color: #f5f5f5;
+}
+
+.features-banner-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header Section */
+.features-banner-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.features-banner-eyebrow {
+    display: inline-block;
+    font-family: var(--primary-font, "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif);
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--primary-green, #9cc130);
+    margin-bottom: 8px;
+}
+
+.features-banner-heading {
+    font-family: var(--secondary-font, "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif);
+    font-size: 2.25rem;
+    font-weight: 900;
+    color: #1a1a1a;
+    line-height: 1.2;
+    margin: 0;
+    padding-left: 25%;
+    padding-right: 25%;
+}
+
+@media (max-width: 768px) {
+    .features-banner-heading {
+        font-size: 1.5rem;
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+}
+
+/* Content Grid */
+.features-banner-grid {
+    display: grid;
+    grid-template-columns: 5fr 3fr 3fr;
+    gap: 30px;
+    align-items: stretch;
+}
+
+@media (max-width: 992px) {
+    .features-banner-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .features-banner-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Image Card */
+.features-banner-image-card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #1E3A5F;
+}
+
+.features-banner-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.features-banner-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1E3A5F 0%, #2d5a87 100%);
+}
+
+.features-banner-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 30px;
+}
+
+.features-banner-image-content {
+    color: #fff;
+    z-index: 1;
+}
+
+.features-banner-image-title {
+    display: inline-block;
+    font-family: var(--secondary-font, "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    color: #fff;
+    background: rgba(156, 193, 48, 0.85);
+    padding: 10px 16px;
+    border-radius: 8px;
+}
+
+.features-banner-image-subtitle {
+    display: none;
+}
+
+/* Decorative Circle - Hidden */
+.features-banner-decorative-circle {
+    display: none;
+}
+
+/* Feature Cards */
+.features-banner-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.features-banner-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.features-banner-card-icon {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 24px;
+    color: var(--primary-green, #9cc130);
+}
+
+.features-banner-card-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.features-banner-card-title {
+    font-family: var(--secondary-font, "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif);
+    font-size: 1rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin: 0 0 16px 0;
+}
+
+.features-banner-card-description {
+    font-family: var(--primary-font, "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: #666;
+    margin: 0;
+}
+
+/* Alignment Support */
+.wp-block-ihowz-features-banner.alignwide .features-banner-container,
+.ihowz-features-banner.alignwide .features-banner-container {
+    max-width: 1400px;
+}
+
+.wp-block-ihowz-features-banner.alignfull,
+.ihowz-features-banner.alignfull {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+}
+
+.wp-block-ihowz-features-banner.alignfull .features-banner-container,
+.ihowz-features-banner.alignfull .features-banner-container {
+    max-width: 1400px;
+    padding: 0 40px;
+}

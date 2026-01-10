@@ -1,0 +1,66 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "ihowz/features-banner",
+    "version": "1.0.1",
+    "title": "Features Banner",
+    "category": "design",
+    "icon": "layout",
+    "description": "A banner section with eyebrow text, heading, featured image card, and feature cards.",
+    "keywords": ["features", "banner", "cards", "services"],
+    "textdomain": "ihowz-theme",
+    "attributes": {
+        "eyebrowText": {
+            "type": "string",
+            "default": "Our Services"
+        },
+        "heading": {
+            "type": "string",
+            "default": "Experience the future of housing."
+        },
+        "imageCardTitle": {
+            "type": "string",
+            "default": "Making Everything Better"
+        },
+        "imageCardSubtitle": {
+            "type": "string",
+            "default": "From the start"
+        },
+        "imageId": {
+            "type": "number",
+            "default": 0
+        },
+        "imageUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "features": {
+            "type": "array",
+            "default": [
+                {
+                    "icon": "lightbulb",
+                    "title": "Expert Knowledge",
+                    "description": "We provide expert knowledge and guidance to help you make informed decisions about your property investments."
+                },
+                {
+                    "icon": "home",
+                    "title": "Better Housing",
+                    "description": "We believe in a brighter future. Our solutions are designed to improve housing standards for everyone."
+                }
+            ]
+        },
+        "backgroundColor": {
+            "type": "string",
+            "default": "#f5f5f5"
+        }
+    },
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"],
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "render": "file:./render.php"
+}

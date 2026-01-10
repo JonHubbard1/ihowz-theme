@@ -736,3 +736,79 @@ function ihowz_hero_custom_styles() {
     wp_add_inline_style('ihowz-style', $custom_css);
 }
 add_action('wp_enqueue_scripts', 'ihowz_hero_custom_styles');
+
+/**
+ * Register Custom Gutenberg Blocks
+ */
+function ihowz_register_blocks() {
+    // Check if block editor is available
+    if (!function_exists('register_block_type')) {
+        return;
+    }
+
+    // Version for cache busting
+    $version = '1.0.' . filemtime(get_template_directory() . '/blocks/features-banner/style.css');
+
+    // Register the block editor script with dependencies
+    wp_register_script(
+        'ihowz-features-banner-editor',
+        get_template_directory_uri() . '/blocks/features-banner/index.js',
+        array('wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-i18n'),
+        $version,
+        true
+    );
+
+    // Register block styles with cache-busting version
+    wp_register_style(
+        'ihowz-features-banner-style',
+        get_template_directory_uri() . '/blocks/features-banner/style.css',
+        array(),
+        $version
+    );
+
+    wp_register_style(
+        'ihowz-features-banner-editor-style',
+        get_template_directory_uri() . '/blocks/features-banner/editor.css',
+        array(),
+        $version
+    );
+
+    // Register features-banner block
+    register_block_type(get_template_directory() . '/blocks/features-banner', array(
+        'editor_script' => 'ihowz-features-banner-editor',
+        'style' => 'ihowz-features-banner-style',
+        'editor_style' => 'ihowz-features-banner-editor-style',
+    ));
+}
+add_action('init', 'ihowz_register_blocks');
+
+/**
+ * Add block category for iHowz blocks
+ */
+function ihowz_block_categories($categories) {
+    return array_merge(
+        array(
+            array(
+                'slug'  => 'ihowz-blocks',
+                'title' => __('iHowz Blocks', 'ihowz-theme'),
+                'icon'  => 'admin-home',
+            ),
+        ),
+        $categories
+    );
+}
+add_filter('block_categories_all', 'ihowz_block_categories', 10, 1);
+
+/**
+ * Enqueue block editor assets
+ */
+function ihowz_enqueue_block_editor_assets() {
+    // Enqueue editor styles for all blocks
+    wp_enqueue_style(
+        'ihowz-blocks-editor',
+        get_template_directory_uri() . '/blocks/editor.css',
+        array('wp-edit-blocks'),
+        '1.0.0'
+    );
+}
+add_action('enqueue_block_editor_assets', 'ihowz_enqueue_block_editor_assets');
