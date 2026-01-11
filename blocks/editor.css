@@ -4,10 +4,10 @@
  * @package iHowz Theme
  */
 
-/* Import Mona Sans from GitHub */
+/* Mona Sans Font - Locally hosted */
 @font-face {
     font-family: 'Mona Sans';
-    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-Regular.woff2') format('woff2');
+    src: url('../assets/fonts/MonaSans-Regular.woff2') format('woff2');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -15,7 +15,7 @@
 
 @font-face {
     font-family: 'Mona Sans';
-    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-Medium.woff2') format('woff2');
+    src: url('../assets/fonts/MonaSans-Medium.woff2') format('woff2');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -23,7 +23,7 @@
 
 @font-face {
     font-family: 'Mona Sans';
-    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-SemiBold.woff2') format('woff2');
+    src: url('../assets/fonts/MonaSans-SemiBold.woff2') format('woff2');
     font-weight: 600;
     font-style: normal;
     font-display: swap;
@@ -31,7 +31,7 @@
 
 @font-face {
     font-family: 'Mona Sans';
-    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-Bold.woff2') format('woff2');
+    src: url('../assets/fonts/MonaSans-Bold.woff2') format('woff2');
     font-weight: 700;
     font-style: normal;
     font-display: swap;
@@ -39,7 +39,7 @@
 
 @font-face {
     font-family: 'Mona Sans';
-    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-ExtraBold.woff2') format('woff2');
+    src: url('../assets/fonts/MonaSans-ExtraBold.woff2') format('woff2');
     font-weight: 800;
     font-style: normal;
     font-display: swap;
@@ -47,7 +47,7 @@
 
 @font-face {
     font-family: 'Mona Sans';
-    src: url('https://github.com/github/mona-sans/raw/main/fonts/webfonts/static/MonaSans-Black.woff2') format('woff2');
+    src: url('../assets/fonts/MonaSans-Black.woff2') format('woff2');
     font-weight: 900;
     font-style: normal;
     font-display: swap;
