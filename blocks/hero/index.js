@@ -24,6 +24,7 @@
                 backgroundImage,
                 backgroundImageId,
                 backgroundVideo,
+                backgroundVideoId,
                 overlayOpacity,
                 overlayColor,
                 heading,
@@ -70,21 +71,152 @@
                                 setAttributes({ backgroundType: value });
                             }
                         }),
-                        (backgroundType || 'image') === 'image' && createElement(TextControl, {
-                            label: 'Image URL',
-                            value: backgroundImage,
-                            onChange: function (value) {
-                                setAttributes({ backgroundImage: value });
-                            }
-                        }),
-                        backgroundType === 'video' && createElement(TextControl, {
-                            label: 'Video URL (MP4)',
-                            help: 'Paste the full URL to your MP4 video file',
-                            value: backgroundVideo,
-                            onChange: function (value) {
-                                setAttributes({ backgroundVideo: value });
-                            }
-                        }),
+                        (backgroundType || 'image') === 'image' && createElement(
+                            Fragment,
+                            null,
+                            createElement(
+                                'div',
+                                { style: { marginBottom: '16px' } },
+                                createElement('label', { style: { display: 'block', marginBottom: '8px', fontWeight: '500' } }, 'Background Image'),
+                                createElement(
+                                    MediaUploadCheck,
+                                    null,
+                                    createElement(MediaUpload, {
+                                        onSelect: function (media) {
+                                            setAttributes({
+                                                backgroundImage: media.url,
+                                                backgroundImageId: media.id
+                                            });
+                                        },
+                                        allowedTypes: ['image'],
+                                        value: backgroundImageId,
+                                        render: function (obj) {
+                                            return createElement(
+                                                'div',
+                                                null,
+                                                backgroundImageId
+                                                    ? createElement(
+                                                        'div',
+                                                        null,
+                                                        createElement('img', {
+                                                            src: backgroundImage,
+                                                            style: { maxWidth: '100%', marginBottom: '10px', borderRadius: '4px' }
+                                                        }),
+                                                        createElement(
+                                                            Button,
+                                                            { onClick: obj.open, variant: 'secondary', style: { marginRight: '8px' } },
+                                                            'Replace Image'
+                                                        ),
+                                                        createElement(
+                                                            Button,
+                                                            {
+                                                                onClick: function () {
+                                                                    setAttributes({ backgroundImage: '', backgroundImageId: 0 });
+                                                                },
+                                                                variant: 'tertiary',
+                                                                isDestructive: true
+                                                            },
+                                                            'Remove'
+                                                        )
+                                                    )
+                                                    : createElement(Button, { onClick: obj.open, variant: 'secondary' }, 'Select Image from Library')
+                                            );
+                                        }
+                                    })
+                                )
+                            ),
+                            createElement(TextControl, {
+                                label: 'Or Enter Image URL',
+                                help: 'Paste an external image URL (overrides library selection)',
+                                value: backgroundImageId ? '' : backgroundImage,
+                                onChange: function (value) {
+                                    setAttributes({ backgroundImage: value, backgroundImageId: 0 });
+                                }
+                            })
+                        ),
+                        backgroundType === 'video' && createElement(
+                            Fragment,
+                            null,
+                            createElement(
+                                'div',
+                                { style: { marginBottom: '16px' } },
+                                createElement('label', { style: { display: 'block', marginBottom: '8px', fontWeight: '500' } }, 'Background Video'),
+                                createElement(
+                                    MediaUploadCheck,
+                                    null,
+                                    createElement(MediaUpload, {
+                                        onSelect: function (media) {
+                                            setAttributes({
+                                                backgroundVideo: media.url,
+                                                backgroundVideoId: media.id
+                                            });
+                                        },
+                                        allowedTypes: ['video'],
+                                        value: backgroundVideoId,
+                                        render: function (obj) {
+                                            return createElement(
+                                                'div',
+                                                null,
+                                                backgroundVideoId
+                                                    ? createElement(
+                                                        'div',
+                                                        null,
+                                                        createElement(
+                                                            'div',
+                                                            {
+                                                                style: {
+                                                                    padding: '12px',
+                                                                    background: '#f0f0f0',
+                                                                    borderRadius: '4px',
+                                                                    marginBottom: '10px',
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    gap: '8px'
+                                                                }
+                                                            },
+                                                            createElement(
+                                                                'span',
+                                                                { style: { fontSize: '20px' } },
+                                                                '🎬'
+                                                            ),
+                                                            createElement(
+                                                                'span',
+                                                                { style: { fontSize: '13px', wordBreak: 'break-all' } },
+                                                                backgroundVideo.split('/').pop()
+                                                            )
+                                                        ),
+                                                        createElement(
+                                                            Button,
+                                                            { onClick: obj.open, variant: 'secondary', style: { marginRight: '8px' } },
+                                                            'Replace Video'
+                                                        ),
+                                                        createElement(
+                                                            Button,
+                                                            {
+                                                                onClick: function () {
+                                                                    setAttributes({ backgroundVideo: '', backgroundVideoId: 0 });
+                                                                },
+                                                                variant: 'tertiary',
+                                                                isDestructive: true
+                                                            },
+                                                            'Remove'
+                                                        )
+                                                    )
+                                                    : createElement(Button, { onClick: obj.open, variant: 'secondary' }, 'Select Video from Library')
+                                            );
+                                        }
+                                    })
+                                )
+                            ),
+                            createElement(TextControl, {
+                                label: 'Or Enter Video URL',
+                                help: 'Paste an external MP4 video URL (overrides library selection)',
+                                value: backgroundVideoId ? '' : backgroundVideo,
+                                onChange: function (value) {
+                                    setAttributes({ backgroundVideo: value, backgroundVideoId: 0 });
+                                }
+                            })
+                        ),
                         createElement(RangeControl, {
                             label: 'Overlay Opacity',
                             value: overlayOpacity,

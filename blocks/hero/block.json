@@ -27,6 +27,10 @@
             "type": "string",
             "default": ""
         },
+        "backgroundVideoId": {
+            "type": "number",
+            "default": 0
+        },
         "overlayOpacity": {
             "type": "number",
             "default": 30
