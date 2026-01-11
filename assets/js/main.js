@@ -157,8 +157,6 @@
         // Hero video loading - Safari autoplay fix
         var heroVideo = document.getElementById('hero-background-video');
         if (heroVideo) {
-            console.log('Hero video found, initializing...');
-
             // Remove controls attribute if present (Safari sometimes adds it)
             heroVideo.removeAttribute('controls');
 
@@ -172,87 +170,42 @@
             var hasPlayed = false;
 
             // Function to attempt playing the video
-            function attemptPlay(source) {
+            function attemptPlay() {
                 if (hasPlayed) {
                     return;
                 }
-
-                console.log('Attempting to play video from: ' + source);
-                console.log('Video readyState: ' + heroVideo.readyState + ' (0=nothing, 1=metadata, 2=current, 3=future, 4=enough)');
 
                 var playPromise = heroVideo.play();
 
                 if (playPromise !== undefined) {
                     playPromise.then(function() {
                         hasPlayed = true;
-                        console.log('✓ Video playing successfully!');
-                        // Remove controls if Safari adds them
                         heroVideo.removeAttribute('controls');
-                    }).catch(function(error) {
-                        console.log('✗ Video play blocked: ' + error.message);
-                        if (source === 'init') {
-                            console.log('Will retry on user interaction (click, scroll, or touch)');
-                        }
+                    }).catch(function() {
+                        // Autoplay blocked - will retry on user interaction
                     });
                 }
             }
 
-            // Try multiple video events
-            heroVideo.addEventListener('loadedmetadata', function() {
-                console.log('✓ Video metadata loaded');
-            });
-
-            heroVideo.addEventListener('loadeddata', function() {
-                console.log('✓ Video data loaded');
-            });
-
+            // Try to play when video is ready
             heroVideo.addEventListener('canplay', function() {
-                console.log('✓ Video can play (readyState: ' + heroVideo.readyState + ')');
-                attemptPlay('canplay');
+                attemptPlay();
             });
 
             heroVideo.addEventListener('canplaythrough', function() {
-                console.log('✓ Video can play through');
-                attemptPlay('canplaythrough');
-            });
-
-            // Log when video actually starts playing
-            heroVideo.addEventListener('play', function() {
-                console.log('✓ Video PLAY event fired');
-            });
-
-            heroVideo.addEventListener('playing', function() {
-                console.log('✓ Video is PLAYING');
-            });
-
-            // Log video errors
-            heroVideo.addEventListener('error', function(e) {
-                console.error('✗ Video error:', e);
-                if (heroVideo.error) {
-                    var errorMessages = {
-                        1: 'MEDIA_ERR_ABORTED - Video loading aborted',
-                        2: 'MEDIA_ERR_NETWORK - Network error',
-                        3: 'MEDIA_ERR_DECODE - Video decode error',
-                        4: 'MEDIA_ERR_SRC_NOT_SUPPORTED - Video format not supported'
-                    };
-                    console.error(errorMessages[heroVideo.error.code] || 'Unknown error');
-                }
+                attemptPlay();
             });
 
             // Start loading the video
-            console.log('Starting video load...');
             heroVideo.load();
 
-            // Try to play immediately (will likely fail but worth trying)
-            setTimeout(function() {
-                attemptPlay('init');
-            }, 500);
+            // Try to play after a short delay
+            setTimeout(attemptPlay, 500);
 
             // Fallback: Play on any user interaction (required for Safari)
-            function playOnInteraction(e) {
-                console.log('User interaction detected: ' + e.type);
+            function playOnInteraction() {
                 if (!hasPlayed) {
-                    attemptPlay('interaction-' + e.type);
+                    attemptPlay();
                 }
             }
 
@@ -261,10 +214,6 @@
             document.addEventListener('scroll', playOnInteraction, { once: true });
             document.addEventListener('touchstart', playOnInteraction, { once: true });
             document.addEventListener('keydown', playOnInteraction, { once: true });
-
-            console.log('Video initialization complete.');
-        } else {
-            console.warn('Hero video element not found!');
         }
 
     });
