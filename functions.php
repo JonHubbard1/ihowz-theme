@@ -74,8 +74,11 @@ function ihowz_theme_scripts() {
     // Sidebar navigation styles
     wp_enqueue_style('ihowz-sidebar-nav', get_template_directory_uri() . '/assets/css/sidebar-nav.css', array('ihowz-style'), $theme_version);
 
+    // Block common styles (shared by theme and plugin blocks)
+    wp_enqueue_style('ihowz-blocks', get_template_directory_uri() . '/assets/css/blocks.css', array('ihowz-style'), $theme_version);
+
     // Responsive styles (media queries)
-    wp_enqueue_style('ihowz-responsive', get_template_directory_uri() . '/assets/css/responsive.css', array('ihowz-style', 'ihowz-layout', 'ihowz-components', 'ihowz-templates'), $theme_version);
+    wp_enqueue_style('ihowz-responsive', get_template_directory_uri() . '/assets/css/responsive.css', array('ihowz-style', 'ihowz-layout', 'ihowz-components', 'ihowz-templates', 'ihowz-blocks'), $theme_version);
 
     // Custom JavaScript
     wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), '1.0.9', true);

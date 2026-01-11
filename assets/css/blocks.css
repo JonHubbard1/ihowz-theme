@@ -1,0 +1,467 @@
+/**
+ * iHowz Blocks - Common Styles
+ *
+ * Centralized styles for all Gutenberg blocks (theme and plugin)
+ * These styles use CSS variables defined in style.css
+ *
+ * @package iHowz Theme
+ */
+
+/* ==========================================================================
+   Block Container Styles
+   ========================================================================== */
+
+/* Standard block container - 90% width, max 1600px, centered */
+.ihowz-block-container {
+    width: 90%;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Inner container for full-width backgrounds */
+.ihowz-block-inner {
+    width: 90%;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Block vertical spacing */
+.ihowz-block-spacing {
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+
+.ihowz-block-spacing-sm {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+/* Block padding for backgrounds */
+.ihowz-block-padding {
+    padding: 60px 20px;
+}
+
+.ihowz-block-padding-sm {
+    padding: 40px 20px;
+}
+
+/* ==========================================================================
+   Typography - Eyebrow
+   ========================================================================== */
+
+.ihowz-eyebrow {
+    display: block;
+    font-family: var(--primary-font, "Mona Sans", sans-serif);
+    font-size: clamp(0.9375rem, 1.1vw, 1.125rem);
+    font-weight: 500;
+    color: var(--primary-green, #9FC045);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   Typography - Headings
+   ========================================================================== */
+
+.ihowz-heading {
+    font-family: var(--primary-font, "Mona Sans", sans-serif);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--primary-charcoal, #263238);
+    line-height: 1.2;
+    margin: 0;
+}
+
+.ihowz-heading-lg {
+    font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.ihowz-heading-sm {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+}
+
+/* ==========================================================================
+   Typography - Body Text
+   ========================================================================== */
+
+.ihowz-body-text {
+    font-family: var(--primary-font, "Mona Sans", sans-serif);
+    font-size: clamp(0.9375rem, 1.1vw, 1.125rem);
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--neutral-gray, #757575);
+    margin: 0;
+}
+
+/* ==========================================================================
+   Cards
+   ========================================================================== */
+
+.ihowz-card {
+    background: var(--background-pure-white, #fff);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(38, 50, 56, 0.08);
+    transition: transform 0.25s ease-out, box-shadow 0.25s ease-out;
+}
+
+.ihowz-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 20px rgba(38, 50, 56, 0.12);
+}
+
+.ihowz-card-padding {
+    padding: clamp(20px, 3vw, 32px);
+}
+
+/* Card as link */
+a.ihowz-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+/* Primary CTA Button (Gold) */
+.ihowz-btn-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    font-family: var(--primary-font, "Mona Sans", sans-serif);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--accent-gold, #FF8F00);
+    color: #fff;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease-out;
+}
+
+.ihowz-btn-cta:hover {
+    background: #e67e00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 143, 0, 0.3);
+}
+
+.ihowz-btn-cta .btn-icon {
+    width: 18px;
+    height: 18px;
+}
+
+/* Primary Button (Green) */
+.ihowz-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    font-family: var(--primary-font, "Mona Sans", sans-serif);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--primary-green, #9FC045);
+    color: #fff;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease-out;
+}
+
+.ihowz-btn-primary:hover {
+    background: var(--secondary-forest-green, #5F8422);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(159, 192, 69, 0.3);
+}
+
+/* Secondary Button (Outlined) */
+.ihowz-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    font-family: var(--primary-font, "Mona Sans", sans-serif);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: transparent;
+    color: var(--primary-green, #9FC045);
+    border: 2px solid var(--primary-green, #9FC045);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease-out;
+}
+
+.ihowz-btn-secondary:hover {
+    background: var(--secondary-light-green, #F4F9E8);
+}
+
+/* Large button variant */
+.ihowz-btn-lg {
+    padding: 16px 32px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+}
+
+/* ==========================================================================
+   Background Colors (Primary Green variants)
+   ========================================================================== */
+
+.ihowz-bg-green-100 {
+    background-color: rgba(159, 192, 69, 1);
+}
+
+.ihowz-bg-green-75 {
+    background-color: rgba(159, 192, 69, 0.75);
+}
+
+.ihowz-bg-green-50 {
+    background-color: rgba(159, 192, 69, 0.5);
+}
+
+.ihowz-bg-green-25 {
+    background-color: rgba(159, 192, 69, 0.25);
+}
+
+.ihowz-bg-green-10 {
+    background-color: rgba(159, 192, 69, 0.1);
+}
+
+.ihowz-bg-green-5 {
+    background-color: rgba(159, 192, 69, 0.05);
+}
+
+/* Text color adjustments for dark backgrounds */
+.ihowz-bg-green-100 .ihowz-eyebrow,
+.ihowz-bg-green-75 .ihowz-eyebrow {
+    color: #fff;
+}
+
+.ihowz-bg-green-100 .ihowz-heading,
+.ihowz-bg-green-75 .ihowz-heading {
+    color: #fff;
+}
+
+.ihowz-bg-green-100 .ihowz-body-text,
+.ihowz-bg-green-75 .ihowz-body-text {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* ==========================================================================
+   Block Width Variants
+   ========================================================================== */
+
+/* Full width - spans entire viewport */
+.ihowz-width-full {
+    width: 100%;
+    max-width: none;
+}
+
+/* Standard width with rounded corners */
+.ihowz-width-standard {
+    width: 90%;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 16px;
+}
+
+/* ==========================================================================
+   Images
+   ========================================================================== */
+
+.ihowz-image-rounded {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.ihowz-image-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ihowz-image-square {
+    aspect-ratio: 1 / 1;
+}
+
+/* ==========================================================================
+   Icons (Dashicons)
+   ========================================================================== */
+
+.ihowz-icon {
+    color: var(--primary-green, #9FC045);
+}
+
+.ihowz-icon-sm {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.ihowz-icon-md {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+}
+
+.ihowz-icon-lg {
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+}
+
+.ihowz-icon-xl {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+}
+
+/* ==========================================================================
+   Price/Badge Styles
+   ========================================================================== */
+
+.ihowz-price-badge {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--success-green, #388E3C);
+    background: var(--secondary-light-green, #F4F9E8);
+    padding: 8px 16px;
+    border-radius: 8px;
+}
+
+.ihowz-date-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--primary-green, #9FC045);
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    min-width: 55px;
+}
+
+.ihowz-date-badge .day {
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.ihowz-date-badge .month {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+/* ==========================================================================
+   Event/Meta Info
+   ========================================================================== */
+
+.ihowz-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--neutral-gray, #757575);
+}
+
+.ihowz-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ihowz-meta-item .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: var(--primary-green, #9FC045);
+}
+
+/* ==========================================================================
+   No Results Message
+   ========================================================================== */
+
+.ihowz-no-results {
+    text-align: center;
+    padding: 40px;
+    background: var(--background-subtle, #FAFAFA);
+    border-radius: 12px;
+    color: var(--neutral-gray, #757575);
+}
+
+/* ==========================================================================
+   Grid Layouts
+   ========================================================================== */
+
+.ihowz-grid {
+    display: grid;
+    gap: 24px;
+}
+
+.ihowz-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.ihowz-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.ihowz-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.ihowz-grid-5 {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+
+@media (max-width: 992px) {
+    .ihowz-grid-4,
+    .ihowz-grid-5 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .ihowz-block-padding {
+        padding: 50px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ihowz-grid-3,
+    .ihowz-grid-4,
+    .ihowz-grid-5 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ihowz-grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .ihowz-block-padding {
+        padding: 40px 16px;
+    }
+
+    .ihowz-block-spacing {
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+}
+
+@media (max-width: 540px) {
+    .ihowz-grid-2,
+    .ihowz-grid-3,
+    .ihowz-grid-4,
+    .ihowz-grid-5 {
+        grid-template-columns: 1fr;
+    }
+}
