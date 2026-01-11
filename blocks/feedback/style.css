@@ -57,21 +57,10 @@
 }
 
 .feedback-eyebrow {
-    font-family: var(--primary-font, "Mona Sans", sans-serif);
-    font-size: 0.875rem;
-    font-weight: 400;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--primary-green, #9cc130);
     margin-bottom: clamp(12px, 1.5vw, 20px);
 }
 
 .feedback-heading {
-    font-family: var(--primary-font, "Mona Sans", sans-serif);
-    font-size: clamp(1.75rem, 3vw, 2.5rem);
-    font-weight: 900;
-    line-height: 1.2;
-    color: #1a1a1a;
     margin: 0 0 24px 0;
 }
 

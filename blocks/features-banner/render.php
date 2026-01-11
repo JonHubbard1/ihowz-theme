@@ -52,10 +52,10 @@ $wrapper_attributes = get_block_wrapper_attributes(array(
         <!-- Header -->
         <div class="features-banner-header">
             <?php if ($eyebrow_text) : ?>
-                <span class="features-banner-eyebrow"><?php echo $eyebrow_text; ?></span>
+                <span class="features-banner-eyebrow ihowz-eyebrow"><?php echo $eyebrow_text; ?></span>
             <?php endif; ?>
             <?php if ($heading) : ?>
-                <h2 class="features-banner-heading"><?php echo $heading; ?></h2>
+                <h2 class="features-banner-heading ihowz-heading"><?php echo $heading; ?></h2>
             <?php endif; ?>
         </div>
 

@@ -46,10 +46,10 @@ $icons = [
         <?php if ($eyebrow_text || $heading || $subheading) : ?>
             <div class="member-services-bento-header">
                 <?php if ($eyebrow_text) : ?>
-                    <span class="member-services-bento-eyebrow"><?php echo esc_html($eyebrow_text); ?></span>
+                    <span class="member-services-bento-eyebrow ihowz-eyebrow"><?php echo esc_html($eyebrow_text); ?></span>
                 <?php endif; ?>
                 <?php if ($heading) : ?>
-                    <h2 class="member-services-bento-heading"><?php echo esc_html($heading); ?></h2>
+                    <h2 class="member-services-bento-heading ihowz-heading"><?php echo esc_html($heading); ?></h2>
                 <?php endif; ?>
                 <?php if ($subheading) : ?>
                     <p class="member-services-bento-subheading"><?php echo esc_html($subheading); ?></p>

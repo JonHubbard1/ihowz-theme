@@ -37,10 +37,10 @@ $quote_icon = '<svg class="feedback-quote-icon" xmlns="http://www.w3.org/2000/sv
         <!-- Header Area -->
         <div class="feedback-header">
             <?php if ($eyebrow_text) : ?>
-                <span class="feedback-eyebrow"><?php echo esc_html($eyebrow_text); ?></span>
+                <span class="feedback-eyebrow ihowz-eyebrow"><?php echo esc_html($eyebrow_text); ?></span>
             <?php endif; ?>
             <?php if ($heading) : ?>
-                <h2 class="feedback-heading"><?php echo wp_kses_post($heading); ?></h2>
+                <h2 class="feedback-heading ihowz-heading"><?php echo wp_kses_post($heading); ?></h2>
             <?php endif; ?>
             <?php if ($show_button && $button_text) : ?>
                 <a href="<?php echo $button_url; ?>" class="feedback-btn">

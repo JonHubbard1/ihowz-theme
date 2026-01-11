@@ -37,7 +37,7 @@ if (!$has_content) {
         <!-- Eyebrow Text - cols 1-2, row 1 -->
         <div class="about-stats-eyebrow-area">
             <?php if ($eyebrow_text) : ?>
-                <span class="about-stats-eyebrow"><?php echo esc_html($eyebrow_text); ?></span>
+                <span class="about-stats-eyebrow ihowz-eyebrow"><?php echo esc_html($eyebrow_text); ?></span>
             <?php endif; ?>
         </div>
 

@@ -28,22 +28,10 @@
 }
 
 .member-services-bento-eyebrow {
-    display: block;
-    font-family: var(--primary-font, "Mona Sans", sans-serif);
-    font-size: 0.875rem;
-    font-weight: 400;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--primary-green, #9cc130);
     margin-bottom: clamp(10px, 1.2vw, 16px);
 }
 
 .member-services-bento-heading {
-    font-family: var(--primary-font, "Mona Sans", sans-serif);
-    font-size: clamp(1.75rem, 3vw, 2.75rem);
-    font-weight: 900;
-    line-height: 1.2;
-    color: #1a1a1a;
     margin: 0 0 clamp(12px, 1.5vw, 20px) 0;
 }
 
@@ -275,14 +263,6 @@
         margin-bottom: 36px;
     }
 
-    .member-services-bento-eyebrow {
-        font-size: 1rem;
-    }
-
-    .member-services-bento-heading {
-        font-size: 2rem;
-    }
-
     .member-services-bento-subheading {
         font-size: 1.0625rem;
     }
@@ -362,14 +342,6 @@
 
     .member-services-bento-header {
         margin-bottom: 28px;
-    }
-
-    .member-services-bento-eyebrow {
-        font-size: 0.9375rem;
-    }
-
-    .member-services-bento-heading {
-        font-size: 1.75rem;
     }
 
     .member-services-bento-subheading {

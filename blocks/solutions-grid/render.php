@@ -39,10 +39,10 @@ if (!$has_header && !$has_rows) {
         <div class="solutions-grid-header">
             <div class="solutions-grid-header-content">
                 <?php if ($eyebrow_text) : ?>
-                    <span class="solutions-grid-eyebrow"><?php echo esc_html($eyebrow_text); ?></span>
+                    <span class="solutions-grid-eyebrow ihowz-eyebrow"><?php echo esc_html($eyebrow_text); ?></span>
                 <?php endif; ?>
                 <?php if ($heading) : ?>
-                    <h2 class="solutions-grid-heading"><?php echo wp_kses_post($heading); ?></h2>
+                    <h2 class="solutions-grid-heading ihowz-heading"><?php echo wp_kses_post($heading); ?></h2>
                 <?php endif; ?>
             </div>
             <?php if ($show_top_button && $top_button_text) : ?>

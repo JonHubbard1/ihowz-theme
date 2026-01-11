@@ -45,10 +45,10 @@ $icons = [
         <?php if ($eyebrow_text || $heading || $subheading) : ?>
             <div class="member-services-grid-header">
                 <?php if ($eyebrow_text) : ?>
-                    <span class="member-services-grid-eyebrow"><?php echo esc_html($eyebrow_text); ?></span>
+                    <span class="member-services-grid-eyebrow ihowz-eyebrow"><?php echo esc_html($eyebrow_text); ?></span>
                 <?php endif; ?>
                 <?php if ($heading) : ?>
-                    <h2 class="member-services-grid-heading"><?php echo esc_html($heading); ?></h2>
+                    <h2 class="member-services-grid-heading ihowz-heading"><?php echo esc_html($heading); ?></h2>
                 <?php endif; ?>
                 <?php if ($subheading) : ?>
                     <p class="member-services-grid-subheading"><?php echo esc_html($subheading); ?></p>
