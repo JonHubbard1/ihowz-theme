@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "ihowz/member-services-grid",
+    "version": "1.0.0",
+    "title": "Member Services Grid",
+    "category": "design",
+    "icon": "grid-view",
+    "description": "A 2x3 grid of member service cards with icons, titles, descriptions, and links.",
+    "keywords": ["services", "members", "grid", "cards", "features"],
+    "textdomain": "ihowz-theme",
+    "attributes": {
+        "eyebrowText": {
+            "type": "string",
+            "default": ""
+        },
+        "heading": {
+            "type": "string",
+            "default": ""
+        },
+        "subheading": {
+            "type": "string",
+            "default": ""
+        },
+        "services": {
+            "type": "array",
+            "default": []
+        },
+        "backgroundColor": {
+            "type": "string",
+            "default": "#ffffff"
+        }
+    },
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"],
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "render": "file:./render.php"
+}

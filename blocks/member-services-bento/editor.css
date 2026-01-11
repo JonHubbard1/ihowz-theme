@@ -1,0 +1,195 @@
+/**
+ * Member Services Bento Block - Editor Styles
+ *
+ * @package iHowz Theme
+ */
+
+/* Editor Preview */
+.wp-block-ihowz-member-services-bento {
+    padding: 40px;
+    border-radius: 16px;
+}
+
+.member-services-bento-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Header */
+.member-services-bento-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.member-services-bento-eyebrow {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #9cc130;
+    margin-bottom: 12px;
+}
+
+.member-services-bento-heading {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #263238;
+    margin: 0 0 16px 0;
+    line-height: 1.2;
+}
+
+.member-services-bento-subheading {
+    font-size: 1.125rem;
+    color: #757575;
+    margin: 0 auto;
+    max-width: 600px;
+    line-height: 1.6;
+}
+
+/* Bento Grid */
+.member-services-bento-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(160px, auto);
+    gap: 20px;
+}
+
+/* Base Card */
+.member-services-bento-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Card Sizes */
+.member-services-bento-card--small {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+.member-services-bento-card--medium {
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
+.member-services-bento-card--large {
+    grid-column: span 2;
+    grid-row: span 2;
+    padding: 32px;
+}
+
+/* Content wrapper */
+.member-services-bento-card-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* Split layout for cards with images */
+.member-services-bento-card.has-image {
+    flex-direction: row;
+    padding: 0;
+}
+
+.member-services-bento-card.has-image .member-services-bento-card-content {
+    flex: 1;
+    padding: 24px;
+    justify-content: center;
+}
+
+.member-services-bento-card--large.has-image .member-services-bento-card-content {
+    padding: 32px;
+}
+
+/* Image container */
+.member-services-bento-card-image {
+    flex: 0 0 45%;
+    overflow: hidden;
+}
+
+.member-services-bento-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.member-services-bento-card--large.has-image .member-services-bento-card-image {
+    flex: 0 0 50%;
+}
+
+/* Card Icon */
+.member-services-bento-card-icon {
+    width: 44px;
+    height: 44px;
+    color: #FF8F00;
+    margin-bottom: 16px;
+}
+
+.member-services-bento-card-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.member-services-bento-card--large .member-services-bento-card-icon {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 20px;
+}
+
+/* Card Title */
+.member-services-bento-card-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #263238;
+    margin: 0 0 10px 0;
+}
+
+.member-services-bento-card--large .member-services-bento-card-title {
+    font-size: 1.5rem;
+    margin-bottom: 14px;
+}
+
+/* Card Description */
+.member-services-bento-card-description {
+    font-size: 0.9375rem;
+    color: #757575;
+    margin: 0 0 16px 0;
+    flex-grow: 1;
+    line-height: 1.6;
+}
+
+.member-services-bento-card--large .member-services-bento-card-description {
+    font-size: 1.0625rem;
+}
+
+.member-services-bento-card.has-image .member-services-bento-card-description {
+    flex-grow: 0;
+}
+
+/* Card Button */
+.member-services-bento-card-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #FF8F00;
+    text-decoration: none;
+    margin-top: auto;
+}
+
+/* Inspector Panel Styles */
+.service-settings {
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+.service-settings:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}

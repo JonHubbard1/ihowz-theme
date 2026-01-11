@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "ihowz/member-services-bento",
+    "version": "1.0.0",
+    "title": "Member Services Bento",
+    "category": "design",
+    "icon": "layout",
+    "description": "A bento-style grid of member service cards with varying sizes and visual emphasis.",
+    "keywords": ["services", "members", "bento", "grid", "cards", "features"],
+    "textdomain": "ihowz-theme",
+    "attributes": {
+        "eyebrowText": {
+            "type": "string",
+            "default": ""
+        },
+        "heading": {
+            "type": "string",
+            "default": ""
+        },
+        "subheading": {
+            "type": "string",
+            "default": ""
+        },
+        "services": {
+            "type": "array",
+            "default": []
+        },
+        "backgroundColor": {
+            "type": "string",
+            "default": "#f5f5f5"
+        }
+    },
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"],
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "render": "file:./render.php"
+}

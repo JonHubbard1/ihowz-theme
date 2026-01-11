@@ -954,6 +954,68 @@ function ihowz_register_blocks() {
         'editor_script' => 'ihowz-feedback-editor',
         'style' => 'ihowz-feedback-style',
     ));
+
+    // Member Services Grid block
+    $msg_version = '1.0.' . filemtime(get_template_directory() . '/blocks/member-services-grid/style.css');
+
+    wp_register_script(
+        'ihowz-member-services-grid-editor',
+        get_template_directory_uri() . '/blocks/member-services-grid/index.js',
+        array('wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-i18n'),
+        $msg_version,
+        true
+    );
+
+    wp_register_style(
+        'ihowz-member-services-grid-style',
+        get_template_directory_uri() . '/blocks/member-services-grid/style.css',
+        array(),
+        $msg_version
+    );
+
+    wp_register_style(
+        'ihowz-member-services-grid-editor-style',
+        get_template_directory_uri() . '/blocks/member-services-grid/editor.css',
+        array(),
+        $msg_version
+    );
+
+    register_block_type(get_template_directory() . '/blocks/member-services-grid', array(
+        'editor_script' => 'ihowz-member-services-grid-editor',
+        'style' => 'ihowz-member-services-grid-style',
+        'editor_style' => 'ihowz-member-services-grid-editor-style',
+    ));
+
+    // Member Services Bento block
+    $msb_version = '1.0.' . filemtime(get_template_directory() . '/blocks/member-services-bento/style.css');
+
+    wp_register_script(
+        'ihowz-member-services-bento-editor',
+        get_template_directory_uri() . '/blocks/member-services-bento/index.js',
+        array('wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-i18n', 'wp-media-utils'),
+        $msb_version,
+        true
+    );
+
+    wp_register_style(
+        'ihowz-member-services-bento-style',
+        get_template_directory_uri() . '/blocks/member-services-bento/style.css',
+        array(),
+        $msb_version
+    );
+
+    wp_register_style(
+        'ihowz-member-services-bento-editor-style',
+        get_template_directory_uri() . '/blocks/member-services-bento/editor.css',
+        array(),
+        $msb_version
+    );
+
+    register_block_type(get_template_directory() . '/blocks/member-services-bento', array(
+        'editor_script' => 'ihowz-member-services-bento-editor',
+        'style' => 'ihowz-member-services-bento-style',
+        'editor_style' => 'ihowz-member-services-bento-editor-style',
+    ));
 }
 add_action('init', 'ihowz_register_blocks');
 
