@@ -17,7 +17,7 @@
     margin-left: auto;
     margin-right: auto;
     min-height: 600px;
-    padding: 80px 40px;
+    padding: clamp(60px, 8vw, 100px) clamp(20px, 4vw, 60px);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -79,23 +79,23 @@
 /* Heading */
 .ihowz-hero .hero-heading {
     font-family: var(--primary-font, "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif);
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-size: clamp(2rem, 5vw, 4.5rem);
     font-weight: 700;
     line-height: 1.1;
     color: #fff;
-    margin: 0 0 24px 0;
+    margin: 0 0 clamp(16px, 2.5vw, 32px) 0;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Subheading */
 .ihowz-hero .hero-subheading {
     font-family: var(--primary-font);
-    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-size: clamp(1rem, 1.5vw, 1.375rem);
     font-weight: 400;
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.9);
-    margin: 0 0 32px 0;
-    max-width: 700px;
+    margin: 0 0 clamp(24px, 3vw, 40px) 0;
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -105,17 +105,17 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 16px;
+    gap: clamp(12px, 1.5vw, 20px);
 }
 
 /* Base Button Styles */
 .ihowz-hero .hero-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 14px 28px;
+    gap: clamp(6px, 0.8vw, 10px);
+    padding: clamp(12px, 1.5vw, 18px) clamp(24px, 3vw, 36px);
     font-family: var(--primary-font);
-    font-size: 1rem;
+    font-size: clamp(0.9375rem, 1.1vw, 1.125rem);
     font-weight: 600;
     text-decoration: none;
     border-radius: 8px;
@@ -124,8 +124,8 @@
 }
 
 .ihowz-hero .hero-btn-icon {
-    width: 18px;
-    height: 18px;
+    width: clamp(16px, 1.5vw, 22px);
+    height: clamp(16px, 1.5vw, 22px);
 }
 
 /* Primary Button - Orange */
@@ -186,7 +186,7 @@
 }
 
 .ihowz-hero .hero-card-left .hero-card-content {
-    padding: 16px;
+    padding: clamp(14px, 1.5vw, 20px);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -194,16 +194,16 @@
 
 .ihowz-hero .hero-card-title {
     font-family: var(--primary-font);
-    font-size: 0.9375rem;
+    font-size: clamp(0.875rem, 1vw, 1.0625rem);
     font-weight: 700;
     color: var(--primary-charcoal, #263238);
-    margin: 0 0 8px 0;
+    margin: 0 0 clamp(6px, 0.7vw, 10px) 0;
     line-height: 1.3;
 }
 
 .ihowz-hero .hero-card-text {
     font-family: var(--primary-font);
-    font-size: 0.8125rem;
+    font-size: clamp(0.75rem, 0.9vw, 0.9375rem);
     font-weight: 400;
     color: var(--neutral-gray, #757575);
     margin: 0;
@@ -231,7 +231,7 @@
 }
 
 .ihowz-hero .hero-card-right .hero-card-content {
-    padding: 16px;
+    padding: clamp(14px, 1.5vw, 20px);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -259,27 +259,52 @@
 
     .wp-block-ihowz-hero,
     .ihowz-hero {
-        padding: 60px 20px;
+        padding: 70px 30px;
+    }
+
+    .ihowz-hero .hero-heading {
+        font-size: 3rem;
+        margin-bottom: 20px;
+    }
+
+    .ihowz-hero .hero-subheading {
+        font-size: 1.125rem;
+        margin-bottom: 28px;
+    }
+
+    .ihowz-hero .hero-btn {
+        padding: 14px 28px;
+        font-size: 1rem;
     }
 }
 
 @media (max-width: 768px) {
+    .wp-block-ihowz-hero,
+    .ihowz-hero {
+        padding: 50px 20px;
+    }
+
     .ihowz-hero .hero-heading {
-        font-size: 2rem;
+        font-size: 2.25rem;
+        margin-bottom: 16px;
     }
 
     .ihowz-hero .hero-subheading {
         font-size: 1rem;
+        margin-bottom: 24px;
     }
 
     .ihowz-hero .hero-buttons {
         flex-direction: column;
         align-items: center;
+        gap: 12px;
     }
 
     .ihowz-hero .hero-btn {
         width: 100%;
-        max-width: 280px;
+        max-width: 300px;
         justify-content: center;
+        padding: 14px 24px;
+        font-size: 0.9375rem;
     }
 }
