@@ -78,7 +78,7 @@
         });
 
         // Smooth scrolling for anchor links
-        $('a[href*="#"]:not([href="#"])').click(function() {
+        $('a[href*="#"]:not([href="#"])').on('click', function() {
             if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
                 var target = $(this.hash);
                 target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
@@ -109,7 +109,7 @@
         var backToTop = $('<button class="back-to-top" title="Back to Top">↑</button>');
         $('body').append(backToTop);
 
-        $(window).scroll(function() {
+        $(window).on('scroll', function() {
             if ($(this).scrollTop() > 300) {
                 backToTop.fadeIn();
             } else {
@@ -117,7 +117,7 @@
             }
         });
 
-        backToTop.click(function() {
+        backToTop.on('click', function() {
             $('html, body').animate({ scrollTop: 0 }, 600);
             return false;
         });
@@ -137,7 +137,7 @@
         var body = $('body');
         var grayBarHeight = grayBar.length ? grayBar.outerHeight() : 80;
 
-        $(window).scroll(function() {
+        $(window).on('scroll', function() {
             var scrollTop = $(this).scrollTop();
 
             if (scrollTop > grayBarHeight) {
