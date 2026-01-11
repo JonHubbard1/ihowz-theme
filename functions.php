@@ -54,8 +54,28 @@ add_action('after_setup_theme', 'ihowz_theme_setup');
  * Enqueue scripts and styles
  */
 function ihowz_theme_scripts() {
-    // Main stylesheet
-    wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), '1.3.3');
+    $theme_version = '1.4.0';
+
+    // Main stylesheet (base styles, variables, fonts, reset)
+    wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), $theme_version);
+
+    // Layout styles (header, footer, navigation structure)
+    wp_enqueue_style('ihowz-layout', get_template_directory_uri() . '/assets/css/layout.css', array('ihowz-style'), $theme_version);
+
+    // Component styles (WordPress core, pagination, accessibility)
+    wp_enqueue_style('ihowz-components', get_template_directory_uri() . '/assets/css/components.css', array('ihowz-style'), $theme_version);
+
+    // MegaMenu styles
+    wp_enqueue_style('ihowz-megamenu', get_template_directory_uri() . '/assets/css/megamenu.css', array('ihowz-style'), $theme_version);
+
+    // Template styles (page template specific styles)
+    wp_enqueue_style('ihowz-templates', get_template_directory_uri() . '/assets/css/templates.css', array('ihowz-style'), $theme_version);
+
+    // Sidebar navigation styles
+    wp_enqueue_style('ihowz-sidebar-nav', get_template_directory_uri() . '/assets/css/sidebar-nav.css', array('ihowz-style'), $theme_version);
+
+    // Responsive styles (media queries)
+    wp_enqueue_style('ihowz-responsive', get_template_directory_uri() . '/assets/css/responsive.css', array('ihowz-style', 'ihowz-layout', 'ihowz-components', 'ihowz-templates'), $theme_version);
 
     // Custom JavaScript
     wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/js/main.js', array('jquery'), '1.0.9', true);
