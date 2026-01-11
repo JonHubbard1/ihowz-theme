@@ -78,7 +78,7 @@ function ihowz_theme_scripts() {
     wp_enqueue_style('ihowz-responsive', get_template_directory_uri() . '/assets/css/responsive.css', array('ihowz-style', 'ihowz-layout', 'ihowz-components', 'ihowz-templates'), $theme_version);
 
     // Custom JavaScript
-    wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/js/main.js', array('jquery'), '1.0.9', true);
+    wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), '1.0.9', true);
 
     // Comment reply script
     if (is_singular() && comments_open() && get_option('thread_comments')) {
@@ -265,7 +265,7 @@ function ihowz_theme_body_classes($classes) {
         $classes[] = 'no-sidebar';
     }
 
-    if (is_page_template('page-news.php')) {
+    if (is_page_template('templates/page-news.php')) {
         $classes[] = 'news-page';
     }
 

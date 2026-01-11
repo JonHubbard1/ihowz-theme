@@ -1,6 +1,10 @@
 <?php
 /**
- * Template for the News page
+ * Template Name: News Page
+ * Template for displaying news/blog posts in a grid layout
+ *
+ * @package iHowz
+ * @since 1.0.0
  */
 
 get_header(); ?>
