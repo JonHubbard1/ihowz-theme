@@ -39,8 +39,10 @@ A modern, trustworthy digital platform that empowers landlords with clear guidan
 
 **Primary Font Family**
 
-- **Primary Font** - Inter (clean, modern sans-serif for optimal readability)
+- **Primary Font** - Mona Sans (clean, modern sans-serif for optimal readability)
 - **Secondary Font** - Georgia (serif for formal documentation and legal text)
+
+**CSS Variable**: `var(--primary-font, "Mona Sans", sans-serif)`
 
 **Font Weights**
 
@@ -272,10 +274,11 @@ A modern, trustworthy digital platform that empowers landlords with clear guidan
 
 **Layout Grid**
 
-- **Desktop Container**: Max width 1200px, centered
+- **Desktop Container**: Max width 1600px, width 90%, centered
 - **Tablet**: 16px side margins
-- **Mobile**: 16px side margins
+- **Mobile**: 16px side margins, width 90%
 - **Grid Columns**: 12-column system with 24px gutters
+- **Block Container Padding**: 0 20px (standard blocks)
 
 **Motion and Animation**
 
@@ -354,11 +357,119 @@ A modern, trustworthy digital platform that empowers landlords with clear guidan
 - **Post Templates**: Consistent colour usage and typography hierarchy
 - **Story Templates**: Mobile-optimized vertical layouts
 
+**Custom Gutenberg Blocks**
+
+The theme includes custom Gutenberg blocks with server-side rendering. All blocks follow consistent styling patterns.
+
+**Block Container Standards**
+
+- **Width**: 90% of viewport
+- **Max Width**: 1600px
+- **Margin**: 60px auto (vertical centering)
+- **Padding**: 0 20px (horizontal)
+- **Border Radius**: 16px (for blocks with backgrounds)
+
+**Available Blocks**
+
+**Features Banner** (`ihowz/features-banner`)
+- Full-width banner with background image/colour
+- Eyebrow text, heading, description, and CTA button
+- 16px border radius
+- Supports wide and full alignment
+
+**Hero Section** (`ihowz/hero`)
+- Background image or video support
+- Title, subtitle, description text
+- Primary and secondary CTA buttons
+- Optional floating info cards (left and right)
+- Video autoplay with muted, loop, playsinline attributes
+- Content aligned to top (flex-start)
+- Max content width: 1200px
+
+**Content with Sidebar** (`ihowz/content-with-sidebar`)
+- Two-column layout with main content and sidebar
+- Sidebar background: 25% primary green (rgba based)
+- Flexible content areas using InnerBlocks
+
+**Page Navigation** (`ihowz/page-navigation`)
+- Hierarchical page list with depth control (1-5 levels)
+- Options: show only children, select parent page, exclude pages
+- Styled navigation buttons with green hover states
+- Second level: 15% green fill background
+
+**Solutions Grid** (`ihowz/solutions-grid`)
+- Flexible grid with up to 4 rows, 5 items per row
+- Optional eyebrow, heading, and top CTA button
+- Per-item: image, title, button, width percentage
+- MediaUpload with URL fallback for images
+
+**About Stats** (`ihowz/about-stats`)
+- 5-column CSS Grid layout
+- Row 1: Eyebrow (cols 1-2), Main text (cols 3-5)
+- Row 2: Stats in columns 1, 2, 3 (vertically centered), Large image (cols 4-5, spans rows 2-3)
+- Row 3: Secondary text + button (cols 1-2), Small image (col 3)
+- Stats counter animation using Intersection Observer
+- Plain numbers animate from 0 when scrolled into view
+- Supports prefixes ($, £), suffixes (+), and thousand separators
+- Square images with aspect-ratio: 1/1
+
+**Feedback/Testimonials** (`ihowz/feedback`)
+- 3-column grid layout
+- Header in column 1, row 1; testimonial cards fill remaining grid
+- Up to 6 testimonial cards
+- Card contents: orange quote icon, quote text, author photo, name, role
+- Container: 5% gray background, 16px border radius, 50px 40px padding
+- Decorative roof SVG background at 15% opacity, bottom-right aligned
+- Author role displayed in accent gold (#FF8F00)
+
+**Block Typography Standards**
+
+- **Eyebrow Text**: 1.25rem, font-weight 500, Primary Green
+- **Main/Heading Text**: 1.5rem - 2.5rem (clamp for responsiveness), font-weight 500-700
+- **Body/Secondary Text**: 1rem, font-weight 400, line-height 1.7, Neutral Gray
+- **Stat Numbers**: clamp(2.5rem, 5vw, 3.5rem), font-weight 700, Primary Charcoal
+- **Stat Labels**: 0.875rem, font-weight 500, Neutral Gray (line 2: Light Gray)
+
+**Block Button Standards**
+
+- **CTA Buttons**: Accent Gold (#FF8F00) background, white text
+- **Padding**: 12px 24px
+- **Border Radius**: 8px
+- **Font**: 0.9375rem, font-weight 600
+- **Hover**: Darker gold (#e67e00), translateY(-2px), box-shadow
+- **Icon**: 18px inline SVG arrow
+
+**Block Image Standards**
+
+- **Border Radius**: 16px
+- **Overflow**: hidden (on container)
+- **Object Fit**: cover
+- **Square Images**: aspect-ratio: 1/1
+
+**Block Responsive Breakpoints**
+
+- **Desktop**: Full grid layouts
+- **992px**: Simplified grids (2-3 columns)
+- **768px**: Further reduced columns, stacked layouts
+- **540px**: Single column layouts
+- **480px**: Full-width elements
+
 **Implementation Notes**
 
 **Technical Specifications**
 
 - **CSS Custom Properties**: All colours and spacing defined as CSS variables
+
+**CSS Variables Used in Blocks**
+
+```css
+--primary-font: "Mona Sans", sans-serif
+--primary-green: #9cc130
+--primary-charcoal: #263238
+--accent-gold: #FF8F00
+--neutral-gray: #757575
+--light-gray: #BDBDBD
+```
 - **Component Library**: Reusable components built with consistent styling
 - **Responsive Breakpoints**:
     - Mobile: 0-767px
