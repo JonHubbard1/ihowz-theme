@@ -29,8 +29,8 @@
 
 .about-stats-eyebrow {
     font-family: var(--primary-font, "Mona Sans", sans-serif);
-    font-size: clamp(0.9375rem, 1.1vw, 1.125rem);
-    font-weight: 500;
+    font-size: 0.875rem;
+    font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: var(--primary-green, #9cc130);
