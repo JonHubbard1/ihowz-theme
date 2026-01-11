@@ -8,7 +8,7 @@
     const { registerBlockType } = blocks;
     const { createElement: el, Fragment } = element;
     const { InspectorControls, MediaUpload, MediaUploadCheck, RichText, useBlockProps } = blockEditor;
-    const { PanelBody, TextControl, TextareaControl, SelectControl, ColorPicker, Button, IconButton } = components;
+    const { PanelBody, TextControl, TextareaControl, SelectControl, RangeControl, ColorPicker, Button, IconButton } = components;
     const { __ } = i18n;
 
     // Icon options for feature cards
@@ -68,6 +68,7 @@
                 imageCardTitlePosition,
                 imageId,
                 imageUrl,
+                imageMinHeight,
                 features,
                 backgroundColor
             } = attributes;
@@ -144,6 +145,13 @@
                                 { label: 'Bottom', value: 'bottom' }
                             ],
                             onChange: (value) => setAttributes({ imageCardTitlePosition: value })
+                        }),
+                        el(RangeControl, {
+                            label: __('Image Min Height (px)', 'ihowz-theme'),
+                            value: imageMinHeight || 400,
+                            onChange: (value) => setAttributes({ imageMinHeight: value }),
+                            min: 200,
+                            max: 800
                         }),
                         el(
                             MediaUploadCheck,
@@ -246,7 +254,7 @@
                             // Image Card
                             el(
                                 'div',
-                                { className: 'features-banner-image-card title-position-' + (imageCardTitlePosition || 'top') },
+                                { className: 'features-banner-image-card title-position-' + (imageCardTitlePosition || 'top'), style: { minHeight: (imageMinHeight || 400) + 'px' } },
                                 imageUrl
                                     ? el('img', { src: imageUrl, className: 'features-banner-image', alt: imageCardTitle })
                                     : el('div', { className: 'features-banner-image-placeholder' }, __('Select an image', 'ihowz-theme')),

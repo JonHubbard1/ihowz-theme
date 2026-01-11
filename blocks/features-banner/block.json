@@ -39,6 +39,10 @@
             "type": "string",
             "default": ""
         },
+        "imageMinHeight": {
+            "type": "number",
+            "default": 400
+        },
         "features": {
             "type": "array",
             "default": []
