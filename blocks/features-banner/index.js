@@ -69,6 +69,7 @@
                 imageId,
                 imageUrl,
                 imageMinHeight,
+                imageAlignment,
                 features,
                 backgroundColor
             } = attributes;
@@ -152,6 +153,16 @@
                             onChange: (value) => setAttributes({ imageMinHeight: value }),
                             min: 200,
                             max: 800
+                        }),
+                        el(SelectControl, {
+                            label: __('Image Alignment', 'ihowz-theme'),
+                            value: imageAlignment || 'center',
+                            options: [
+                                { label: 'Top', value: 'top' },
+                                { label: 'Center', value: 'center' },
+                                { label: 'Bottom', value: 'bottom' }
+                            ],
+                            onChange: (value) => setAttributes({ imageAlignment: value })
                         }),
                         el(
                             MediaUploadCheck,
@@ -256,7 +267,7 @@
                                 'div',
                                 { className: 'features-banner-image-card title-position-' + (imageCardTitlePosition || 'top'), style: { minHeight: (imageMinHeight || 400) + 'px' } },
                                 imageUrl
-                                    ? el('img', { src: imageUrl, className: 'features-banner-image', alt: imageCardTitle })
+                                    ? el('img', { src: imageUrl, className: 'features-banner-image', alt: imageCardTitle, style: { objectPosition: 'center ' + (imageAlignment || 'center') } })
                                     : el('div', { className: 'features-banner-image-placeholder' }, __('Select an image', 'ihowz-theme')),
                                 el(
                                     'div',

@@ -17,6 +17,7 @@ $image_card_title = isset($attributes['imageCardTitle']) ? esc_html($attributes[
 $image_card_subtitle = isset($attributes['imageCardSubtitle']) ? esc_html($attributes['imageCardSubtitle']) : 'From the start';
 $image_card_title_position = isset($attributes['imageCardTitlePosition']) ? esc_attr($attributes['imageCardTitlePosition']) : 'top';
 $image_min_height = isset($attributes['imageMinHeight']) ? intval($attributes['imageMinHeight']) : 400;
+$image_alignment = isset($attributes['imageAlignment']) ? esc_attr($attributes['imageAlignment']) : 'center';
 $image_url = isset($attributes['imageUrl']) ? esc_url($attributes['imageUrl']) : '';
 $image_id = isset($attributes['imageId']) ? absint($attributes['imageId']) : 0;
 $features = isset($attributes['features']) ? $attributes['features'] : array();
@@ -63,7 +64,7 @@ $wrapper_attributes = get_block_wrapper_attributes(array(
             <!-- Featured Image Card -->
             <div class="features-banner-image-card title-position-<?php echo $image_card_title_position; ?>" style="min-height: <?php echo $image_min_height; ?>px;">
                 <?php if ($image_url) : ?>
-                    <img src="<?php echo $image_url; ?>" alt="<?php echo $image_card_title; ?>" class="features-banner-image" />
+                    <img src="<?php echo $image_url; ?>" alt="<?php echo $image_card_title; ?>" class="features-banner-image" style="object-position: center <?php echo $image_alignment; ?>;" />
                 <?php else : ?>
                     <div class="features-banner-image-placeholder"></div>
                 <?php endif; ?>

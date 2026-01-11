@@ -43,6 +43,11 @@
             "type": "number",
             "default": 400
         },
+        "imageAlignment": {
+            "type": "string",
+            "default": "center",
+            "enum": ["top", "center", "bottom"]
+        },
         "features": {
             "type": "array",
             "default": []
