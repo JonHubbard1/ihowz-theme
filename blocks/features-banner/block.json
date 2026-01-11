@@ -26,6 +26,11 @@
             "type": "string",
             "default": ""
         },
+        "imageCardTitlePosition": {
+            "type": "string",
+            "default": "top",
+            "enum": ["top", "bottom"]
+        },
         "imageId": {
             "type": "number",
             "default": 0

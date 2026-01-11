@@ -81,3 +81,8 @@
 .editor-styles-wrapper .features-banner-card:hover {
     transform: none;
 }
+
+/* Title position support in editor */
+.editor-styles-wrapper .features-banner-image-card.title-position-bottom .features-banner-image-overlay {
+    justify-content: flex-end;
+}

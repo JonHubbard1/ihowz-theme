@@ -105,6 +105,11 @@
     padding: 30px;
 }
 
+/* Title Position - Bottom */
+.features-banner-image-card.title-position-bottom .features-banner-image-overlay {
+    justify-content: flex-end;
+}
+
 .features-banner-image-content {
     color: #fff;
     z-index: 1;

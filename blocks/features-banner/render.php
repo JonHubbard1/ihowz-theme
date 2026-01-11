@@ -15,6 +15,7 @@ $eyebrow_text = isset($attributes['eyebrowText']) ? esc_html($attributes['eyebro
 $heading = isset($attributes['heading']) ? esc_html($attributes['heading']) : 'Experience the future of housing.';
 $image_card_title = isset($attributes['imageCardTitle']) ? esc_html($attributes['imageCardTitle']) : 'Making Everything Better';
 $image_card_subtitle = isset($attributes['imageCardSubtitle']) ? esc_html($attributes['imageCardSubtitle']) : 'From the start';
+$image_card_title_position = isset($attributes['imageCardTitlePosition']) ? esc_attr($attributes['imageCardTitlePosition']) : 'top';
 $image_url = isset($attributes['imageUrl']) ? esc_url($attributes['imageUrl']) : '';
 $image_id = isset($attributes['imageId']) ? absint($attributes['imageId']) : 0;
 $features = isset($attributes['features']) ? $attributes['features'] : array();
@@ -59,7 +60,7 @@ $wrapper_attributes = get_block_wrapper_attributes(array(
         <!-- Content Grid -->
         <div class="features-banner-grid">
             <!-- Featured Image Card -->
-            <div class="features-banner-image-card">
+            <div class="features-banner-image-card title-position-<?php echo $image_card_title_position; ?>">
                 <?php if ($image_url) : ?>
                     <img src="<?php echo $image_url; ?>" alt="<?php echo $image_card_title; ?>" class="features-banner-image" />
                 <?php else : ?>

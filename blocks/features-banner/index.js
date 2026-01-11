@@ -65,6 +65,7 @@
                 heading,
                 imageCardTitle,
                 imageCardSubtitle,
+                imageCardTitlePosition,
                 imageId,
                 imageUrl,
                 features,
@@ -134,6 +135,15 @@
                             label: __('Image Card Subtitle', 'ihowz-theme'),
                             value: imageCardSubtitle,
                             onChange: (value) => setAttributes({ imageCardSubtitle: value })
+                        }),
+                        el(SelectControl, {
+                            label: __('Title Position', 'ihowz-theme'),
+                            value: imageCardTitlePosition || 'top',
+                            options: [
+                                { label: 'Top', value: 'top' },
+                                { label: 'Bottom', value: 'bottom' }
+                            ],
+                            onChange: (value) => setAttributes({ imageCardTitlePosition: value })
                         }),
                         el(
                             MediaUploadCheck,
@@ -236,7 +246,7 @@
                             // Image Card
                             el(
                                 'div',
-                                { className: 'features-banner-image-card' },
+                                { className: 'features-banner-image-card title-position-' + (imageCardTitlePosition || 'top') },
                                 imageUrl
                                     ? el('img', { src: imageUrl, className: 'features-banner-image', alt: imageCardTitle })
                                     : el('div', { className: 'features-banner-image-placeholder' }, __('Select an image', 'ihowz-theme')),
