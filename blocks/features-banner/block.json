@@ -4,7 +4,7 @@
     "name": "ihowz/features-banner",
     "version": "1.0.1",
     "title": "Features Banner",
-    "category": "design",
+    "category": "ihowz-blocks",
     "icon": "layout",
     "description": "A banner section with eyebrow text, heading, featured image card, and feature cards.",
     "keywords": ["features", "banner", "cards", "services"],

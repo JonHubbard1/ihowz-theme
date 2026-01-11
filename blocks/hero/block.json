@@ -4,7 +4,7 @@
     "name": "ihowz/hero",
     "version": "1.0.0",
     "title": "Hero Section",
-    "category": "design",
+    "category": "ihowz-blocks",
     "icon": "cover-image",
     "description": "A full-width hero section with background image, heading, buttons, and optional floating cards.",
     "keywords": ["hero", "banner", "header", "cover", "cta"],

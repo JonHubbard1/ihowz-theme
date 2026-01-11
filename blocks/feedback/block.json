@@ -4,7 +4,7 @@
     "name": "ihowz/feedback",
     "version": "1.0.0",
     "title": "Feedback / Testimonials",
-    "category": "design",
+    "category": "ihowz-blocks",
     "icon": "format-quote",
     "description": "A testimonials section with heading, CTA button, and a grid of customer feedback cards.",
     "keywords": ["feedback", "testimonials", "quotes", "reviews", "customers"],

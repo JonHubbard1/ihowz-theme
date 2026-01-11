@@ -4,7 +4,7 @@
     "name": "ihowz/about-stats",
     "version": "1.0.0",
     "title": "About Stats",
-    "category": "design",
+    "category": "ihowz-blocks",
     "icon": "chart-bar",
     "description": "An about section with stats, text content, CTA button, and overlapping images.",
     "keywords": ["about", "stats", "statistics", "numbers", "mission"],

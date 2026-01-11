@@ -4,7 +4,7 @@
     "name": "ihowz/member-services-grid",
     "version": "1.0.0",
     "title": "Member Services Grid",
-    "category": "design",
+    "category": "ihowz-blocks",
     "icon": "grid-view",
     "description": "A 2x3 grid of member service cards with icons, titles, descriptions, and links.",
     "keywords": ["services", "members", "grid", "cards", "features"],

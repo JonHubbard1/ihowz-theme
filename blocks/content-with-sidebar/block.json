@@ -4,7 +4,7 @@
     "name": "ihowz/content-with-sidebar",
     "version": "1.0.0",
     "title": "Content with Sidebar",
-    "category": "design",
+    "category": "ihowz-blocks",
     "icon": "columns",
     "description": "A two-column layout with main content area and sidebar. Sidebar can use widgets or blocks.",
     "keywords": ["sidebar", "columns", "layout", "content"],

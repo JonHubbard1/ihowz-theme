@@ -4,7 +4,7 @@
     "name": "ihowz/page-navigation",
     "version": "1.0.0",
     "title": "Page Navigation",
-    "category": "widgets",
+    "category": "ihowz-blocks",
     "icon": "list-view",
     "description": "Display a navigation list of pages with configurable depth levels.",
     "keywords": ["pages", "navigation", "menu", "sidebar", "list"],

@@ -4,7 +4,7 @@
     "name": "ihowz/member-services-bento",
     "version": "1.0.0",
     "title": "Member Services Bento",
-    "category": "design",
+    "category": "ihowz-blocks",
     "icon": "layout",
     "description": "A bento-style grid of member service cards with varying sizes and visual emphasis.",
     "keywords": ["services", "members", "bento", "grid", "cards", "features"],
