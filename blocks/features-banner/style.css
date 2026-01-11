@@ -13,9 +13,9 @@
 }
 
 .features-banner-container {
+    width: 90%;
     max-width: 1600px;
     margin: 0 auto;
-    padding: 0 20px;
 }
 
 /* Header Section */
@@ -182,6 +182,7 @@
 /* Alignment Support */
 .wp-block-ihowz-features-banner.alignwide .features-banner-container,
 .ihowz-features-banner.alignwide .features-banner-container {
+    width: 90%;
     max-width: 1600px;
 }
 
@@ -193,6 +194,6 @@
 
 .wp-block-ihowz-features-banner.alignfull .features-banner-container,
 .ihowz-features-banner.alignfull .features-banner-container {
+    width: 90%;
     max-width: 1600px;
-    padding: 0 40px;
 }
