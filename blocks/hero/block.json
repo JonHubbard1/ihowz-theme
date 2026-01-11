@@ -106,11 +106,16 @@
         "minHeight": {
             "type": "number",
             "default": 600
+        },
+        "align": {
+            "type": "string",
+            "default": "full"
         }
     },
     "supports": {
         "html": false,
         "align": ["full", "wide"],
+        "defaultAlign": "full",
         "spacing": {
             "padding": true
         }
