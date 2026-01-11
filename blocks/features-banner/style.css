@@ -13,7 +13,7 @@
 }
 
 .features-banner-container {
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -182,7 +182,7 @@
 /* Alignment Support */
 .wp-block-ihowz-features-banner.alignwide .features-banner-container,
 .ihowz-features-banner.alignwide .features-banner-container {
-    max-width: 1400px;
+    max-width: 1600px;
 }
 
 .wp-block-ihowz-features-banner.alignfull,
@@ -193,6 +193,6 @@
 
 .wp-block-ihowz-features-banner.alignfull .features-banner-container,
 .ihowz-features-banner.alignfull .features-banner-container {
-    max-width: 1400px;
+    max-width: 1600px;
     padding: 0 40px;
 }
