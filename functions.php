@@ -911,6 +911,29 @@ function ihowz_register_blocks() {
         'style' => 'ihowz-about-stats-style',
         'view_script' => 'ihowz-about-stats-frontend',
     ));
+
+    // Feedback/Testimonials block
+    $fb_version = '1.0.' . filemtime(get_template_directory() . '/blocks/feedback/style.css');
+
+    wp_register_script(
+        'ihowz-feedback-editor',
+        get_template_directory_uri() . '/blocks/feedback/index.js',
+        array('wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-server-side-render', 'wp-media-utils'),
+        $fb_version,
+        true
+    );
+
+    wp_register_style(
+        'ihowz-feedback-style',
+        get_template_directory_uri() . '/blocks/feedback/style.css',
+        array(),
+        $fb_version
+    );
+
+    register_block_type(get_template_directory() . '/blocks/feedback', array(
+        'editor_script' => 'ihowz-feedback-editor',
+        'style' => 'ihowz-feedback-style',
+    ));
 }
 add_action('init', 'ihowz_register_blocks');
 

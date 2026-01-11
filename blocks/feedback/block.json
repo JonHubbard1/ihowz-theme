@@ -1,0 +1,47 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "ihowz/feedback",
+    "version": "1.0.0",
+    "title": "Feedback / Testimonials",
+    "category": "design",
+    "icon": "format-quote",
+    "description": "A testimonials section with heading, CTA button, and a grid of customer feedback cards.",
+    "keywords": ["feedback", "testimonials", "quotes", "reviews", "customers"],
+    "textdomain": "ihowz-theme",
+    "attributes": {
+        "eyebrowText": {
+            "type": "string",
+            "default": ""
+        },
+        "heading": {
+            "type": "string",
+            "default": ""
+        },
+        "showButton": {
+            "type": "boolean",
+            "default": false
+        },
+        "buttonText": {
+            "type": "string",
+            "default": ""
+        },
+        "buttonUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "testimonials": {
+            "type": "array",
+            "default": []
+        }
+    },
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"],
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "render": "file:./render.php"
+}
