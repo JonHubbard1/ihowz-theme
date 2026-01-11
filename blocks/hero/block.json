@@ -107,15 +107,13 @@
             "type": "number",
             "default": 600
         },
-        "align": {
-            "type": "string",
-            "default": "full"
+        "fullWidth": {
+            "type": "boolean",
+            "default": true
         }
     },
     "supports": {
         "html": false,
-        "align": ["full", "wide"],
-        "defaultAlign": "full",
         "spacing": {
             "padding": true
         }

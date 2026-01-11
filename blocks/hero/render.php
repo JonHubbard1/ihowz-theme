@@ -18,6 +18,7 @@ $primary_btn_url = isset($attributes['primaryButtonUrl']) ? esc_url($attributes[
 $secondary_btn_text = isset($attributes['secondaryButtonText']) ? $attributes['secondaryButtonText'] : '';
 $secondary_btn_url = isset($attributes['secondaryButtonUrl']) ? esc_url($attributes['secondaryButtonUrl']) : '#';
 $min_height = isset($attributes['minHeight']) ? intval($attributes['minHeight']) : 600;
+$full_width = isset($attributes['fullWidth']) ? $attributes['fullWidth'] : true;
 
 // Left card
 $show_left_card = isset($attributes['showLeftCard']) ? $attributes['showLeftCard'] : false;
@@ -36,8 +37,8 @@ $wrapper_classes = 'wp-block-ihowz-hero ihowz-hero';
 if (!empty($attributes['className'])) {
     $wrapper_classes .= ' ' . esc_attr($attributes['className']);
 }
-if (!empty($attributes['align'])) {
-    $wrapper_classes .= ' align' . esc_attr($attributes['align']);
+if ($full_width) {
+    $wrapper_classes .= ' alignfull';
 }
 
 // Convert hex to rgba for overlay

@@ -43,7 +43,8 @@
                 rightCardImageId,
                 rightCardTitle,
                 rightCardText,
-                minHeight
+                minHeight,
+                fullWidth
             } = attributes;
 
             const blockProps = useBlockProps({
@@ -411,6 +412,21 @@
                                 }
                             })
                         )
+                    ),
+                    // Advanced Panel
+                    createElement(
+                        PanelBody,
+                        { title: 'Advanced', initialOpen: false },
+                        createElement(ToggleControl, {
+                            label: 'Full Width',
+                            help: fullWidth
+                                ? 'Hero spans the full viewport width with no rounded corners.'
+                                : 'Hero is contained within the page width with rounded corners.',
+                            checked: fullWidth,
+                            onChange: function (value) {
+                                setAttributes({ fullWidth: value });
+                            }
+                        })
                     )
                 ),
                 createElement(
