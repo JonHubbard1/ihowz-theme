@@ -13,7 +13,6 @@
     width: 90%;
     max-width: 1600px;
     margin: 60px auto;
-    padding: 0 20px;
 }
 
 /* Content Area */
@@ -72,7 +71,7 @@
 /* Alignment Support */
 .wp-block-ihowz-content-with-sidebar.alignwide,
 .ihowz-content-with-sidebar.alignwide {
-    max-width: 1400px;
+    max-width: 1600px;
 }
 
 .wp-block-ihowz-content-with-sidebar.alignfull,
