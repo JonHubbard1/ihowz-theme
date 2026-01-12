@@ -15,6 +15,11 @@
                 className: 'ihowz-page-navigation-editor'
             });
 
+            // Get current post ID for editor context
+            const currentPostId = useSelect(function (select) {
+                return select('core/editor').getCurrentPostId();
+            }, []);
+
             // Fetch pages for the parent page dropdown
             const pages = useSelect(function (select) {
                 return select('core').getEntityRecords('postType', 'page', {
@@ -111,6 +116,7 @@
                     createElement(ServerSideRender, {
                         block: 'ihowz/page-navigation',
                         attributes: attributes,
+                        urlQueryArgs: { editor_post_id: currentPostId },
                         EmptyResponsePlaceholder: function () {
                             return createElement(
                                 Placeholder,

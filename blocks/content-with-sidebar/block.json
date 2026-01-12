@@ -36,6 +36,10 @@
             "type": "string",
             "default": "top",
             "enum": ["top", "center", "stretch"]
+        },
+        "align": {
+            "type": "string",
+            "default": "wide"
         }
     },
     "supports": {

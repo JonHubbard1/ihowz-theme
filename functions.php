@@ -855,6 +855,7 @@ function ihowz_register_blocks() {
     register_block_type(get_template_directory() . '/blocks/page-navigation', array(
         'editor_script' => 'ihowz-page-navigation-editor',
         'style' => 'ihowz-page-navigation-style',
+        'editor_style' => 'ihowz-page-navigation-style',
     ));
 
     // Hero block
@@ -878,6 +879,7 @@ function ihowz_register_blocks() {
     register_block_type(get_template_directory() . '/blocks/hero', array(
         'editor_script' => 'ihowz-hero-editor',
         'style' => 'ihowz-hero-style',
+        'editor_style' => 'ihowz-hero-style',
     ));
 
     // Solutions Grid block
@@ -901,6 +903,7 @@ function ihowz_register_blocks() {
     register_block_type(get_template_directory() . '/blocks/solutions-grid', array(
         'editor_script' => 'ihowz-solutions-grid-editor',
         'style' => 'ihowz-solutions-grid-style',
+        'editor_style' => 'ihowz-solutions-grid-style',
     ));
 
     // About Stats block
@@ -932,6 +935,7 @@ function ihowz_register_blocks() {
     register_block_type(get_template_directory() . '/blocks/about-stats', array(
         'editor_script' => 'ihowz-about-stats-editor',
         'style' => 'ihowz-about-stats-style',
+        'editor_style' => 'ihowz-about-stats-style',
         'view_script' => 'ihowz-about-stats-frontend',
     ));
 
@@ -956,6 +960,7 @@ function ihowz_register_blocks() {
     register_block_type(get_template_directory() . '/blocks/feedback', array(
         'editor_script' => 'ihowz-feedback-editor',
         'style' => 'ihowz-feedback-style',
+        'editor_style' => 'ihowz-feedback-style',
     ));
 
     // Member Services Grid block

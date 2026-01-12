@@ -113,3 +113,16 @@
     padding-left: 25px;
     font-size: 0.8125rem;
 }
+
+/* Single level (depth-1) - reduce spacing between items */
+.ihowz-page-navigation.depth-1 .page-navigation-list > li {
+    margin: 8px 0;
+}
+
+.ihowz-page-navigation.depth-1 .page-navigation-list > li:first-child {
+    margin-top: 0;
+}
+
+.ihowz-page-navigation.depth-1 .page-navigation-list > li:last-child {
+    margin-bottom: 0;
+}

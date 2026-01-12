@@ -4,34 +4,66 @@
  * @package iHowz Theme
  */
 
-/* Editor container */
+/* Editor container - grid is applied via inline styles */
+/* Override frontend constraints and editor content width for better preview */
 .wp-block-ihowz-content-with-sidebar,
 .editor-styles-wrapper .ihowz-content-with-sidebar {
-    display: grid;
     width: 100%;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Expand block to wide width in editor for better preview */
+.editor-styles-wrapper .wp-block-ihowz-content-with-sidebar:not(.alignfull):not(.alignwide) {
+    max-width: var(--wp--style--global--wide-size, 1200px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Full width in editor */
+.editor-styles-wrapper .wp-block-ihowz-content-with-sidebar.alignfull {
+    max-width: 100%;
+}
+
+/* Wide width in editor */
+.editor-styles-wrapper .wp-block-ihowz-content-with-sidebar.alignwide {
+    max-width: var(--wp--style--global--wide-size, 1200px);
+}
+
+/* Make InnerBlocks wrappers transparent to grid layout using display: contents */
+.wp-block-ihowz-content-with-sidebar > .block-editor-inner-blocks,
+.ihowz-content-with-sidebar > .block-editor-inner-blocks,
+.wp-block-ihowz-content-with-sidebar > .block-editor-inner-blocks > .block-editor-block-list__layout,
+.ihowz-content-with-sidebar > .block-editor-inner-blocks > .block-editor-block-list__layout {
+    display: contents;
 }
 
 /* Content and Sidebar areas in editor */
-.editor-styles-wrapper .ihowz-content-with-sidebar .content-area,
-.editor-styles-wrapper .ihowz-content-with-sidebar > .wp-block-group.content-area {
+.ihowz-content-with-sidebar .wp-block-group.content-area,
+.ihowz-content-with-sidebar .content-area {
     background: rgba(255, 255, 255, 0.5);
     border: 1px dashed #ccc;
     border-radius: 8px;
     padding: 20px;
     min-height: 200px;
+    min-width: 0;
+    width: 100%;
 }
 
-.editor-styles-wrapper .ihowz-content-with-sidebar .sidebar-area,
-.editor-styles-wrapper .ihowz-content-with-sidebar > .wp-block-group.sidebar-area {
+.ihowz-content-with-sidebar .wp-block-group.sidebar-area,
+.ihowz-content-with-sidebar .sidebar-area {
     background: rgba(156, 193, 48, 0.1);
     border: 1px dashed var(--primary-green, #9cc130);
     border-radius: 8px;
     padding: 20px;
     min-height: 200px;
+    min-width: 0;
+    width: 100%;
 }
 
 /* Labels for areas */
-.editor-styles-wrapper .ihowz-content-with-sidebar > .wp-block-group.content-area::before {
+.ihowz-content-with-sidebar .wp-block-group.content-area::before {
     content: 'Content Area';
     display: block;
     font-size: 11px;
@@ -44,7 +76,7 @@
     border-bottom: 1px solid #ddd;
 }
 
-.editor-styles-wrapper .ihowz-content-with-sidebar > .wp-block-group.sidebar-area::before {
+.ihowz-content-with-sidebar .wp-block-group.sidebar-area::before {
     content: 'Sidebar Area';
     display: block;
     font-size: 11px;

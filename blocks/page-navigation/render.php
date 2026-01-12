@@ -15,20 +15,34 @@ $show_title = isset($attributes['showTitle']) ? $attributes['showTitle'] : false
 
 // Determine the parent page for the list
 $child_of = 0;
+$is_editor = defined('REST_REQUEST') && REST_REQUEST;
+$editor_post_id = isset($_GET['editor_post_id']) ? intval($_GET['editor_post_id']) : 0;
 
 if ($show_only_children) {
     // Show children of current page
+    $current_page_id = 0;
+
     if (is_page()) {
         global $post;
+        $current_page_id = $post->ID;
+        $current_parent = $post->post_parent;
+    } elseif ($is_editor && $editor_post_id > 0) {
+        // In editor context, use the post ID passed from the editor
+        $current_page_id = $editor_post_id;
+        $editor_post = get_post($editor_post_id);
+        $current_parent = $editor_post ? $editor_post->post_parent : 0;
+    }
+
+    if ($current_page_id > 0) {
         // If current page has children, show them
         // Otherwise show siblings (children of parent)
-        $children = get_pages(array('child_of' => $post->ID, 'post_status' => 'publish'));
+        $children = get_pages(array('child_of' => $current_page_id, 'post_status' => 'publish'));
         if (!empty($children)) {
-            $child_of = $post->ID;
-        } elseif ($post->post_parent) {
-            $child_of = $post->post_parent;
+            $child_of = $current_page_id;
+        } elseif ($current_parent) {
+            $child_of = $current_parent;
         } else {
-            $child_of = $post->ID;
+            $child_of = $current_page_id;
         }
     }
 } elseif ($parent_page > 0) {
@@ -60,7 +74,7 @@ if (empty($pages)) {
 }
 
 // Build wrapper classes
-$wrapper_classes = 'wp-block-ihowz-page-navigation ihowz-page-navigation';
+$wrapper_classes = 'wp-block-ihowz-page-navigation ihowz-page-navigation depth-' . $depth;
 if (!empty($attributes['className'])) {
     $wrapper_classes .= ' ' . esc_attr($attributes['className']);
 }
