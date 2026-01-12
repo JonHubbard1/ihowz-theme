@@ -113,6 +113,35 @@ article .page-content > p:first-of-type,
     font-weight: 600;
 }
 
+/* Links */
+a {
+    color: var(--primary-green);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(156, 193, 48, 0.5);
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+a:hover {
+    color: var(--secondary-forest-green);
+    border-bottom-color: var(--secondary-forest-green);
+}
+
+/* Remove underline from buttons, cards, nav links, and other non-text links */
+a.ihowz-btn-cta,
+a.ihowz-btn-primary,
+a.ihowz-btn-secondary,
+a.ihowz-card,
+a.wp-block-button__link,
+.main-navigation a,
+.footer-navigation a,
+.site-branding a,
+.event-card-link,
+a[class*="-btn"],
+a[class*="-card"],
+a[class*="-link"] {
+    border-bottom: none;
+}
+
 .container {
     width: 90%;
     max-width: 1600px;
