@@ -232,11 +232,25 @@
     font-size: 1.5rem;
 }
 
-/* Current Menu Item Styling */
-.current-menu-item > a,
-.current-menu-parent > a {
+/* Current Menu Item Styling - Top level only */
+.main-navigation > ul > li.current-menu-item > a,
+.main-navigation > ul > li.current-menu-parent > a,
+.main-navigation > ul > li.current-menu-ancestor > a {
     color: #fff;
     background-color: var(--primary-green);
+}
+
+/* Reset current item styling in dropdowns */
+.sub-menu .current-menu-item > a,
+.megamenu-dropdown .current-menu-item > a {
+    color: #000;
+    background-color: transparent;
+}
+
+.sub-menu .current-menu-item > a:hover,
+.megamenu-dropdown .current-menu-item > a:hover {
+    color: #fff;
+    background-color: rgba(159, 192, 69, 0.75);
 }
 
 /* MegaMenu Mobile Adjustments */

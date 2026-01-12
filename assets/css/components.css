@@ -776,9 +776,10 @@ select:focus {
     font-size: 1.5rem;
 }
 
-/* Current Menu Item Styling */
-.current-menu-item > a,
-.current-menu-parent > a {
+/* Current Menu Item Styling - Top level only */
+.main-navigation > ul > li.current-menu-item > a,
+.main-navigation > ul > li.current-menu-parent > a,
+.main-navigation > ul > li.current-menu-ancestor > a {
     color: #fff;
     background-color: var(--primary-green);
 }

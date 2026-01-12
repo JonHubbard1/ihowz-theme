@@ -284,7 +284,9 @@ body.header-sticky-active {
     color: #fff;
 }
 
-.main-navigation .current-menu-item a {
+.main-navigation > ul > li.current-menu-item > a,
+.main-navigation > ul > li.current-menu-parent > a,
+.main-navigation > ul > li.current-menu-ancestor > a {
     background-color: var(--primary-green);
     color: #fff;
 }
