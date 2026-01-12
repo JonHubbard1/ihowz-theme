@@ -5,6 +5,51 @@
         "layout": {
             "contentSize": "800px",
             "wideSize": "1200px"
+        },
+        "typography": {
+            "fontFamilies": [
+                {
+                    "fontFamily": "\"Mona Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+                    "slug": "primary",
+                    "name": "Primary (Mona Sans)"
+                }
+            ],
+            "customFontSize": true,
+            "dropCap": false
+        },
+        "spacing": {
+            "units": ["px", "em", "rem", "%", "vw", "vh"]
+        },
+        "color": {
+            "custom": true,
+            "customGradient": true,
+            "palette": [
+                {
+                    "slug": "primary-green",
+                    "color": "#9cc130",
+                    "name": "Primary Green"
+                },
+                {
+                    "slug": "primary-charcoal",
+                    "color": "#263238",
+                    "name": "Primary Charcoal"
+                },
+                {
+                    "slug": "accent-gold",
+                    "color": "#FF8F00",
+                    "name": "Accent Gold"
+                },
+                {
+                    "slug": "background-light-green",
+                    "color": "#F7FCF0",
+                    "name": "Light Green Background"
+                }
+            ]
+        }
+    },
+    "styles": {
+        "typography": {
+            "fontFamily": "\"Mona Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
         }
     }
 }
