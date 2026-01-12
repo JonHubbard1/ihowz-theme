@@ -779,8 +779,8 @@ select:focus {
 /* Current Menu Item Styling */
 .current-menu-item > a,
 .current-menu-parent > a {
-    color: var(--primary-green);
-    background-color: var(--background-light-green);
+    color: #fff;
+    background-color: var(--primary-green);
 }
 
 /* MegaMenu Mobile Adjustments */
