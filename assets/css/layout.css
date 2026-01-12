@@ -734,7 +734,7 @@ body.header-sticky-active {
 }
 
 /* Default block content gets container width */
-.fullwidth-content > *:not(.alignfull):not(.alignwide) {
+.fullwidth-content > *:not(.alignfull):not(.alignwide):not(.ihowz-width-full):not(.wp-block-ihowz-content-with-sidebar):not(.wp-block-ihowz-features-banner) {
     width: 90%;
     max-width: 1600px;
     margin-left: auto;
@@ -743,11 +743,20 @@ body.header-sticky-active {
     padding-right: 20px;
 }
 
-/* Gutenberg blocks that handle their own width */
+/* Gutenberg blocks that handle their own width - no extra constraints */
 .fullwidth-content > .wp-block-ihowz-features-banner,
 .fullwidth-content > .wp-block-ihowz-content-with-sidebar {
+    /* These blocks use their own width settings from their style.css */
+}
+
+/* Full-width background blocks - break out of container */
+.fullwidth-content > .ihowz-width-full {
     padding-left: 0;
     padding-right: 0;
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
 }
 
 /* Advertising Bar Styles */

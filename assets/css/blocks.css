@@ -257,10 +257,12 @@ a.ihowz-card {
    Block Width Variants
    ========================================================================== */
 
-/* Full width - spans entire viewport */
+/* Full width - spans entire viewport, breaks out of container */
 .ihowz-width-full {
-    width: 100%;
-    max-width: none;
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
 }
 
 /* Standard width with rounded corners */
