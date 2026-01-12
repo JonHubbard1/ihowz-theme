@@ -28,7 +28,8 @@
     gap: 0.5rem;
     padding: 0.75rem 1.25rem;
     text-decoration: none;
-    color: var(--primary-charcoal);
+    color: #000;
+    background-color: transparent;
     font-weight: 500;
     font-size: 1rem;
     transition: all 0.3s ease;
@@ -36,8 +37,8 @@
 }
 
 .main-navigation a:hover {
-    color: var(--primary-green);
-    background-color: var(--background-light-green);
+    color: #fff;
+    background-color: rgba(159, 192, 69, 0.75);
 }
 
 /* Menu Icons */
@@ -107,11 +108,13 @@
     white-space: nowrap;
     font-size: 1rem;
     line-height: 1.5;
+    color: #000;
+    background-color: transparent;
 }
 
 .sub-menu a:hover {
-    background-color: var(--background-light-green);
-    color: var(--primary-green);
+    background-color: rgba(159, 192, 69, 0.75);
+    color: #fff;
 }
 
 /* MegaMenu Dropdown Styles */
@@ -182,8 +185,8 @@
 }
 
 .megamenu-dropdown > li > a:hover {
-    background-color: var(--background-light-green);
-    color: var(--primary-green);
+    background-color: rgba(159, 192, 69, 0.75);
+    color: #fff;
 }
 
 /* Nested items in megamenu */
@@ -204,12 +207,12 @@
     padding: 0.75rem 1.75rem;
     font-size: 0.95rem;
     font-weight: 400;
-    color: var(--primary-charcoal);
+    color: #000;
 }
 
 .megamenu-dropdown .sub-menu a:hover {
-    background-color: var(--background-light-green);
-    color: var(--primary-green);
+    background-color: rgba(159, 192, 69, 0.75);
+    color: #fff;
 }
 
 /* Featured Items */
@@ -232,8 +235,8 @@
 /* Current Menu Item Styling */
 .current-menu-item > a,
 .current-menu-parent > a {
-    color: var(--primary-green);
-    background-color: var(--background-light-green);
+    color: #fff;
+    background-color: var(--primary-green);
 }
 
 /* MegaMenu Mobile Adjustments */
