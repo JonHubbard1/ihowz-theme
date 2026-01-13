@@ -274,7 +274,55 @@ A modern, trustworthy digital platform that empowers landlords with clear guidan
 
 **Layout Grid**
 
-- **Desktop Container**: Max width 1600px, width 90%, centered
+**IMPORTANT: Standard Content Width Rule**
+
+All content on the site follows a consistent width constraint:
+- **Width**: 90% of viewport width
+- **Max Width**: 1600px
+- **Centering**: `margin-left: auto; margin-right: auto;`
+
+This rule applies to:
+- Header content (logo, navigation)
+- All block content (text, grids, cards)
+- Footer content
+- Any element that should align with the main content area
+
+**Full-Width Backgrounds with Contained Content**
+
+When a section needs a full-width background (e.g., coloured backgrounds, images) but the content should stay within the standard width:
+1. The outer container spans 100% viewport width (for the background)
+2. An inner container constrains the content to 90%/1600px
+
+```css
+/* Outer wrapper - full width background */
+.section-fullwidth {
+    width: 100%;
+    background-color: #example;
+}
+
+/* Inner wrapper - standard content width */
+.section-fullwidth .section-inner {
+    width: 90%;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+```
+
+**Breaking Out of Container (Edge-to-Edge)**
+
+For elements that need to span the full viewport while inside a constrained container, use the negative margin technique:
+
+```css
+.full-viewport-width {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+}
+```
+
+**Additional Layout Specifications**
+
 - **Tablet**: 16px side margins
 - **Mobile**: 16px side margins, width 90%
 - **Grid Columns**: 12-column system with 24px gutters
@@ -363,11 +411,18 @@ The theme includes custom Gutenberg blocks with server-side rendering. All block
 
 **Block Container Standards**
 
+All blocks follow the **Standard Content Width Rule** (see Layout Grid section):
 - **Width**: 90% of viewport
 - **Max Width**: 1600px
-- **Margin**: 60px auto (vertical centering)
-- **Padding**: 0 20px (horizontal)
+- **Horizontal Centering**: `margin-left: auto; margin-right: auto;`
+- **Vertical Spacing**: 60px top and bottom margin
+- **Padding**: 0 20px (horizontal, for text content)
 - **Border Radius**: 16px (for blocks with backgrounds)
+
+For blocks with full-width backgrounds:
+- Outer container: 100% width (for background colour/image)
+- Inner container: 90%/1600px (for content alignment)
+- Use CSS classes: `.ihowz-width-full` for outer, `.ihowz-block-inner` for inner
 
 **Available Blocks**
 
