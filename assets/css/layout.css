@@ -662,21 +662,48 @@ body.header-sticky-active {
 .page-header-fullwidth {
     background-color: rgba(159, 192, 69, 0.25); /* 25% primary green */
     width: 100%;
-    padding: 60px 0 80px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Roof line drawing on right side */
+.page-header-fullwidth::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    height: 100%;
+    background-image: url('../images/roof2.svg');
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-size: auto 80%;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 0;
 }
 
 .page-header-fullwidth .page-header-inner {
     width: 90%;
     max-width: 1600px;
     margin: 0 auto;
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
 }
 
 .page-header-fullwidth .page-header {
     text-align: left;
-    margin-bottom: 16px;
+    margin-bottom: 100px;
 }
 
 .page-header-fullwidth .page-title {
+    margin-bottom: 0;
+}
+
+.page-header-fullwidth .breadcrumb {
     margin-bottom: 0;
 }
 
