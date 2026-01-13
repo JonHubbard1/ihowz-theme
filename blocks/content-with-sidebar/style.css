@@ -2,17 +2,27 @@
  * Content with Sidebar Block - Frontend Styles
  *
  * @package iHowz Theme
+ *
+ * STANDARD CONTENT WIDTH RULE:
+ * - Width: 90% of viewport
+ * - Max Width: 1600px
+ * - Centering: margin-left/right auto
+ * This ensures content aligns with header, footer, and other blocks.
  */
 
-/* Block Container */
+/* Block Container - follows Standard Content Width Rule */
 .wp-block-ihowz-content-with-sidebar,
 .ihowz-content-with-sidebar {
     display: grid;
     grid-template-columns: 70fr 30fr;
     gap: 40px;
+    /* Standard Content Width Rule */
     width: 90%;
     max-width: 1600px;
-    margin: 60px auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 60px;
+    margin-bottom: 60px;
 }
 
 /* Content Area */

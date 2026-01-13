@@ -838,10 +838,16 @@ body.header-sticky-active {
     padding-right: 20px;
 }
 
-/* Gutenberg blocks that handle their own width - no extra constraints */
+/* Gutenberg blocks that follow Standard Content Width Rule */
 .fullwidth-content > .wp-block-ihowz-features-banner,
 .fullwidth-content > .wp-block-ihowz-content-with-sidebar {
-    /* These blocks use their own width settings from their style.css */
+    /* Standard Content Width Rule - 90% width, max 1600px, centered */
+    width: 90%;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 /* Full-width background blocks - break out of container */
