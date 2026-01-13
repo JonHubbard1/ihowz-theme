@@ -158,6 +158,28 @@ function ihowz_theme_widgets_init() {
         'after_title'   => '</h3>',
     ));
 
+    // Page Content Above Widget Area
+    register_sidebar(array(
+        'name'          => esc_html__('Page - Above Content', 'ihowz-theme'),
+        'id'            => 'page-content-above',
+        'description'   => esc_html__('Full-width widget area above the main content on pages.', 'ihowz-theme'),
+        'before_widget' => '<div class="widget widget-above-content %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h3 class="widget-title">',
+        'after_title'   => '</h3>',
+    ));
+
+    // Page Content Below Widget Area
+    register_sidebar(array(
+        'name'          => esc_html__('Page - Below Content', 'ihowz-theme'),
+        'id'            => 'page-content-below',
+        'description'   => esc_html__('Full-width widget area below the main content on pages.', 'ihowz-theme'),
+        'before_widget' => '<div class="widget widget-below-content %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h3 class="widget-title">',
+        'after_title'   => '</h3>',
+    ));
+
     // Template-Specific Advertisement Widget Areas
 
     // Home Page - Sponsor Showcase (4x 250x250)

@@ -830,6 +830,35 @@ body.header-sticky-active {
     border-bottom: 2px solid var(--primary-green, #9FC045);
 }
 
+/* Widget Areas Above/Below Content */
+.page-widgets-above,
+.page-widgets-below {
+    width: 90%;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.page-widgets-above {
+    margin-top: 40px;
+    margin-bottom: 0;
+}
+
+.page-widgets-below {
+    margin-top: 0;
+    margin-bottom: 40px;
+}
+
+.page-widgets-above .widget,
+.page-widgets-below .widget {
+    margin-bottom: 30px;
+}
+
+.page-widgets-above .widget:last-child,
+.page-widgets-below .widget:last-child {
+    margin-bottom: 0;
+}
+
 /* Full Width with Widgets - Responsive */
 @media (max-width: 992px) {
     .page-with-widgets-container {

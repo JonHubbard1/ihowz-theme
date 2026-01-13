@@ -31,6 +31,13 @@ get_header(); ?>
 
         <article id="post-<?php the_ID(); ?>" <?php post_class('fullwidth-article'); ?>>
 
+            <!-- Widget Area Above Content -->
+            <?php if (is_active_sidebar('page-content-above')) : ?>
+                <div class="page-widgets-above">
+                    <?php dynamic_sidebar('page-content-above'); ?>
+                </div>
+            <?php endif; ?>
+
             <!-- Content with Sidebar - follows Standard Content Width Rule -->
             <div class="page-with-widgets-container">
                 <div class="page-main-content">
@@ -64,6 +71,13 @@ get_header(); ?>
                     <?php endif; ?>
                 </aside>
             </div>
+
+            <!-- Widget Area Below Content -->
+            <?php if (is_active_sidebar('page-content-below')) : ?>
+                <div class="page-widgets-below">
+                    <?php dynamic_sidebar('page-content-below'); ?>
+                </div>
+            <?php endif; ?>
 
         </article>
 
