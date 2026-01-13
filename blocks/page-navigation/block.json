@@ -36,6 +36,7 @@
         }
     },
     "supports": {
+        "inserter": true,
         "html": false,
         "className": true
     },

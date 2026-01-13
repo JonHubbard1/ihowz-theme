@@ -32,6 +32,7 @@
         }
     },
     "supports": {
+        "inserter": true,
         "html": false,
         "align": ["wide", "full"],
         "spacing": {

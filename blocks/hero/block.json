@@ -113,6 +113,7 @@
         }
     },
     "supports": {
+        "inserter": true,
         "html": false,
         "spacing": {
             "padding": true
