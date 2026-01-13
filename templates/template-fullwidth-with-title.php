@@ -13,21 +13,21 @@ get_header(); ?>
 
     <?php while (have_posts()) : the_post(); ?>
 
-        <!-- Page Header -->
-        <div class="container">
-            <header class="page-header">
-                <h1 class="page-title"><?php the_title(); ?></h1>
-            </header>
-        </div>
+        <!-- Page Header with Full-Width Background -->
+        <div class="page-header-fullwidth">
+            <div class="page-header-inner">
+                <header class="page-header">
+                    <h1 class="page-title"><?php the_title(); ?></h1>
+                </header>
 
-        <!-- Breadcrumb -->
-        <?php
-        if (!is_front_page() && !is_home()) {
-            echo '<div class="container">';
-            ihowz_theme_breadcrumb();
-            echo '</div>';
-        }
-        ?>
+                <!-- Breadcrumb -->
+                <?php
+                if (!is_front_page() && !is_home()) {
+                    ihowz_theme_breadcrumb();
+                }
+                ?>
+            </div>
+        </div>
 
         <article id="post-<?php the_ID(); ?>" <?php post_class('fullwidth-article'); ?>>
 

@@ -660,6 +660,28 @@ body.header-sticky-active {
     opacity: 0.9;
 }
 
+/* Full Width with Title Template - Header Section */
+.page-header-fullwidth {
+    background-color: rgba(159, 192, 69, 0.25); /* 25% primary green */
+    width: 100%;
+    padding: 60px 0 40px 0;
+}
+
+.page-header-fullwidth .page-header-inner {
+    width: 90%;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.page-header-fullwidth .page-header {
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+.page-header-fullwidth .page-title {
+    margin-bottom: 0;
+}
+
 /* Page Sidebar Layout */
 .page-container-with-sidebar {
     display: flex;
