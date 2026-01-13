@@ -23,8 +23,23 @@
                         <a href="#" class="header-top-row-social-icon">in</a>
                     </div>
                     <div class="header-top-row-buttons">
-                        <a href="/login" class="button header-login">Login</a>
-                        <a href="/join" class="button header-join-today">Join Today</a>
+                        <?php if ( is_user_logged_in() ) : ?>
+                            <?php $current_user = wp_get_current_user(); ?>
+                            <div class="header-member-menu">
+                                <button class="header-member-toggle">
+                                    Welcome back <?php echo esc_html( $current_user->first_name . ' ' . $current_user->last_name ); ?>
+                                    <span class="header-member-arrow">▼</span>
+                                </button>
+                                <div class="header-member-dropdown">
+                                    <a href="/member-portal">Dashboard</a>
+                                    <a href="/member-portal/?view=profile">Profile</a>
+                                    <a href="<?php echo esc_url( wp_logout_url( home_url() ) ); ?>">Logout</a>
+                                </div>
+                            </div>
+                        <?php else : ?>
+                            <a href="/login" class="button header-login">Login</a>
+                            <a href="/join" class="button header-join-today">Join Today</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
