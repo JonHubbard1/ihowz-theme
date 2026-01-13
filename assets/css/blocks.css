@@ -505,6 +505,13 @@ a.ihowz-card {
     margin-top: 60px;
 }
 
+/* Sidebar widget titles */
+.page-widgets-sidebar .widget-title,
+.page-widgets-sidebar .widget h3 {
+    font-family: var(--primary-font, "Mona Sans", sans-serif);
+    font-weight: 700;
+}
+
 @container widget (max-width: 399px) {
     /* Thin widget heading - compact with underline */
     .ihowz-heading {
@@ -564,6 +571,11 @@ a.ihowz-card {
     .ihowz-upcoming-events-block .event-title {
         font-size: 15px;
         margin-bottom: 8px;
+    }
+
+    .ihowz-upcoming-events-block.layout-compact .event-title {
+        font-size: 0.9rem;
+        margin-bottom: 0;
     }
 
     /* Compact price badge */
