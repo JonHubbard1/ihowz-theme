@@ -686,7 +686,7 @@ body.header-sticky-active {
     background-image: url('../images/roof2.svg');
     background-repeat: no-repeat;
     background-position: right bottom;
-    background-size: auto 80%;
+    background-size: auto 95%;
     opacity: 0.15;
     pointer-events: none;
     z-index: 0;
