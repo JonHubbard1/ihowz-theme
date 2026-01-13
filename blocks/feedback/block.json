@@ -2,11 +2,11 @@
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 2,
     "name": "ihowz/feedback",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "title": "Feedback / Testimonials",
     "category": "ihowz-blocks",
     "icon": "format-quote",
-    "description": "A testimonials section with heading, CTA button, and a grid of customer feedback cards.",
+    "description": "A testimonials section with heading, CTA button, and randomly selected customer feedback cards from the database.",
     "keywords": ["feedback", "testimonials", "quotes", "reviews", "customers"],
     "textdomain": "ihowz-theme",
     "attributes": {
@@ -30,6 +30,11 @@
             "type": "string",
             "default": ""
         },
+        "displayRows": {
+            "type": "string",
+            "default": "2",
+            "enum": ["1", "2"]
+        },
         "testimonials": {
             "type": "array",
             "default": []
@@ -44,5 +49,7 @@
             "padding": true
         }
     },
+    "editorStyle": "ihowz-feedback-style",
+    "style": "ihowz-feedback-style",
     "render": "file:./render.php"
 }

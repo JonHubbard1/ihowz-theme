@@ -126,7 +126,7 @@
 .member-services-bento-card-icon {
     width: clamp(40px, 4vw, 56px);
     height: clamp(40px, 4vw, 56px);
-    color: var(--accent-gold, #FF8F00);
+    color: var(--primary-green, #9cc130);
     margin-bottom: clamp(14px, 1.8vw, 22px);
 }
 
@@ -188,7 +188,7 @@
     font-family: var(--primary-font, "Mona Sans", sans-serif);
     font-size: clamp(0.875rem, 1vw, 0.9375rem);
     font-weight: 600;
-    color: var(--accent-gold, #FF8F00);
+    color: var(--primary-green, #9cc130);
     text-decoration: none;
     transition: gap 0.2s ease;
     align-self: flex-start;

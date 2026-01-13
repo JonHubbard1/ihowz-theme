@@ -7,7 +7,7 @@
 /* Container */
 .wp-block-ihowz-feedback,
 .ihowz-feedback {
-    width: 90%;
+    width: 100%;
     max-width: 1600px;
     margin: 60px auto;
     padding: 50px 40px !important;
@@ -108,7 +108,7 @@
 .feedback-quote-icon {
     width: clamp(28px, 3vw, 40px);
     height: clamp(28px, 3vw, 40px);
-    color: var(--accent-gold, #FF8F00);
+    color: var(--primary-green, #9cc130);
     margin-bottom: clamp(12px, 1.5vw, 20px);
     flex-shrink: 0;
 }
@@ -165,7 +165,7 @@
     font-family: var(--primary-font, "Mona Sans", sans-serif);
     font-size: clamp(0.75rem, 0.9vw, 0.875rem);
     font-weight: 500;
-    color: var(--accent-gold, #FF8F00);
+    color: var(--primary-green, #9cc130);
 }
 
 /* Responsive */

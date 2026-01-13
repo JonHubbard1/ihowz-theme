@@ -82,7 +82,7 @@ $overlay_rgba = "rgba({$r}, {$g}, {$b}, " . ($overlay_opacity / 100) . ")";
                 <?php if ($primary_btn_text) : ?>
                     <a href="<?php echo $primary_btn_url; ?>" class="hero-btn hero-btn-primary">
                         <?php echo esc_html($primary_btn_text); ?>
-                        <svg class="hero-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <svg class="hero-btn-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
                         </svg>
                     </a>
@@ -91,7 +91,7 @@ $overlay_rgba = "rgba({$r}, {$g}, {$b}, " . ($overlay_opacity / 100) . ")";
                 <?php if ($secondary_btn_text) : ?>
                     <a href="<?php echo $secondary_btn_url; ?>" class="hero-btn hero-btn-secondary">
                         <?php echo esc_html($secondary_btn_text); ?>
-                        <svg class="hero-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <svg class="hero-btn-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
                         </svg>
                     </a>

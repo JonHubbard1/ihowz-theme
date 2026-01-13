@@ -1,0 +1,64 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "ihowz/news-headlines",
+    "version": "1.0.0",
+    "title": "News Headlines",
+    "category": "ihowz-blocks",
+    "icon": "megaphone",
+    "description": "Display news headlines from a selected category in a configurable grid layout.",
+    "keywords": ["news", "headlines", "posts", "grid", "category", "articles"],
+    "textdomain": "ihowz-theme",
+    "attributes": {
+        "category": {
+            "type": "string",
+            "default": ""
+        },
+        "postCount": {
+            "type": "number",
+            "default": 6
+        },
+        "columns": {
+            "type": "number",
+            "default": 3
+        },
+        "rows": {
+            "type": "number",
+            "default": 2
+        },
+        "showFeaturedImage": {
+            "type": "boolean",
+            "default": true
+        },
+        "showAuthor": {
+            "type": "boolean",
+            "default": true
+        },
+        "showDate": {
+            "type": "boolean",
+            "default": true
+        },
+        "showExcerpt": {
+            "type": "boolean",
+            "default": true
+        },
+        "containerWidth": {
+            "type": "string",
+            "default": "content"
+        },
+        "backgroundOpacity": {
+            "type": "number",
+            "default": 0
+        }
+    },
+    "supports": {
+        "inserter": true,
+        "html": false,
+        "align": ["wide", "full"],
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "render": "file:./render.php"
+}

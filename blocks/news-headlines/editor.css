@@ -1,0 +1,23 @@
+/**
+ * News Headlines Block - Editor Styles
+ *
+ * @package iHowz Theme
+ */
+
+/* Editor wrapper */
+.ihowz-news-headlines-editor {
+    margin: 20px 0;
+}
+
+/* Ensure block preview renders properly in editor */
+.ihowz-news-headlines-editor .wp-block-ihowz-news-headlines {
+    margin: 0;
+}
+
+/* Fix full-width in editor context */
+.ihowz-news-headlines-editor .wp-block-ihowz-news-headlines.ihowz-width-full {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}

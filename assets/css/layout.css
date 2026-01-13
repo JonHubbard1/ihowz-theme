@@ -961,9 +961,10 @@ body.header-sticky-active {
 }
 
 .advertising-container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 20px;
+    width: 90%;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
 }
 
