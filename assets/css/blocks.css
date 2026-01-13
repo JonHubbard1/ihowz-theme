@@ -509,7 +509,10 @@ a.ihowz-card {
 .page-widgets-sidebar .widget-title,
 .page-widgets-sidebar .widget h3 {
     font-family: var(--primary-font, "Mona Sans", sans-serif);
+    font-size: 1rem;
     font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 15px;
 }
 
 @container widget (max-width: 399px) {
