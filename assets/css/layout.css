@@ -641,8 +641,6 @@ body.header-sticky-active {
 .page-header {
     text-align: left;
     margin-bottom: 0;
-    padding: 0;
-    background: none;
     color: #333;
 }
 
