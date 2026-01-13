@@ -709,6 +709,52 @@ body.header-sticky-active {
     z-index: 1;
 }
 
+/* Full Width with Title - Responsive */
+@media (max-width: 992px) {
+    .page-header-fullwidth .page-header-inner {
+        padding: 25px 0;
+    }
+
+    .page-header-fullwidth .page-header {
+        margin-bottom: 60px;
+    }
+
+    .page-header-fullwidth .page-header-inner::before {
+        background-size: auto 70%;
+        opacity: 0.12;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header-fullwidth .page-header-inner {
+        padding: 20px 0;
+    }
+
+    .page-header-fullwidth .page-header {
+        margin-bottom: 40px;
+    }
+
+    .page-header-fullwidth .page-header-inner::before {
+        width: 60%;
+        background-size: auto 60%;
+        opacity: 0.1;
+    }
+}
+
+@media (max-width: 540px) {
+    .page-header-fullwidth .page-header-inner {
+        padding: 16px 0;
+    }
+
+    .page-header-fullwidth .page-header {
+        margin-bottom: 30px;
+    }
+
+    .page-header-fullwidth .page-header-inner::before {
+        display: none; /* Hide roof on small mobile */
+    }
+}
+
 /* Page Sidebar Layout */
 .page-container-with-sidebar {
     display: flex;
