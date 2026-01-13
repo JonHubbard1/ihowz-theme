@@ -473,12 +473,22 @@ a.ihowz-card {
    ========================================================================== */
 
 /**
- * Base styles for blocks rendered in widget areas
+ * Styles for blocks rendered in widget areas
  * The .in-widget class is automatically added to blocks when they
  * are rendered inside a WordPress widget area (sidebar, footer, etc.)
+ *
+ * Uses CSS Container Queries to automatically detect width:
+ * - Thin widgets (<400px): Compact styling for narrow sidebars
+ * - Wide widgets (>=400px): Fuller styling for footer/wide areas
  */
 
-/* Override standard container widths in widgets */
+/* Define widget blocks as containers for container queries */
+.in-widget {
+    container-type: inline-size;
+    container-name: widget;
+}
+
+/* Override standard container widths in all widgets */
 .in-widget.ihowz-block-container,
 .in-widget .ihowz-block-container,
 .in-widget .ihowz-block-inner {
@@ -486,76 +496,178 @@ a.ihowz-card {
     max-width: 100%;
 }
 
-/* Reduce padding for blocks in widgets */
-.in-widget.ihowz-block-padding {
-    padding: 20px 0;
+/* ==========================================================================
+   Thin Widget Styles (< 400px)
+   ========================================================================== */
+
+@container widget (max-width: 399px) {
+    /* Thin widget heading - compact with underline */
+    .ihowz-heading {
+        font-family: var(--primary-font, "Mona Sans", sans-serif);
+        font-size: 1rem;
+        font-weight: 700;
+        margin-top: 0;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--primary-green, #9FC045);
+        line-height: 1.3;
+    }
+
+    .ihowz-eyebrow {
+        font-size: 0.7rem;
+        margin-bottom: 5px;
+    }
+
+    /* Single column grids in thin widgets */
+    .ihowz-grid-2,
+    .ihowz-grid-3,
+    .ihowz-grid-4,
+    .ihowz-grid-5 {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    /* Compact cards */
+    .ihowz-card {
+        padding: 12px;
+        border-radius: 8px;
+    }
+
+    /* Compact date badge */
+    .ihowz-date-badge {
+        padding: 6px 8px;
+        min-width: 36px;
+    }
+
+    .ihowz-date-badge .day {
+        font-size: 1rem;
+    }
+
+    .ihowz-date-badge .month {
+        font-size: 0.55rem;
+    }
+
+    /* Compact price badge */
+    .ihowz-price-badge {
+        padding: 3px 8px;
+        font-size: 0.85rem;
+    }
+
+    /* Compact meta items */
+    .ihowz-meta {
+        gap: 8px;
+        font-size: 0.75rem;
+    }
+
+    /* Compact buttons */
+    .ihowz-btn,
+    .ihowz-btn-primary,
+    .ihowz-btn-secondary {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    /* Reduced spacing */
+    .ihowz-block-padding {
+        padding: 15px 0;
+    }
+
+    .ihowz-block-spacing {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .ihowz-block-spacing-sm {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
 }
 
-/* Smaller headings in widget context */
-.in-widget .ihowz-heading {
-    font-size: clamp(1.25rem, 2vw, 1.5rem);
-}
+/* ==========================================================================
+   Wide Widget Styles (>= 400px)
+   ========================================================================== */
 
-.in-widget .ihowz-eyebrow {
-    font-size: 0.75rem;
-}
+@container widget (min-width: 400px) {
+    /* Wide widget heading - standard prominent style */
+    .ihowz-heading {
+        font-family: var(--primary-font, "Mona Sans", sans-serif);
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        font-weight: 900;
+        color: #1a1a1a;
+        line-height: 1.2;
+        margin: 0;
+    }
 
-/* Compact grids in widgets - usually single column */
-.in-widget .ihowz-grid-2,
-.in-widget .ihowz-grid-3,
-.in-widget .ihowz-grid-4,
-.in-widget .ihowz-grid-5 {
-    grid-template-columns: 1fr;
-    gap: 15px;
-}
+    .ihowz-eyebrow {
+        font-size: 0.875rem;
+        margin-bottom: 8px;
+    }
 
-/* Smaller card styling in widgets */
-.in-widget .ihowz-card {
-    padding: 15px;
-    border-radius: 8px;
-}
+    /* Multi-column grids in wide widgets */
+    .ihowz-grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-/* Compact date badge in widgets */
-.in-widget .ihowz-date-badge {
-    padding: 8px 10px;
-    min-width: 40px;
-}
+    .ihowz-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
 
-.in-widget .ihowz-date-badge .day {
-    font-size: 1.1rem;
-}
+    .ihowz-grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-.in-widget .ihowz-date-badge .month {
-    font-size: 0.6rem;
-}
+    /* Standard cards */
+    .ihowz-card {
+        padding: 20px;
+        border-radius: 12px;
+    }
 
-/* Smaller price badge in widgets */
-.in-widget .ihowz-price-badge {
-    padding: 4px 10px;
-    font-size: 0.9rem;
-}
+    /* Standard date badge */
+    .ihowz-date-badge {
+        padding: 10px 12px;
+        min-width: 50px;
+    }
 
-/* Compact meta items in widgets */
-.in-widget .ihowz-meta {
-    gap: 10px;
-    font-size: 0.8rem;
-}
+    .ihowz-date-badge .day {
+        font-size: 1.4rem;
+    }
 
-/* Compact buttons in widgets */
-.in-widget .ihowz-btn,
-.in-widget .ihowz-btn-primary,
-.in-widget .ihowz-btn-secondary {
-    padding: 8px 16px;
-    font-size: 0.85rem;
-}
+    .ihowz-date-badge .month {
+        font-size: 0.7rem;
+    }
 
-/* Reduce spacing in widget blocks */
-.in-widget .ihowz-block-spacing {
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
+    /* Standard price badge */
+    .ihowz-price-badge {
+        padding: 6px 14px;
+        font-size: 1rem;
+    }
 
-.in-widget .ihowz-block-spacing-sm {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    /* Standard meta items */
+    .ihowz-meta {
+        gap: 12px;
+        font-size: 0.85rem;
+    }
+
+    /* Standard buttons */
+    .ihowz-btn,
+    .ihowz-btn-primary,
+    .ihowz-btn-secondary {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    /* Standard spacing */
+    .ihowz-block-padding {
+        padding: 30px 0;
+    }
+
+    .ihowz-block-spacing {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .ihowz-block-spacing-sm {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
 }
