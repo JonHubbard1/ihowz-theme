@@ -518,6 +518,8 @@ a.ihowz-card {
 /* Upcoming events in sidebar - compact styling */
 .page-widgets-sidebar .ihowz-upcoming-events-block .event-title {
     font-size: 0.95rem !important;
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
 }
 
 @container widget (max-width: 399px) {
