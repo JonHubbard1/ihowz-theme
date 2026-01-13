@@ -662,12 +662,21 @@ body.header-sticky-active {
 .page-header-fullwidth {
     background-color: rgba(159, 192, 69, 0.25); /* 25% primary green */
     width: 100%;
+}
+
+.page-header-fullwidth .page-header-inner {
+    width: 90%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
     position: relative;
     overflow: hidden;
 }
 
-/* Roof line drawing on right side */
-.page-header-fullwidth::before {
+/* Roof line drawing on right side - within content area */
+.page-header-fullwidth .page-header-inner::before {
     content: '';
     position: absolute;
     right: 0;
@@ -683,20 +692,11 @@ body.header-sticky-active {
     z-index: 0;
 }
 
-.page-header-fullwidth .page-header-inner {
-    width: 90%;
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 30px 0;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    z-index: 1;
-}
-
 .page-header-fullwidth .page-header {
     text-align: left;
     margin-bottom: 100px;
+    position: relative;
+    z-index: 1;
 }
 
 .page-header-fullwidth .page-title {
@@ -705,6 +705,8 @@ body.header-sticky-active {
 
 .page-header-fullwidth .breadcrumb {
     margin-bottom: 0;
+    position: relative;
+    z-index: 1;
 }
 
 /* Page Sidebar Layout */
