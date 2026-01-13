@@ -539,18 +539,21 @@ a.ihowz-card {
         border-radius: 8px;
     }
 
-    /* Compact date badge */
+    /* Compact date badge - inline day and month */
     .ihowz-date-badge {
-        padding: 6px 8px;
-        min-width: 36px;
+        flex-direction: row;
+        gap: 4px;
+        padding: 6px 10px;
+        min-width: auto;
     }
 
     .ihowz-date-badge .day {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     .ihowz-date-badge .month {
-        font-size: 0.55rem;
+        font-size: 0.9rem;
+        margin-top: 0;
     }
 
     /* Compact price badge */
