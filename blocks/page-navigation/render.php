@@ -5,6 +5,9 @@
  * @package iHowz Theme
  */
 
+// Detect if rendering in a widget area
+$is_widget_context = did_action('dynamic_sidebar_before') > did_action('dynamic_sidebar_after');
+
 // Get attributes with defaults
 $depth = isset($attributes['depth']) ? intval($attributes['depth']) : 2;
 $show_only_children = isset($attributes['showOnlyChildren']) ? $attributes['showOnlyChildren'] : false;
@@ -75,6 +78,9 @@ if (empty($pages)) {
 
 // Build wrapper classes
 $wrapper_classes = 'wp-block-ihowz-page-navigation ihowz-page-navigation depth-' . $depth;
+if ($is_widget_context) {
+    $wrapper_classes .= ' in-widget';
+}
 if (!empty($attributes['className'])) {
     $wrapper_classes .= ' ' . esc_attr($attributes['className']);
 }

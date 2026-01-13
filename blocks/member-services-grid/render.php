@@ -10,6 +10,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Detect if rendering in a widget area
+$is_widget_context = did_action('dynamic_sidebar_before') > did_action('dynamic_sidebar_after');
+
 // Get attributes
 $eyebrow_text = $attributes['eyebrowText'] ?? '';
 $heading = $attributes['heading'] ?? '';
@@ -17,9 +20,15 @@ $subheading = $attributes['subheading'] ?? '';
 $services = $attributes['services'] ?? [];
 $background_color = $attributes['backgroundColor'] ?? '#ffffff';
 
+// Build wrapper class
+$wrapper_class = 'ihowz-member-services-grid';
+if ($is_widget_context) {
+    $wrapper_class .= ' in-widget';
+}
+
 // Build wrapper attributes
 $wrapper_attributes = get_block_wrapper_attributes([
-    'class' => 'ihowz-member-services-grid',
+    'class' => $wrapper_class,
     'style' => 'background-color: ' . esc_attr($background_color) . ';'
 ]);
 

@@ -467,3 +467,95 @@ a.ihowz-card {
         grid-template-columns: 1fr;
     }
 }
+
+/* ==========================================================================
+   Widget Context Styles
+   ========================================================================== */
+
+/**
+ * Base styles for blocks rendered in widget areas
+ * The .in-widget class is automatically added to blocks when they
+ * are rendered inside a WordPress widget area (sidebar, footer, etc.)
+ */
+
+/* Override standard container widths in widgets */
+.in-widget.ihowz-block-container,
+.in-widget .ihowz-block-container,
+.in-widget .ihowz-block-inner {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Reduce padding for blocks in widgets */
+.in-widget.ihowz-block-padding {
+    padding: 20px 0;
+}
+
+/* Smaller headings in widget context */
+.in-widget .ihowz-heading {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+}
+
+.in-widget .ihowz-eyebrow {
+    font-size: 0.75rem;
+}
+
+/* Compact grids in widgets - usually single column */
+.in-widget .ihowz-grid-2,
+.in-widget .ihowz-grid-3,
+.in-widget .ihowz-grid-4,
+.in-widget .ihowz-grid-5 {
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+/* Smaller card styling in widgets */
+.in-widget .ihowz-card {
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* Compact date badge in widgets */
+.in-widget .ihowz-date-badge {
+    padding: 8px 10px;
+    min-width: 40px;
+}
+
+.in-widget .ihowz-date-badge .day {
+    font-size: 1.1rem;
+}
+
+.in-widget .ihowz-date-badge .month {
+    font-size: 0.6rem;
+}
+
+/* Smaller price badge in widgets */
+.in-widget .ihowz-price-badge {
+    padding: 4px 10px;
+    font-size: 0.9rem;
+}
+
+/* Compact meta items in widgets */
+.in-widget .ihowz-meta {
+    gap: 10px;
+    font-size: 0.8rem;
+}
+
+/* Compact buttons in widgets */
+.in-widget .ihowz-btn,
+.in-widget .ihowz-btn-primary,
+.in-widget .ihowz-btn-secondary {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+}
+
+/* Reduce spacing in widget blocks */
+.in-widget .ihowz-block-spacing {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.in-widget .ihowz-block-spacing-sm {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}

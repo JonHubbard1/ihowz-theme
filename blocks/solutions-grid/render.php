@@ -5,6 +5,9 @@
  * @package iHowz Theme
  */
 
+// Detect if rendering in a widget area
+$is_widget_context = did_action('dynamic_sidebar_before') > did_action('dynamic_sidebar_after');
+
 // Get attributes with defaults
 $eyebrow_text = isset($attributes['eyebrowText']) ? $attributes['eyebrowText'] : '';
 $heading = isset($attributes['heading']) ? $attributes['heading'] : '';
@@ -18,6 +21,9 @@ $card_min_height = isset($attributes['cardMinHeight']) ? intval($attributes['car
 
 // Build wrapper classes
 $wrapper_classes = 'wp-block-ihowz-solutions-grid ihowz-solutions-grid';
+if ($is_widget_context) {
+    $wrapper_classes .= ' in-widget';
+}
 if (!empty($attributes['className'])) {
     $wrapper_classes .= ' ' . esc_attr($attributes['className']);
 }

@@ -10,6 +10,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Detect if rendering in a widget area
+$is_widget_context = did_action('dynamic_sidebar_before') > did_action('dynamic_sidebar_after');
+
 // Extract attributes with defaults
 $sidebar_source = isset($attributes['sidebarSource']) ? $attributes['sidebarSource'] : 'blocks';
 $widget_area = isset($attributes['widgetArea']) ? $attributes['widgetArea'] : 'page-sidebar';
@@ -40,9 +43,15 @@ $inline_style = sprintf(
     $align_items
 );
 
+// Build wrapper classes
+$wrapper_class = 'ihowz-content-with-sidebar sidebar-' . $sidebar_position;
+if ($is_widget_context) {
+    $wrapper_class .= ' in-widget';
+}
+
 // Get wrapper attributes
 $wrapper_attributes = get_block_wrapper_attributes(array(
-    'class' => 'ihowz-content-with-sidebar sidebar-' . $sidebar_position,
+    'class' => $wrapper_class,
     'style' => $inline_style,
 ));
 

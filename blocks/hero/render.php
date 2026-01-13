@@ -5,6 +5,9 @@
  * @package iHowz Theme
  */
 
+// Detect if rendering in a widget area
+$is_widget_context = did_action('dynamic_sidebar_before') > did_action('dynamic_sidebar_after');
+
 // Get attributes with defaults
 $background_type = isset($attributes['backgroundType']) ? $attributes['backgroundType'] : 'image';
 $background_image = isset($attributes['backgroundImage']) ? esc_url($attributes['backgroundImage']) : '';
@@ -34,6 +37,9 @@ $right_card_text = isset($attributes['rightCardText']) ? $attributes['rightCardT
 
 // Build wrapper classes
 $wrapper_classes = 'wp-block-ihowz-hero ihowz-hero';
+if ($is_widget_context) {
+    $wrapper_classes .= ' in-widget';
+}
 if (!empty($attributes['className'])) {
     $wrapper_classes .= ' ' . esc_attr($attributes['className']);
 }

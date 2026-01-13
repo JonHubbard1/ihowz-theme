@@ -5,6 +5,9 @@
  * @package iHowz Theme
  */
 
+// Detect if rendering in a widget area
+$is_widget_context = did_action('dynamic_sidebar_before') > did_action('dynamic_sidebar_after');
+
 // Get attributes with defaults
 $eyebrow_text = isset($attributes['eyebrowText']) ? $attributes['eyebrowText'] : '';
 $main_text = isset($attributes['mainText']) ? $attributes['mainText'] : '';
@@ -18,6 +21,9 @@ $image2_url = isset($attributes['image2Url']) ? esc_url($attributes['image2Url']
 
 // Build wrapper classes
 $wrapper_classes = 'wp-block-ihowz-about-stats ihowz-about-stats';
+if ($is_widget_context) {
+    $wrapper_classes .= ' in-widget';
+}
 if (!empty($attributes['className'])) {
     $wrapper_classes .= ' ' . esc_attr($attributes['className']);
 }
