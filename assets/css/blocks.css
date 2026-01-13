@@ -500,10 +500,9 @@ a.ihowz-card {
    Thin Widget Styles (< 400px)
    ========================================================================== */
 
-/* Remove top margin from first widget's heading in thin sidebars */
-.widget:first-child .in-widget .ihowz-heading,
-.in-widget:first-child .ihowz-heading {
-    margin-top: 0;
+/* Add spacing between widgets in sidebar (except first) */
+.page-widgets-sidebar .widget:not(:first-child) {
+    margin-top: 60px;
 }
 
 @container widget (max-width: 399px) {
@@ -512,7 +511,7 @@ a.ihowz-card {
         font-family: var(--primary-font, "Mona Sans", sans-serif);
         font-size: 1rem;
         font-weight: 700;
-        margin-top: 30px;
+        margin-top: 0;
         margin-bottom: 15px;
         padding-bottom: 10px;
         border-bottom: 2px solid var(--primary-green, #9FC045);
