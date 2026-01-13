@@ -372,11 +372,6 @@ function ihowz_theme_plugin_styles() {
 }
 
 /**
- * Disable block-based widgets editor (use classic widgets)
- */
-add_filter('use_widgets_block_editor', '__return_false');
-
-/**
  * Breadcrumb function
  */
 function ihowz_theme_breadcrumb() {
