@@ -786,6 +786,69 @@ body.header-sticky-active {
     color: var(--primary-charcoal);
 }
 
+/* Full Width with Widgets and Title Template */
+.page-with-widgets-container {
+    /* Standard Content Width Rule */
+    width: 90%;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 40px;
+    align-items: start;
+}
+
+.page-with-widgets-container .page-main-content {
+    min-width: 0;
+}
+
+.page-widgets-sidebar {
+    background: rgba(159, 192, 69, 0.25); /* 25% primary green */
+    padding: 25px;
+    border-radius: 12px;
+}
+
+.page-widgets-sidebar .widget {
+    margin-bottom: 25px;
+}
+
+.page-widgets-sidebar .widget:last-child {
+    margin-bottom: 0;
+}
+
+.page-widgets-sidebar .widget-title,
+.page-widgets-sidebar .widget h3 {
+    font-family: var(--primary-font, "Mona Sans", sans-serif);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary-green, #9FC045);
+}
+
+/* Full Width with Widgets - Responsive */
+@media (max-width: 992px) {
+    .page-with-widgets-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .page-widgets-sidebar {
+        order: 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-with-widgets-container {
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+}
+
 /* Full Width Template Styles */
 .site-main-fullwidth {
     width: 100%;
