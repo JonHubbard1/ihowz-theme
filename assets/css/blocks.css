@@ -500,13 +500,19 @@ a.ihowz-card {
    Thin Widget Styles (< 400px)
    ========================================================================== */
 
+/* Remove top margin from first widget's heading in thin sidebars */
+.widget:first-child .in-widget .ihowz-heading,
+.in-widget:first-child .ihowz-heading {
+    margin-top: 0;
+}
+
 @container widget (max-width: 399px) {
     /* Thin widget heading - compact with underline */
     .ihowz-heading {
         font-family: var(--primary-font, "Mona Sans", sans-serif);
         font-size: 1rem;
         font-weight: 700;
-        margin-top: 0;
+        margin-top: 30px;
         margin-bottom: 15px;
         padding-bottom: 10px;
         border-bottom: 2px solid var(--primary-green, #9FC045);
