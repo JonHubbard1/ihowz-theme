@@ -645,12 +645,12 @@ body.header-sticky-active {
 }
 
 .page-title {
-    font-size: 4rem;
-    margin-bottom: 0;
-    font-weight: 100;
-    color: #333;
-    line-height: 1.1;
-    letter-spacing: -0.04em;
+    font-family: var(--primary-font, "Mona Sans", sans-serif);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 900;
+    color: #1a1a1a;
+    line-height: 1.2;
+    margin: 0;
 }
 
 .page-description {
@@ -662,7 +662,7 @@ body.header-sticky-active {
 .page-header-fullwidth {
     background-color: rgba(159, 192, 69, 0.25); /* 25% primary green */
     width: 100%;
-    padding: 60px 0 40px 0;
+    padding: 60px 0 80px 0;
 }
 
 .page-header-fullwidth .page-header-inner {
