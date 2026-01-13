@@ -556,6 +556,16 @@ a.ihowz-card {
         margin-top: 0;
     }
 
+    /* Upcoming events - compact styling */
+    .ihowz-upcoming-events-block .event-header {
+        margin-bottom: 8px;
+    }
+
+    .ihowz-upcoming-events-block .event-title {
+        font-size: 15px;
+        margin-bottom: 8px;
+    }
+
     /* Compact price badge */
     .ihowz-price-badge {
         padding: 3px 8px;
