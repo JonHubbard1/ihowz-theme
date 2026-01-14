@@ -37,7 +37,38 @@
                                 </div>
                             </div>
                         <?php else : ?>
-                            <a href="/login" class="button header-login">Login</a>
+                            <div class="header-login-menu">
+                                <button class="button header-login" type="button" aria-expanded="false" aria-controls="header-login-dropdown">
+                                    Login
+                                </button>
+                                <div id="header-login-dropdown" class="header-login-dropdown">
+                                    <form id="header-login-form" method="post" action="<?php echo esc_url(wp_login_url()); ?>">
+                                        <div class="login-form-group">
+                                            <label for="header-user-login"><?php _e('Email or Username', 'ihowz'); ?></label>
+                                            <input type="text" name="log" id="header-user-login" required autocomplete="username">
+                                        </div>
+                                        <div class="login-form-group">
+                                            <label for="header-user-pass"><?php _e('Password', 'ihowz'); ?></label>
+                                            <input type="password" name="pwd" id="header-user-pass" required autocomplete="current-password">
+                                        </div>
+                                        <div class="login-form-group login-remember">
+                                            <label>
+                                                <input type="checkbox" name="rememberme" value="forever">
+                                                <?php _e('Remember me', 'ihowz'); ?>
+                                            </label>
+                                        </div>
+                                        <div class="login-form-error" style="display: none;"></div>
+                                        <?php wp_nonce_field('ajax-login-nonce', 'security'); ?>
+                                        <input type="hidden" name="redirect_to" value="<?php echo esc_url(home_url($_SERVER['REQUEST_URI'])); ?>">
+                                        <button type="submit" class="login-submit-btn">
+                                            <?php _e('Sign In', 'ihowz'); ?>
+                                        </button>
+                                        <div class="login-form-links">
+                                            <a href="<?php echo esc_url(wp_lostpassword_url()); ?>"><?php _e('Forgot password?', 'ihowz'); ?></a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                             <a href="/join" class="button header-join-today">Join Today</a>
                         <?php endif; ?>
                     </div>

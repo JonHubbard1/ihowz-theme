@@ -98,6 +98,92 @@
             $(this).parent().removeClass('focused');
         });
 
+        // Login Dropdown Toggle
+        var loginMenu = $('.header-login-menu');
+        var loginButton = loginMenu.find('.header-login');
+        var loginDropdown = loginMenu.find('.header-login-dropdown');
+
+        // Toggle dropdown on button click
+        loginButton.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var isActive = loginMenu.hasClass('active');
+            loginMenu.toggleClass('active');
+            loginButton.attr('aria-expanded', !isActive);
+
+            // Focus the first input when opening
+            if (!isActive) {
+                setTimeout(function() {
+                    loginDropdown.find('input[type="text"]').first().focus();
+                }, 100);
+            }
+        });
+
+        // Close dropdown when clicking outside
+        $(document).on('click', function(e) {
+            if (loginMenu.hasClass('active') && !loginMenu.is(e.target) && loginMenu.has(e.target).length === 0) {
+                loginMenu.removeClass('active');
+                loginButton.attr('aria-expanded', 'false');
+            }
+        });
+
+        // Close dropdown on Escape key
+        $(document).on('keydown', function(e) {
+            if (e.key === 'Escape' && loginMenu.hasClass('active')) {
+                loginMenu.removeClass('active');
+                loginButton.attr('aria-expanded', 'false');
+                loginButton.focus();
+            }
+        });
+
+        // Handle login form submission via AJAX
+        $('#header-login-form').on('submit', function(e) {
+            e.preventDefault();
+
+            var $form = $(this);
+            var $submitBtn = $form.find('.login-submit-btn');
+            var $errorDiv = $form.find('.login-form-error');
+            var originalText = $submitBtn.text();
+
+            // Clear previous errors
+            $errorDiv.hide().text('');
+
+            // Disable button and show loading state
+            $submitBtn.prop('disabled', true).text('Signing in...');
+
+            // Prepare form data
+            var formData = {
+                action: 'ihowz_ajax_login',
+                log: $form.find('input[name="log"]').val(),
+                pwd: $form.find('input[name="pwd"]').val(),
+                rememberme: $form.find('input[name="rememberme"]').is(':checked') ? 'forever' : '',
+                security: $form.find('input[name="security"]').val(),
+                redirect_to: $form.find('input[name="redirect_to"]').val()
+            };
+
+            // Make AJAX request
+            $.ajax({
+                type: 'POST',
+                url: ihowz_ajax.ajax_url || '/wp-admin/admin-ajax.php',
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        // Login successful - redirect
+                        window.location.href = response.data.redirect || formData.redirect_to || window.location.href;
+                    } else {
+                        // Show error message
+                        $errorDiv.text(response.data.message || 'Login failed. Please check your credentials.').show();
+                        $submitBtn.prop('disabled', false).text(originalText);
+                    }
+                },
+                error: function() {
+                    // On AJAX error, fall back to standard form submission
+                    $form.off('submit').submit();
+                }
+            });
+        });
+
         // Add fade-in animation to post cards
         if ($('.posts-grid').length) {
             $('.post-card').each(function(index) {

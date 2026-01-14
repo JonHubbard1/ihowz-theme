@@ -89,7 +89,13 @@ function ihowz_theme_scripts() {
     wp_enqueue_style('ihowz-responsive', get_template_directory_uri() . '/assets/css/responsive.css', array('ihowz-style', 'ihowz-layout', 'ihowz-components', 'ihowz-templates', 'ihowz-blocks'), $theme_version);
 
     // Custom JavaScript
-    wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), '1.0.9', true);
+    wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), '1.0.10', true);
+
+    // Localize script with AJAX URL for login form
+    wp_localize_script('ihowz-script', 'ihowz_ajax', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce'    => wp_create_nonce('ajax-login-nonce'),
+    ));
 
     // Comment reply script
     if (is_singular() && comments_open() && get_option('thread_comments')) {
@@ -1113,3 +1119,72 @@ function ihowz_enqueue_block_editor_assets() {
     );
 }
 add_action('enqueue_block_editor_assets', 'ihowz_enqueue_block_editor_assets');
+
+/**
+ * AJAX Login Handler
+ */
+function ihowz_ajax_login() {
+    // Verify nonce
+    if (!isset($_POST['security']) || !wp_verify_nonce($_POST['security'], 'ajax-login-nonce')) {
+        wp_send_json_error(array(
+            'message' => __('Security check failed. Please refresh the page and try again.', 'ihowz-theme'),
+        ));
+    }
+
+    // Get credentials
+    $username = isset($_POST['log']) ? sanitize_user($_POST['log']) : '';
+    $password = isset($_POST['pwd']) ? $_POST['pwd'] : '';
+    $remember = isset($_POST['rememberme']) && $_POST['rememberme'] === 'forever';
+    $redirect_to = isset($_POST['redirect_to']) ? esc_url_raw($_POST['redirect_to']) : home_url();
+
+    // Validate input
+    if (empty($username) || empty($password)) {
+        wp_send_json_error(array(
+            'message' => __('Please enter both email/username and password.', 'ihowz-theme'),
+        ));
+    }
+
+    // Attempt login
+    $credentials = array(
+        'user_login'    => $username,
+        'user_password' => $password,
+        'remember'      => $remember,
+    );
+
+    $user = wp_signon($credentials, is_ssl());
+
+    if (is_wp_error($user)) {
+        // Get specific error message
+        $error_code = $user->get_error_code();
+
+        switch ($error_code) {
+            case 'invalid_username':
+            case 'invalid_email':
+                $message = __('Unknown email or username. Please try again.', 'ihowz-theme');
+                break;
+            case 'incorrect_password':
+                $message = __('Incorrect password. Please try again.', 'ihowz-theme');
+                break;
+            case 'empty_username':
+                $message = __('Please enter your email or username.', 'ihowz-theme');
+                break;
+            case 'empty_password':
+                $message = __('Please enter your password.', 'ihowz-theme');
+                break;
+            default:
+                $message = __('Login failed. Please check your credentials.', 'ihowz-theme');
+        }
+
+        wp_send_json_error(array(
+            'message' => $message,
+        ));
+    }
+
+    // Login successful
+    wp_send_json_success(array(
+        'message'  => __('Login successful! Redirecting...', 'ihowz-theme'),
+        'redirect' => $redirect_to,
+    ));
+}
+add_action('wp_ajax_nopriv_ihowz_ajax_login', 'ihowz_ajax_login');
+add_action('wp_ajax_ihowz_ajax_login', 'ihowz_ajax_login');
