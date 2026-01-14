@@ -242,6 +242,7 @@
 
 .breadcrumb-pill:hover {
     background-color: var(--secondary-forest-green);
+    color: var(--primary-white);
     transform: translateY(-1px);
     text-decoration: none;
 }
