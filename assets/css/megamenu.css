@@ -169,6 +169,7 @@
     align-items: flex-start;
     border-bottom: 1px solid var(--background-light-gray);
     width: 100%;
+    position: relative;
 }
 
 .megamenu-dropdown > li:last-child {
@@ -189,25 +190,68 @@
     color: #fff;
 }
 
-/* Nested items in megamenu */
+/* Nested items in megamenu - Flyout style */
 .megamenu-dropdown .sub-menu {
-    position: static;
+    position: absolute;
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-10px);
+    transition: all 0.25s ease;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    padding: 0.75rem 0;
+    margin: 0;
+    min-width: 220px;
+    background: var(--background-pure-white);
+    border-radius: 8px;
+    left: 100%;
+    top: 0;
+    z-index: 1001;
+}
+
+/* Show flyout on hover */
+.megamenu-dropdown > li:hover > .sub-menu {
     display: block;
     opacity: 1;
     visibility: visible;
-    transform: none;
-    box-shadow: none;
-    padding: 0;
-    margin: 0;
-    min-width: 0;
-    background: transparent;
+    transform: translateX(0);
+}
+
+/* Hide dropdown indicator on flyout items, use right arrow instead */
+.megamenu-dropdown > li.menu-item-has-children > a .dropdown-indicator {
+    display: none;
+}
+
+/* Right arrow for flyout items */
+.megamenu-dropdown > li.menu-item-has-children > a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.megamenu-dropdown > li.menu-item-has-children > a::after {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 5px solid currentColor;
+    flex-shrink: 0;
+    opacity: 0.5;
+}
+
+.megamenu-dropdown > li.menu-item-has-children:hover > a::after {
+    opacity: 1;
 }
 
 .megamenu-dropdown .sub-menu a {
-    padding: 0.75rem 1.75rem;
+    padding: 0.75rem 1.5rem;
     font-size: 0.95rem;
     font-weight: 400;
     color: #000;
+    white-space: nowrap;
 }
 
 .megamenu-dropdown .sub-menu a:hover {
@@ -288,7 +332,34 @@
     }
 
     .megamenu-dropdown .sub-menu {
+        position: static;
+        display: none;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        padding: 0;
         padding-left: 1rem;
+        min-width: 0;
+        background: transparent;
+        border-radius: 0;
+    }
+
+    /* Show dropdown indicator on mobile, hide the right arrow */
+    .megamenu-dropdown > li.menu-item-has-children > a .dropdown-indicator {
+        display: block;
+    }
+
+    .megamenu-dropdown > li.menu-item-has-children > a::after {
+        display: none;
+    }
+
+    .megamenu-dropdown > li.menu-open > a .dropdown-indicator {
+        transform: rotate(180deg);
+    }
+
+    .megamenu-dropdown > li.menu-open > .sub-menu {
+        display: block;
     }
 
     .dropdown-indicator {
