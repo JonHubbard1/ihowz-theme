@@ -27,7 +27,7 @@
                             <?php $current_user = wp_get_current_user(); ?>
                             <div class="header-member-menu">
                                 <button class="header-member-toggle">
-                                    Welcome back <?php echo esc_html( $current_user->first_name . ' ' . $current_user->last_name ); ?>
+                                    Welcome back <span class="header-member-name"><?php echo esc_html( $current_user->first_name . ' ' . $current_user->last_name ); ?></span>
                                     <span class="header-member-arrow">▼</span>
                                 </button>
                                 <div class="header-member-dropdown">

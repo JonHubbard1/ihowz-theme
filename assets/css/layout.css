@@ -114,13 +114,17 @@
     background: none;
     border: none;
     color: var(--primary-charcoal);
-    font-size: 0.85rem;
-    font-weight: var(--medium);
+    font-size: 1.15rem;
+    font-weight: var(--regular);
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 6px;
     padding: 4px 8px;
+}
+
+.header-member-name {
+    font-weight: var(--bold);
 }
 
 .header-member-toggle:hover {
