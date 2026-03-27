@@ -1,0 +1,104 @@
+/* Footer company info */
+.footer-company-info {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 15px 0 5px 0;
+}
+
+.footer-company-details {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 5px 0;
+}
+
+.footer-company-details a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+}
+
+.footer-company-details a:hover {
+    color: var(--primary-green, #76AD01);
+}
+
+/* Footer layout: logo+company column gets more space */
+.footer-content {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+}
+
+.footer-logo {
+    flex-direction: column;
+}
+
+/* Footer legal links */
+.footer-legal-links {
+    text-align: center;
+    padding: 15px 0;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    margin-top: 20px;
+}
+
+.footer-legal-links a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+
+.footer-legal-links a:hover {
+    color: var(--primary-green, #76AD01);
+}
+
+.footer-legal-separator {
+    color: rgba(255,255,255,0.3);
+    margin: 0 10px;
+}
+
+/* SVG icons in social links */
+.footer-social-icon svg,
+.header-top-row-social-icon svg {
+    fill: currentColor;
+}
+
+/* Footer menu lists: smaller font, no bullets */
+.site-footer ul,
+.site-footer .footer-column ul,
+.site-footer .widget ul,
+footer ul {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.site-footer li,
+.site-footer .footer-column li,
+.site-footer .widget li,
+footer li {
+    font-size: 13px;
+    list-style: none;
+}
+
+/* Pill-style hover for all footer links */
+.site-footer a {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    background-image: none !important;
+    padding: 4px 12px;
+    border-radius: 20px;
+    transition: background-color 0.2s ease;
+    display: inline-block;
+}
+
+.site-footer a:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+/* Exclude logo from pill effect */
+.footer-logo > a {
+    padding: 0;
+    border-radius: 0;
+}
+.footer-logo > a:hover {
+    background-color: transparent;
+}

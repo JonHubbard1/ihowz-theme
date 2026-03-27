@@ -49,6 +49,8 @@ function ihowz_theme_setup() {
     register_nav_menus(array(
         'primary' => esc_html__('Primary Menu', 'ihowz-theme'),
         'footer' => esc_html__('Footer Menu', 'ihowz-theme'),
+        'footer-resources' => esc_html__('Footer Resources Menu', 'ihowz-theme'),
+        'footer-information' => esc_html__('Footer Information Menu', 'ihowz-theme'),
     ));
 
     // Set content width
@@ -62,7 +64,7 @@ add_action('after_setup_theme', 'ihowz_theme_setup');
  * Enqueue scripts and styles
  */
 function ihowz_theme_scripts() {
-    $theme_version = '1.4.0';
+    $theme_version = '1.4.4';
 
     // Main stylesheet (base styles, variables, fonts, reset)
     wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), $theme_version);
@@ -86,6 +88,7 @@ function ihowz_theme_scripts() {
     wp_enqueue_style('ihowz-blocks', get_template_directory_uri() . '/assets/css/blocks.css', array('ihowz-style'), $theme_version);
 
     // Responsive styles (media queries)
+    wp_enqueue_style("ihowz-footer-additions", get_template_directory_uri() . "/assets/css/footer-additions.css", array("ihowz-layout"), $theme_version);
     wp_enqueue_style('ihowz-responsive', get_template_directory_uri() . '/assets/css/responsive.css', array('ihowz-style', 'ihowz-layout', 'ihowz-components', 'ihowz-templates', 'ihowz-blocks'), $theme_version);
 
     // Custom JavaScript
@@ -362,15 +365,15 @@ function ihowz_theme_logo() {
 /**
  * News page custom query
  */
-function ihowz_theme_news_query($query) {
-    if (!is_admin() && $query->is_main_query()) {
-        if (is_page('news')) {
-            $query->set('post_type', 'post');
-            $query->set('posts_per_page', 9);
-        }
-    }
-}
-add_action('pre_get_posts', 'ihowz_theme_news_query');
+// Removed - was causing 404 on News page
+// Removed - was causing 404 on News page
+// Removed - was causing 404 on News page
+// Removed - was causing 404 on News page
+// Removed - was causing 404 on News page
+// Removed - was causing 404 on News page
+// Removed - was causing 404 on News page
+// Removed - was causing 404 on News page
+// Removed - was causing 404 on News page
 
 /**
  * Add support for iHowz plugin integration
@@ -1188,3 +1191,31 @@ function ihowz_ajax_login() {
 }
 add_action('wp_ajax_nopriv_ihowz_ajax_login', 'ihowz_ajax_login');
 add_action('wp_ajax_ihowz_ajax_login', 'ihowz_ajax_login');
+/**
+ * External links open in new tab (global fix)
+ */
+function ihowz_external_links_new_tab() {
+    ?>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var host = window.location.hostname;
+        document.querySelectorAll("a[href]").forEach(function(link) {
+            try {
+                var url = new URL(link.href);
+                if (url.hostname && url.hostname !== host && url.hostname !== "www." + host) {
+                    link.setAttribute("target", "_blank");
+                    link.setAttribute("rel", "noopener noreferrer");
+                }
+            } catch(e) {}
+        });
+    });
+    </script>
+    <?php
+}
+add_action("wp_footer", "ihowz_external_links_new_tab");
+
+/**
+ * Session Management - Prevent Login Sharing
+ */
+require_once get_template_directory() . "/inc/session-management.php";
+require_once get_template_directory() . "/no-cache.php";

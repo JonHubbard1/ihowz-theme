@@ -97,8 +97,8 @@ $icons = [
                             <?php endif; ?>
                         </div>
                         <?php if ($has_image) : ?>
-                            <div class="member-services-bento-card-image">
-                                <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($service['title'] ?? ''); ?>">
+                            <div class="member-services-bento-card-image"><a href="<?php echo esc_url($service['buttonUrl'] ?? '#'); ?>">
+                                <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($service['title'] ?? ''); ?>"></a>
                             </div>
                         <?php endif; ?>
                     </div>
