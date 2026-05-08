@@ -104,7 +104,7 @@ class iHowz_Session_Management {
         }
         
         // Skip if this is a session confirmation attempt
-        if (isset($_POST['ihowz_session_confirm'])) {
+        if (isset($_POST['ihowz_session_confirm']) || isset($_GET['ihowz_session_confirm'])) {
             return $user;
         }
         
@@ -163,7 +163,13 @@ class iHowz_Session_Management {
             wp_redirect(wp_login_url());
             exit;
         }
-        
+
+        // Display confirmation page on GET request (template_include does not fire on wp-login.php)
+        if ($_SERVER["REQUEST_METHOD"] === "GET" && !isset($_POST["confirm_session"]) && !isset($_POST["cancel_session"])) {
+            $this->display_confirmation_page($user_id, $pending_login);
+            exit;
+        }
+
         // Handle confirmation
         if (isset($_POST['confirm_session'])) {
             check_admin_referer('ihowz_session_confirm_' . $user_id);

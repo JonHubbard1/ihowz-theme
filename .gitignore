@@ -72,4 +72,17 @@ Thumbs.db
 
 # Package files
 *.zip
-*.tar.gz
+*.tar.gz# Backup files
+*.backup
+*.backup.*
+
+
+# Backup files
+*.backup
+*.backup.*
+
+
+# Backup files
+*.backup
+*.backup.*
+
