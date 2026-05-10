@@ -1215,6 +1215,291 @@ function ihowz_external_links_new_tab() {
 add_action("wp_footer", "ihowz_external_links_new_tab");
 
 /**
+ * iHowz Corporate Branding for wp-login.php
+ */
+function ihowz_login_branding() {
+    $primary_green    = '#9cc130';
+    $forest_green     = '#77ae02';
+    $charcoal         = '#263238';
+    $light_green_bg   = '#F7FCF0';
+    $border_color     = '#E0E0E0';
+    $error_red        = '#D32F2F';
+    $success_green    = '#388E3C';
+    $font_family      = '"Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif';
+
+    echo '<style type="text/css">';
+    echo 'body.login { background: ' . $light_green_bg . '; font-family: ' . $font_family . '; }';
+
+    // iHowz logo image on login page
+    $logo_url = 'https://ihowz.greatnew.site/wp-content/uploads/2025/07/short-ihowz-logobmp-6cm.jpg';
+    echo '#login h1 a {';
+    echo 'background-image: url(' . $logo_url . ') !important;';
+    echo 'background-size: contain !important;';
+    echo 'background-repeat: no-repeat !important;';
+    echo 'background-position: center !important;';
+    echo 'width: 100% !important;';
+    echo 'height: 80px !important;';
+    echo 'text-indent: -9999px;';
+    echo 'display: block;';
+    echo 'margin-bottom: 24px;';
+    echo '}';
+
+    // Login form container
+    echo '#login {';
+    echo 'max-width: 400px;';
+    echo 'padding: 0;';
+    echo '}';
+
+    echo '#loginform, #lostpasswordform, #resetpassform {';
+    echo 'background: #fff;';
+    echo 'border: 1px solid ' . $border_color . ';';
+    echo 'border-radius: 10px;';
+    echo 'padding: 32px;';
+    echo 'box-shadow: 0 4px 20px rgba(0,0,0,0.08);';
+    echo '}';
+
+    // Labels
+    echo '#loginform label, #lostpasswordform label, #resetpassform label {';
+    echo 'color: ' . $charcoal . ';';
+    echo 'font-weight: 500;';
+    echo 'font-size: 14px;';
+    echo 'margin-bottom: 6px;';
+    echo '}';
+
+    // Inputs
+    echo '#loginform input[type="text"], #loginform input[type="password"], #loginform input[type="email"],';
+    echo '#lostpasswordform input[type="text"], #resetpassform input[type="password"] {';
+    echo 'height: 48px;';
+    echo 'padding: 12px 16px;';
+    echo 'border: 1px solid #757575;';
+    echo 'border-radius: 8px;';
+    echo 'font-size: 16px;';
+    echo 'color: ' . $charcoal . ';';
+    echo 'background: #fff;';
+    echo 'box-shadow: none;';
+    echo 'transition: border-color 0.2s ease, box-shadow 0.2s ease;';
+    echo '}';
+
+    echo '#loginform input:focus, #lostpasswordform input:focus, #resetpassform input:focus {';
+    echo 'border: 2px solid ' . $primary_green . ';';
+    echo 'box-shadow: 0 0 0 3px rgba(156, 193, 48, 0.15);';
+    echo 'outline: none;';
+    echo '}';
+
+    // Submit button
+    echo '#wp-submit {';
+    echo 'width: 100%;';
+    echo 'height: 48px;';
+    echo 'padding: 12px 24px;';
+    echo 'background: ' . $primary_green . ';';
+    echo 'color: #fff;';
+    echo 'border: none;';
+    echo 'border-radius: 8px;';
+    echo 'font-size: 16px;';
+    echo 'font-weight: 600;';
+    echo 'cursor: pointer;';
+    echo 'transition: all 0.2s ease;';
+    echo '}';
+
+    echo '#wp-submit:hover {';
+    echo 'background: ' . $forest_green . ';';
+    echo 'transform: translateY(-1px);';
+    echo 'box-shadow: 0 4px 12px rgba(156, 193, 48, 0.3);';
+    echo '}';
+
+    // Links
+    echo '#nav a, #backtoblog a {';
+    echo 'color: ' . $primary_green . ';';
+    echo 'transition: color 0.2s ease;';
+    echo '}';
+
+    echo '#nav a:hover, #backtoblog a:hover {';
+    echo 'color: ' . $forest_green . ';';
+    echo '}';
+
+    // Messages / notices
+    echo '.message, #login_error {';
+    echo 'border-radius: 8px;';
+    echo 'font-size: 14px;';
+    echo '}';
+
+    echo '.message {';
+    echo 'background: #E3F2FD;';
+    echo 'border: 1px solid #90CAF9;';
+    echo 'color: #0D47A1;';
+    echo '}';
+
+    echo '#login_error {';
+    echo 'background: #FFEBEE;';
+    echo 'border: 1px solid #EF9A9A;';
+    echo 'color: #B71C1C;';
+    echo '}';
+
+    echo '.message a, #login_error a {';
+    echo 'color: ' . $forest_green . ';';
+    echo '}';
+
+    // Checkbox
+    echo '.forgetmenot input[type="checkbox"] {';
+    echo 'accent-color: ' . $primary_green . ';';
+    echo '}';
+
+    // Privacy policy / language switcher
+    echo '.privacy-policy-page-link, .language-switcher {';
+    echo 'text-align: center;';
+    echo '}';
+
+    echo '</style>';
+}
+add_action('login_enqueue_scripts', 'ihowz_login_branding');
+
+// Update login page logo link and text
+function ihowz_login_logo_url() {
+    return home_url();
+}
+add_filter('login_headerurl', 'ihowz_login_logo_url');
+
+function ihowz_login_logo_text() {
+    return 'iHowz';
+}
+add_filter('login_headertext', 'ihowz_login_logo_text');
+
+/**
+ * iHowz Admin Branding
+ */
+
+// Custom admin footer text
+function ihowz_admin_footer_text($text) {
+    return '<span id="footer-thankyou">' . __('Powered by iHowz Management Suite developed by ', 'ihowz-theme') . '<a href="' . esc_url('https://technoliga.co.uk') . '" target="_blank">Technoliga</a></span>';
+}
+add_filter('admin_footer_text', 'ihowz_admin_footer_text');
+
+// Custom admin version/update footer text
+function ihowz_update_footer_text($content) {
+    return ' <a href="' . esc_url(home_url()) . '" target="_blank">' . esc_html__('Visit iHowz Website', 'ihowz-theme') . '</a>';
+}
+add_filter('update_footer', 'ihowz_update_footer_text', 11);
+
+// Add iHowz logo as the first item in the admin bar
+function ihowz_admin_bar_add_logo($wp_admin_bar) {
+    $logo_url = 'https://ihowz.greatnew.site/wp-content/uploads/2025/07/short-ihowz-logobmp-6cm.jpg';
+    $wp_admin_bar->add_node(array(
+        'id'    => 'ihowz-logo',
+        'title' => '<img src="' . esc_url($logo_url) . '" style="height:20px;width:auto;vertical-align:middle;" alt="iHowz">',
+        'href'  => admin_url(),
+        'meta'  => array(
+            'title' => __('iHowz Dashboard', 'ihowz-theme'),
+        ),
+    ));
+}
+add_action('admin_bar_menu', 'ihowz_admin_bar_add_logo', 0);
+
+// Remove WordPress logo and My Ad Dashboard from admin bar
+function ihowz_admin_bar_cleanup($wp_admin_bar) {
+    // Remove the default WordPress logo node
+    $wp_admin_bar->remove_node('wp-logo');
+    // Remove the iHowz plugin's "My Ad Dashboard" node
+    $wp_admin_bar->remove_node('ihowz-advertiser-dashboard');
+}
+add_action('admin_bar_menu', 'ihowz_admin_bar_cleanup', 999);
+
+// Custom admin color scheme - iHowz Corporate
+function ihowz_admin_color_scheme() {
+    wp_admin_css_color(
+        'ihowz',
+        __('iHowz Corporate', 'ihowz-theme'),
+        '',
+        array('#9cc130', '#77ae02', '#263238', '#FF8F00'),
+        array(
+            'base'    => '#9cc130',
+            'focus'   => '#77ae02',
+            'current' => '#263238',
+        )
+    );
+}
+add_action('admin_init', 'ihowz_admin_color_scheme');
+
+// Force iHowz color scheme for all users (optional - comment out if you want users to choose)
+// add_filter('get_user_option_admin_color', function($color) { return 'ihowz'; });
+
+// Custom admin CSS for iHowz branding
+function ihowz_admin_branding_css() {
+    $primary_green  = '#9cc130';
+    $forest_green   = '#77ae02';
+    $charcoal       = '#263238';
+    $gold           = '#FF8F00';
+    $light_green    = '#F7FCF0';
+
+    echo '<style type="text/css">';
+
+    // Admin bar branding
+    echo '#wpadminbar #wp-admin-bar-ihowz-logo .ab-item { padding: 0 8px; }';
+    echo '#wpadminbar #wp-admin-bar-ihowz-logo img { height: 20px; width: auto; display: inline-block; }';
+
+    // Dashboard welcome panel
+    echo '.welcome-panel {';
+    echo 'background: linear-gradient(135deg, ' . $light_green . ' 0%, #ffffff 100%);';
+    echo 'border-left: 4px solid ' . $primary_green . ';';
+    echo '}';
+
+    // Primary buttons and links
+    echo '.wp-core-ui .button-primary {';
+    echo 'background: ' . $primary_green . ';';
+    echo 'border-color: ' . $forest_green . ';';
+    echo '}';
+    echo '.wp-core-ui .button-primary:hover, .wp-core-ui .button-primary:focus {';
+    echo 'background: ' . $forest_green . ';';
+    echo 'border-color: ' . $forest_green . ';';
+    echo '}';
+
+    // Admin menu highlight
+    echo '#adminmenu li.current a.menu-top, #adminmenu li.wp-has-current-submenu a.wp-has-current-submenu, #adminmenu li.wp-has-current-submenu .wp-submenu .wp-submenu-head {';
+    echo 'background: ' . $primary_green . ';';
+    echo '}';
+
+    // Admin menu hover
+    echo '#adminmenu li.menu-top:hover, #adminmenu li.opensub > a.menu-top, #adminmenu li > a.menu-top:focus {';
+    echo 'background: ' . $forest_green . ';';
+    echo 'color: #fff;';
+    echo '}';
+
+    // Remove top margin from .wrap on iHowz pages so the h1 bar sits flush
+    echo 'body[class*="page_ihowz"] .wrap,';
+    echo 'body[class*="toplevel_page_ihowz"] .wrap {';
+    echo 'margin-top: 0 !important;';
+    echo 'padding-top: 0 !important;';
+    echo '}';
+
+    // iHowz admin page headers - full-width branded bar
+    echo 'body[class*="page_ihowz"] .wrap > h1:first-child,';
+    echo 'body[class*="toplevel_page_ihowz"] .wrap > h1:first-child {';
+    echo 'background: #C8E085;';
+    echo 'color: #5F8422;';
+    echo 'border-bottom: 2px solid #5F8422;';
+    echo 'margin: 0 -20px 20px -20px !important;';
+    echo 'padding: 20px 20px 14px 20px;';
+    echo 'font-weight: 600;';
+    echo 'font-size: 2.5em;';
+    echo 'display: block;';
+    echo '}';
+
+    // Postbox headers (meta boxes)
+    echo '.postbox .hndle {';
+    echo 'background: ' . $light_green . ';';
+    echo 'border-bottom: 1px solid ' . $primary_green . ';';
+    echo '}';
+
+    // Footer branding area
+    echo '#wpfooter {';
+    echo 'background: #fff;';
+    echo 'border-top: 1px solid #e0e0e0;';
+    echo '}';
+
+    echo '</style>';
+}
+add_action('admin_head', 'ihowz_admin_branding_css');
+
+/**
  * Session Management - Prevent Login Sharing
  */
 require_once get_template_directory() . "/inc/session-management.php";

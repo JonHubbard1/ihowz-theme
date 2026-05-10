@@ -1883,3 +1883,51 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* ===================================
+   LOGIN PAGE TEMPLATE
+   =================================== */
+
+.site-main-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 200px);
+    padding: 60px 20px;
+    background: var(--background-light-green, #F7FCF0);
+}
+
+.login-page-container {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.login-page-card .ihowz-login-wrapper {
+    background: var(--primary-white);
+    border-radius: var(--border-radius, 10px);
+    padding: 48px;
+    box-shadow: 0 8px 40px rgba(38, 50, 56, 0.08);
+}
+
+.login-page-card .ihowz-login-logo img {
+    max-width: 160px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+}
+
+@media (max-width: 480px) {
+    .site-main-login {
+        padding: 24px 16px;
+        min-height: auto;
+    }
+
+    .login-page-card .ihowz-login-wrapper {
+        padding: 28px;
+    }
+
+    .login-page-card .ihowz-login-title {
+        font-size: 22px;
+    }
+}
