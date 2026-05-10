@@ -47,7 +47,7 @@ function ihowz_register_testimonial_cpt() {
         'capability_type'    => 'post',
         'has_archive'        => false,
         'hierarchical'       => false,
-        'menu_position'      => 25,
+        'menu_position'      => 33,
         'menu_icon'          => 'dashicons-format-quote',
         'supports'           => array('title', 'thumbnail'),
     );
