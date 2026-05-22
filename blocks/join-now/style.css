@@ -87,7 +87,7 @@
 }
 
 .join-now-form {
-    display: flex;
+    display: block;
     flex-direction: column;
     gap: 20px;
 }
@@ -99,7 +99,7 @@
 }
 
 .join-now-field {
-    display: flex;
+    display: block;
     flex-direction: column;
     gap: 8px;
 }
@@ -160,7 +160,7 @@
    ========================================================================== */
 
 .membership-type-options {
-    display: flex;
+    display: block;
     flex-direction: column;
     gap: 12px;
 }
@@ -197,9 +197,8 @@
 }
 
 .membership-type-info {
-    display: flex;
+    display: block;
     justify-content: space-between;
-    align-items: center;
     gap: 12px;
     margin-bottom: 8px;
     padding-right: 36px;
@@ -228,7 +227,7 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    display: flex;
+    display: block;
     flex-direction: column;
     gap: 6px;
 }
@@ -236,8 +235,7 @@
 .membership-type-benefits li {
     font-size: 0.875rem;
     color: var(--neutral-gray, #757575);
-    display: flex;
-    align-items: center;
+    display: block;
     gap: 8px;
 }
 
@@ -257,7 +255,7 @@
    ========================================================================== */
 
 .join-now-checkbox-label {
-    display: flex;
+    display: block;
     align-items: flex-start;
     gap: 12px;
     font-size: 0.9375rem;
@@ -291,7 +289,7 @@
 .join-now-payment-section {
     padding-top: 24px;
     border-top: 1px solid #E0E0E0;
-    display: flex;
+    display: block;
     flex-direction: column;
     gap: 20px;
 }
@@ -304,9 +302,8 @@
 }
 
 .join-now-payment-summary {
-    display: flex;
+    display: block;
     justify-content: space-between;
-    align-items: center;
     padding: 16px 20px;
     background: var(--secondary-light-green, #F4F9E8);
     border-radius: 8px;
@@ -331,8 +328,7 @@
     border-radius: 8px;
     background: var(--background-pure-white, #FFFFFF);
     min-height: 56px;
-    display: flex;
-    align-items: center;
+    display: block;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -364,7 +360,6 @@
 
 .join-now-submit-btn {
     display: inline-flex;
-    align-items: center;
     justify-content: center;
     gap: 10px;
     padding: 16px 40px;
@@ -397,7 +392,6 @@
 
 .join-now-submit-btn .btn-spinner {
     display: inline-flex;
-    align-items: center;
 }
 
 .spinner-icon {
@@ -535,4 +529,114 @@
     .membership-type-price {
         font-size: 1.125rem;
     }
+}
+
+/* ==========================================
+   Payment Method Toggle
+   ========================================== */
+.payment-method-toggle {
+    display: block;
+    gap: 12px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.payment-method-option {
+    flex: 1;
+    min-width: 180px;
+    display: block;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px 12px;
+    border: 2px solid #DEE2E6;
+    border-radius: 8px;
+    background: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: #495057;
+}
+
+.payment-method-option:hover {
+    border-color: #ADB5BD;
+    background: #F8F9FA;
+}
+
+.payment-method-option.active {
+    border-color: #2B7A0B;
+    background: #F7FCF0;
+    box-shadow: 0 0 0 1px #2B7A0B;
+}
+
+.payment-method-icon {
+    font-size: 1.5rem;
+}
+
+.payment-method-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.payment-method-note {
+    font-size: 0.8rem;
+    color: #6C757D;
+}
+
+/* ==========================================
+   Bacs Direct Debit Section
+   ========================================== */
+.payment-section-bacs {
+    margin-bottom: 24px;
+}
+
+.bacs-instruction {
+    font-size: 0.9rem;
+    color: #6C757D;
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    background: #FFF8E1;
+    border-left: 3px solid #FFA000;
+    border-radius: 0 4px 4px 0;
+}
+
+.bacs-mandate-notice {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: #F8F9FA;
+    border: 1px solid #DEE2E6;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: #495057;
+}
+
+.bacs-mandate-notice p {
+    margin: 0 0 8px 0;
+}
+
+.bacs-guarantee {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #DEE2E6;
+}
+
+.bacs-guarantee ul {
+    margin: 6px 0 0 0;
+    padding-left: 18px;
+    font-size: 0.8rem;
+    color: #6C757D;
+}
+
+.bacs-guarantee ul li {
+    margin-bottom: 2px;
+}
+
+.bacs-guarantee strong {
+    color: #212529;
+}
+
+/* Bacs field error style override */
+.bacs-field.input-error {
+    border-color: #D32F2F !important;
+    background: #FFF5F5;
 }

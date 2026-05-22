@@ -1,7 +1,8 @@
 /**
  * Join Now Block - Frontend Script
  *
- * Handles form validation, Stripe card element, and AJAX submission.
+ * Handles form validation, payment method toggle,
+ * Stripe Card Elements, and Bacs Direct Debit via Stripe.
  *
  * @package iHowz Theme
  */
@@ -9,7 +10,6 @@
 (function () {
     'use strict';
 
-    // Find all join-now forms on the page
     document.querySelectorAll('.join-now-form').forEach(function (form) {
         initJoinForm(form);
     });
@@ -18,56 +18,45 @@
         var formId = form.id;
         if (!formId) return;
 
-        // Get localized data
         var dataKey = 'ihowzJoinData_' + formId;
         var config = window[dataKey] || {};
+        var stripe = null;
+        var cardElement = null;
+        var currentMethod = 'card';
 
-        if (!config.stripe_key) {
-            console.warn('iHowz Join Now: Stripe key not configured for form', formId);
-            showMessage(form, 'Payment processing is not configured. Please contact support.', 'error');
-            disableSubmit(form);
-            return;
-        }
+        // ==========================================
+        // Payment Method Toggle (always active)
+        // ==========================================
+        var methodToggle = form.querySelectorAll('.payment-method-option');
+        var cardSection = document.getElementById(formId + '-payment-card');
+        var bacsSection = document.getElementById(formId + '-payment-bacs');
+        var methodInput = document.getElementById(formId + '-payment-method');
 
-        // Initialize Stripe
-        var stripe = Stripe(config.stripe_key);
-        var elements = stripe.elements();
-        var cardElement = elements.create('card', {
-            style: {
-                base: {
-                    fontSize: '16px',
-                    fontFamily: '"Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif',
-                    color: '#263238',
-                    '::placeholder': {
-                        color: '#BDBDBD'
-                    }
-                },
-                invalid: {
-                    color: '#D32F2F',
-                    iconColor: '#D32F2F'
+        methodToggle.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                methodToggle.forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                currentMethod = btn.dataset.method;
+                if (methodInput) methodInput.value = currentMethod;
+
+                if (currentMethod === 'card') {
+                    if (cardSection) cardSection.style.display = '';
+                    if (bacsSection) bacsSection.style.display = 'none';
+                } else {
+                    if (cardSection) cardSection.style.display = 'none';
+                    if (bacsSection) bacsSection.style.display = '';
                 }
-            },
-            hidePostalCode: true
+            });
         });
 
-        var cardContainer = document.getElementById(formId + '-card-element');
-        var cardErrors = document.getElementById(formId + '-card-errors');
-
-        if (cardContainer) {
-            cardElement.mount('#' + formId + '-card-element');
-        }
-
-        cardElement.on('change', function (event) {
-            if (event.error) {
-                cardErrors.textContent = event.error.message;
-            } else {
-                cardErrors.textContent = '';
-            }
-        });
-
-        // Membership type selection
+        // ==========================================
+        // Membership type selection (always active)
+        // ==========================================
         var typeCards = form.querySelectorAll('.membership-type-card');
-        var amountDisplay = document.getElementById(formId + '-payment-amount');
+        var amountDisplays = [
+            document.getElementById(formId + '-payment-amount'),
+            document.getElementById(formId + '-payment-amount-bacs')
+        ];
 
         typeCards.forEach(function (card) {
             card.addEventListener('click', function () {
@@ -93,45 +82,90 @@
             });
 
             var selectedCard = form.querySelector('.membership-type-card.selected');
-            if (selectedCard && amountDisplay) {
+            if (selectedCard) {
                 var price = parseFloat(selectedCard.dataset.price || 0);
-                amountDisplay.textContent = '£' + price.toFixed(2);
+                var formatted = '\u00a3' + price.toFixed(2);
+                amountDisplays.forEach(function (el) {
+                    if (el) el.textContent = formatted;
+                });
             }
         }
-
-        // Initial selection
         updateSelection();
 
-        // Form submission
+        // ==========================================
+        // Stripe-dependent setup (bail gracefully if no key)
+        // ==========================================
+        if (!config.stripe_key) {
+            console.warn('iHowz Join Now: Stripe key not configured for form', formId);
+            showMessage(form, 'Payment processing is not configured. Please contact support.', 'error');
+            disableSubmit(form);
+            return;
+        }
+
+        stripe = Stripe(config.stripe_key);
+
+        // Card Elements
+        var elements = stripe.elements();
+        var cardContainer = document.getElementById(formId + '-card-element');
+        var cardErrors = document.getElementById(formId + '-card-errors');
+
+        if (cardContainer) {
+            cardElement = elements.create('card', {
+                style: {
+                    base: {
+                        fontSize: '16px',
+                        fontFamily: '"Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif',
+                        color: '#263238',
+                        '::placeholder': { color: '#BDBDBD' }
+                    },
+                    invalid: { color: '#D32F2F', iconColor: '#D32F2F' }
+                },
+                hidePostalCode: true
+            });
+            cardElement.mount('#' + formId + '-card-element');
+            cardElement.on('change', function (event) {
+                if (event.error) {
+                    cardErrors.textContent = event.error.message;
+                } else {
+                    cardErrors.textContent = '';
+                }
+            });
+        }
+
+        // ==========================================
+        // Form Submission
+        // ==========================================
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             clearMessages(form);
 
-            if (!validateForm(form)) {
-                return;
-            }
+            if (!validateForm(form)) return;
 
             setLoading(form, true);
 
-            // Step 1: Create payment intent via AJAX
+            if (currentMethod === 'bacs_debit' && config.bacs_debit_enabled) {
+                submitBacsFlow(form, stripe, config);
+            } else {
+                submitCardFlow(form, stripe, config, cardElement);
+            }
+        });
+
+        // ==========================================
+        // CARD FLOW
+        // ==========================================
+        function submitCardFlow(form, stripe, config, cardElement) {
             var formData = new FormData(form);
             formData.append('action', 'ihowz_create_join_intent');
             formData.append('nonce', config.nonce);
 
-            fetch(config.ajax_url, {
-                method: 'POST',
-                body: formData
-            })
-            .then(function (response) { return response.json(); })
+            fetch(config.ajax_url, { method: 'POST', body: formData })
+            .then(function (r) { return r.json(); })
             .then(function (result) {
                 if (!result.success) {
-                    throw new Error(result.data?.message || 'Failed to initialize payment.');
+                    throw new Error(result.data && result.data.message ? result.data.message : 'Failed to initialise payment.');
                 }
 
-                var clientSecret = result.data.client_secret;
-
-                // Step 2: Confirm card payment with Stripe
-                return stripe.confirmCardPayment(clientSecret, {
+                return stripe.confirmCardPayment(result.data.client_secret, {
                     payment_method: {
                         card: cardElement,
                         billing_details: {
@@ -141,50 +175,32 @@
                             address: {
                                 line1: formData.get('address'),
                                 city: formData.get('town'),
-                                postal_code: formData.get('postcode')
+                                postal_code: formData.get('postcode'),
+                                country: 'GB'
                             }
                         }
                     }
+                }).then(function (stripeResult) {
+                    if (stripeResult.error) throw new Error(stripeResult.error.message);
+                    if (stripeResult.paymentIntent.status !== 'succeeded') {
+                        throw new Error('Payment was not successful. Please try again.');
+                    }
+
+                    var confirmData = new FormData(form);
+                    confirmData.append('action', 'ihowz_confirm_join_payment');
+                    confirmData.append('nonce', config.nonce);
+                    confirmData.append('payment_intent_id', stripeResult.paymentIntent.id);
+                    confirmData.append('stripe_payment_method_id', stripeResult.paymentIntent.payment_method);
+
+                    return fetch(config.ajax_url, { method: 'POST', body: confirmData })
+                        .then(function (r) { return r.json(); });
                 });
             })
-            .then(function (stripeResult) {
-                if (stripeResult.error) {
-                    throw new Error(stripeResult.error.message);
-                }
-
-                if (stripeResult.paymentIntent.status !== 'succeeded') {
-                    throw new Error('Payment was not successful. Please try again.');
-                }
-
-                // Step 3: Confirm signup on server
-                var confirmData = new FormData(form);
-                confirmData.append('action', 'ihowz_confirm_join_payment');
-                confirmData.append('nonce', config.nonce);
-                confirmData.append('payment_intent_id', stripeResult.paymentIntent.id);
-
-                return fetch(config.ajax_url, {
-                    method: 'POST',
-                    body: confirmData
-                });
-            })
-            .then(function (response) { return response.json(); })
             .then(function (confirmResult) {
                 if (!confirmResult.success) {
-                    throw new Error(confirmResult.data?.message || 'Failed to complete signup.');
+                    throw new Error(confirmResult.data && confirmResult.data.message ? confirmResult.data.message : 'Failed to complete signup.');
                 }
-
-                // Success
-                showMessage(form, config.success_message || 'Thank you for joining iHowz! Your membership is now active.', 'success');
-                form.reset();
-                updateSelection();
-                cardElement.clear();
-
-                // Redirect if provided
-                if (confirmResult.data?.redirect_url) {
-                    setTimeout(function () {
-                        window.location.href = confirmResult.data.redirect_url;
-                    }, 2000);
-                }
+                handleSuccess(form, config, confirmResult);
             })
             .catch(function (error) {
                 showMessage(form, error.message, 'error');
@@ -192,21 +208,110 @@
             .finally(function () {
                 setLoading(form, false);
             });
-        });
+        }
+
+        // ==========================================
+        // BACS DIRECT DEBIT FLOW
+        // ==========================================
+        function submitBacsFlow(form, stripe, config) {
+            var formData = new FormData(form);
+            formData.append('action', 'ihowz_create_join_bacs_intent');
+            formData.append('nonce', config.nonce);
+
+            fetch(config.ajax_url, { method: 'POST', body: formData })
+            .then(function (r) { return r.json(); })
+            .then(function (result) {
+                if (!result.success) {
+                    throw new Error(result.data && result.data.message ? result.data.message : 'Failed to set up Direct Debit.');
+                }
+
+                var clientSecret = result.data.client_secret;
+                var setupIntentId = result.data.setup_intent_id;
+
+                var sortCode = document.getElementById(formId + '-sort-code').value.replace(/[^0-9]/g, '');
+                var accountNumber = document.getElementById(formId + '-account-number').value.replace(/[^0-9]/g, '');
+                var accountName = document.getElementById(formId + '-account-name').value.trim();
+
+                return stripe.createPaymentMethod({
+                    type: 'bacs_debit',
+                    bacs_debit: { sort_code: sortCode, account_number: accountNumber },
+                    billing_details: {
+                        name: accountName || (formData.get('first_name') + ' ' + formData.get('last_name')),
+                        email: formData.get('email'),
+                        address: {
+                            line1: formData.get('address'),
+                            city: formData.get('town'),
+                            postal_code: formData.get('postcode'),
+                        country: 'GB'
+                        }
+                    }
+                }).then(function (pmResult) {
+                    if (pmResult.error) throw new Error(pmResult.error.message);
+
+                    var paymentMethodId = pmResult.paymentMethod.id;
+
+                    return stripe.confirmBacsDebitSetup(clientSecret, {
+                        payment_method: paymentMethodId
+                    }).then(function (setupResult) {
+                        if (setupResult.error) throw new Error(setupResult.error.message);
+
+                        var confirmData = new FormData(form);
+                        confirmData.append('action', 'ihowz_confirm_join_bacs_payment');
+                        confirmData.append('nonce', config.nonce);
+                        confirmData.append('setup_intent_id', setupIntentId);
+                        confirmData.append('payment_method_id', paymentMethodId);
+
+                        return fetch(config.ajax_url, { method: 'POST', body: confirmData })
+                            .then(function (r) { return r.json(); });
+                    });
+                });
+            })
+            .then(function (confirmResult) {
+                if (!confirmResult.success) {
+                    throw new Error(confirmResult.data && confirmResult.data.message ? confirmResult.data.message : 'Failed to complete Direct Debit setup.');
+                }
+                handleSuccess(form, config, confirmResult);
+            })
+            .catch(function (error) {
+                showMessage(form, error.message, 'error');
+            })
+            .finally(function () {
+                setLoading(form, false);
+            });
+        }
+
+        function handleSuccess(form, config, confirmResult) {
+            showMessage(form, config.success_message || 'Thank you for joining iHowz! Your membership is now active.', 'success');
+            form.reset();
+            updateSelection();
+            if (cardElement) cardElement.clear();
+
+            if (confirmResult.data && confirmResult.data.redirect_url) {
+                setTimeout(function () {
+                    window.location.href = confirmResult.data.redirect_url;
+                }, 2000);
+            }
+        }
     }
 
+    // ==========================================
+    // Validation (shared)
+    // ==========================================
     function validateForm(form) {
         var valid = true;
-        var requiredFields = form.querySelectorAll('[required]');
+        var activeToggle = form.querySelector('.payment-method-option.active');
+        var currentMethod = activeToggle ? activeToggle.dataset.method : 'card';
 
-        requiredFields.forEach(function (field) {
+        form.querySelectorAll('[required]').forEach(function (field) {
+            // Skip required bacs fields when card is selected, and vice versa
+            if (currentMethod === 'card' && field.closest('.payment-section-bacs')) return;
+            if (currentMethod === 'bacs_debit' && field.closest('.payment-section-card')) return;
+
             field.classList.remove('input-error');
-
             if (!field.value.trim()) {
                 field.classList.add('input-error');
                 valid = false;
             }
-
             if (field.type === 'email' && field.value) {
                 var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(field.value)) {
@@ -216,7 +321,6 @@
             }
         });
 
-        // Password match
         var password = form.querySelector('input[name="password"]');
         var passwordConfirm = form.querySelector('input[name="password_confirm"]');
         if (password && passwordConfirm) {
@@ -232,22 +336,41 @@
             }
         }
 
-        // Terms checkbox
         var terms = form.querySelector('input[name="terms_accepted"]');
         if (terms && !terms.checked) {
             showMessage(form, 'Please accept the Terms & Conditions and Privacy Policy.', 'error');
             valid = false;
         }
 
-        // Membership type selected
         var membershipType = form.querySelector('input[name="membership_type_id"]:checked');
         if (!membershipType) {
             showMessage(form, 'Please select a membership type.', 'error');
             valid = false;
         }
 
+        if (currentMethod === 'bacs_debit') {
+            var sortCode = document.getElementById(form.id + '-sort-code');
+            var accountNumber = document.getElementById(form.id + '-account-number');
+            var accountName = document.getElementById(form.id + '-account-name');
+
+            if (!sortCode || !sortCode.value.replace(/[^0-9]/g, '').match(/^\d{6}$/)) {
+                if (sortCode) sortCode.classList.add('input-error');
+                showMessage(form, 'Please enter a valid sort code (6 digits).', 'error');
+                valid = false;
+            }
+            if (!accountNumber || !accountNumber.value.replace(/[^0-9]/g, '').match(/^\d{6,8}$/)) {
+                if (accountNumber) accountNumber.classList.add('input-error');
+                showMessage(form, 'Please enter a valid account number (6-8 digits).', 'error');
+                valid = false;
+            }
+            if (!accountName || accountName.value.trim().length < 2) {
+                if (accountName) accountName.classList.add('input-error');
+                showMessage(form, 'Please enter the account holder name.', 'error');
+                valid = false;
+            }
+        }
+
         if (!valid) {
-            // Scroll to first error
             var firstError = form.querySelector('.input-error');
             if (firstError) {
                 firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -261,10 +384,8 @@
     function setLoading(form, loading) {
         var submitBtn = form.querySelector('.join-now-submit-btn');
         if (!submitBtn) return;
-
         var btnText = submitBtn.querySelector('.btn-text');
         var btnSpinner = submitBtn.querySelector('.btn-spinner');
-
         submitBtn.disabled = loading;
         if (btnText) btnText.style.display = loading ? 'none' : 'inline';
         if (btnSpinner) btnSpinner.style.display = loading ? 'inline-flex' : 'none';
@@ -281,20 +402,10 @@
     function showMessage(form, message, type) {
         var messagesContainer = form.querySelector('.join-now-messages');
         if (!messagesContainer) return;
-
         var messageEl = document.createElement('div');
         messageEl.className = 'join-now-message join-now-message-' + type;
         messageEl.textContent = message;
         messagesContainer.appendChild(messageEl);
-
-        // Auto-remove info messages, keep error/success
-        if (type === 'info') {
-            setTimeout(function () {
-                messageEl.remove();
-            }, 5000);
-        }
-
-        // Scroll to message if error
         if (type === 'error') {
             messagesContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
@@ -302,11 +413,7 @@
 
     function clearMessages(form) {
         var messagesContainer = form.querySelector('.join-now-messages');
-        if (messagesContainer) {
-            messagesContainer.innerHTML = '';
-        }
-
-        // Clear input errors
+        if (messagesContainer) messagesContainer.innerHTML = '';
         form.querySelectorAll('.input-error').forEach(function (el) {
             el.classList.remove('input-error');
         });

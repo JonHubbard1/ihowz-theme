@@ -27,7 +27,7 @@ $membership_types = array();
 if (function_exists('IHowz_Membership_Module') || class_exists('IHowz_Membership_Module')) {
     global $wpdb;
     $membership_types = $wpdb->get_results(
-        "SELECT id, name, slug, price, duration_months, description, benefits FROM {$wpdb->prefix}ihowz_membership_types WHERE is_active = 1 ORDER BY price ASC"
+        "SELECT id, name, slug, price, duration_months, description, benefits FROM {$wpdb->prefix}ihowz_membership_types WHERE is_active = 1 AND is_join_visible = 1 ORDER BY price ASC"
     );
 }
 
@@ -52,6 +52,9 @@ $stripe_publishable_key = $stripe_mode === 'live'
     ? get_option('ihowz_stripe_live_publishable_key', '')
     : get_option('ihowz_stripe_test_publishable_key', '');
 
+// Bacs Direct Debit flag (via Stripe)
+$bacs_debit_enabled = get_option('ihowz_bacs_debit_enabled', true);
+
 // Localize data for frontend JS
 $join_data = array(
     'ajax_url' => admin_url('admin-ajax.php'),
@@ -60,6 +63,7 @@ $join_data = array(
     'stripe_mode' => $stripe_mode,
     'form_id' => $form_id,
     'success_message' => $success_message,
+    'bacs_debit_enabled' => $bacs_debit_enabled,
     'membership_types' => array_map(function($type) {
         return array(
             'id' => $type->id,
@@ -104,9 +108,7 @@ if ($stripe_publishable_key && !wp_script_is('stripe-js', 'enqueued')) {
                 <!-- Membership Type Selection -->
                 <?php if (!empty($membership_types)) : ?>
                     <div class="join-now-field join-now-field-full">
-                        <label for="<?php echo esc_attr($form_id); ?>-membership-type">
-                            <?php _e('Membership Type', 'ihowz-theme'); ?> <span class="required">*</span>
-                        </label>
+                        <label><?php _e('Membership Type', 'ihowz-theme'); ?> <span class="required">*</span></label>
                         <div class="membership-type-options">
                             <?php foreach ($membership_types as $index => $type) : ?>
                                 <?php
@@ -144,6 +146,84 @@ if ($stripe_publishable_key && !wp_script_is('stripe-js', 'enqueued')) {
                             <?php endforeach; ?>
                         </div>
                     </div>
+                <?php endif; ?>
+
+                <!-- Payment Method Selector -->
+                <?php if ($bacs_debit_enabled) : ?>
+                <div class="join-now-field join-now-field-full">
+                    <label><?php _e('Payment Method', 'ihowz-theme'); ?> <span class="required">*</span></label>
+                    <div class="payment-method-toggle">
+                        <button type="button" class="payment-method-option active" data-method="card">
+                            <span class="payment-method-icon">&#x1f4b3;</span>
+                            <span class="payment-method-label"><?php _e('Credit / Debit Card', 'ihowz-theme'); ?></span>
+                        </button>
+                        <button type="button" class="payment-method-option" data-method="bacs_debit">
+                            <span class="payment-method-icon">&#x1f3e6;</span>
+                            <span class="payment-method-label"><?php _e('Direct Debit', 'ihowz-theme'); ?></span>
+                            <span class="payment-method-note"><?php _e('Pay directly from your bank account', 'ihowz-theme'); ?></span>
+                        </button>
+                    </div>
+                    <input type="hidden" name="payment_method_type" id="<?php echo esc_attr($form_id); ?>-payment-method" value="card">
+                </div>
+                <?php endif; ?>
+
+                <!-- Card Payment Section -->
+                <div class="payment-section payment-section-card" id="<?php echo esc_attr($form_id); ?>-payment-card">
+                    <div class="join-now-payment-section">
+                        <div class="join-now-payment-summary">
+                            <span class="payment-label"><?php _e('Total to pay:', 'ihowz-theme'); ?></span>
+                            <span class="payment-amount" id="<?php echo esc_attr($form_id); ?>-payment-amount">&pound;0.00</span>
+                        </div>
+                        <?php if ($stripe_publishable_key) : ?>
+                        <div class="join-now-field join-now-field-full">
+                            <label><?php _e('Card Details', 'ihowz-theme'); ?></label>
+                            <div id="<?php echo esc_attr($form_id); ?>-card-element" class="stripe-card-element">
+                                <!-- Stripe Element will be mounted here -->
+                            </div>
+                            <div id="<?php echo esc_attr($form_id); ?>-card-errors" class="stripe-card-errors" role="alert"></div>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <!-- Bacs Direct Debit Section -->
+                <?php if ($bacs_debit_enabled && $stripe_publishable_key) : ?>
+                <div class="payment-section payment-section-bacs" id="<?php echo esc_attr($form_id); ?>-payment-bacs" style="display:none;">
+                    <div class="join-now-payment-section">
+                        <div class="join-now-payment-summary">
+                            <span class="payment-label"><?php _e('Total to pay:', 'ihowz-theme'); ?></span>
+                            <span class="payment-amount" id="<?php echo esc_attr($form_id); ?>-payment-amount-bacs">&pound;0.00</span>
+                        </div>
+                        <p class="bacs-instruction"><?php _e('Enter your bank details to set up a Direct Debit. Your payment will be processed within 3 working days.', 'ihowz-theme'); ?></p>
+                        <div class="join-now-field-group">
+                            <div class="join-now-field">
+                                <label><?php _e('Sort Code', 'ihowz-theme'); ?> <span class="required">*</span></label>
+                                <input type="text" id="<?php echo esc_attr($form_id); ?>-sort-code" class="join-now-input bacs-field" placeholder="12-34-56" maxlength="8" autocomplete="off">
+                            </div>
+                            <div class="join-now-field">
+                                <label><?php _e('Account Number', 'ihowz-theme'); ?> <span class="required">*</span></label>
+                                <input type="text" id="<?php echo esc_attr($form_id); ?>-account-number" class="join-now-input bacs-field" placeholder="12345678" maxlength="8" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="join-now-field join-now-field-full">
+                            <label><?php _e('Account Holder Name', 'ihowz-theme'); ?> <span class="required">*</span></label>
+                            <input type="text" id="<?php echo esc_attr($form_id); ?>-account-name" class="join-now-input bacs-field" placeholder="<?php esc_attr_e('Name on bank account', 'ihowz-theme'); ?>" autocomplete="off">
+                        </div>
+                        <div id="<?php echo esc_attr($form_id); ?>-bacs-errors" class="stripe-card-errors" role="alert"></div>
+                        <div class="bacs-mandate-notice">
+                            <p><?php _e('By submitting this form you authorise iHowz to send instructions to your bank to debit your account. Your Direct Debit will be collected on or shortly after the anniversary of your membership.', 'ihowz-theme'); ?></p>
+                            <div class="bacs-guarantee">
+                                <strong><?php _e('The Direct Debit Guarantee', 'ihowz-theme'); ?></strong>
+                                <ul>
+                                    <li><?php _e('This Guarantee is offered by all banks and building societies', 'ihowz-theme'); ?></li>
+                                    <li><?php _e('If the amounts to be paid or the payment dates change, you will be notified in advance', 'ihowz-theme'); ?></li>
+                                    <li><?php _e('You can cancel a Direct Debit at any time by contacting your bank', 'ihowz-theme'); ?></li>
+                                    <li><?php _e('If an error is made, your bank must refund you immediately', 'ihowz-theme'); ?></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <?php endif; ?>
 
                 <!-- Personal Details -->
@@ -299,24 +379,6 @@ if ($stripe_publishable_key && !wp_script_is('stripe-js', 'enqueued')) {
                             <a href="/privacy-policy/" target="_blank"><?php _e('Privacy Policy', 'ihowz-theme'); ?></a>
                         </span>
                     </label>
-                </div>
-
-                <!-- Payment Section -->
-                <div class="join-now-payment-section">
-                    <h3 class="join-now-payment-heading"><?php _e('Payment Details', 'ihowz-theme'); ?></h3>
-                    <div class="join-now-payment-summary">
-                        <span class="payment-label"><?php _e('Total to pay:', 'ihowz-theme'); ?></span>
-                        <span class="payment-amount" id="<?php echo esc_attr($form_id); ?>-payment-amount">&pound;0.00</span>
-                    </div>
-
-                    <!-- Stripe Card Element -->
-                    <div class="join-now-field join-now-field-full">
-                        <label><?php _e('Card Details', 'ihowz-theme'); ?></label>
-                        <div id="<?php echo esc_attr($form_id); ?>-card-element" class="stripe-card-element">
-                            <!-- Stripe Element will be mounted here -->
-                        </div>
-                        <div id="<?php echo esc_attr($form_id); ?>-card-errors" class="stripe-card-errors" role="alert"></div>
-                    </div>
                 </div>
 
                 <!-- Submit Button -->
