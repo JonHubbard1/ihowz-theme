@@ -78,7 +78,7 @@
                                     </form>
                                 </div>
                             </div>
-                            <a href="/join" class="button header-join-today">Join Today</a>
+                            <a href="<?php echo esc_url(home_url("/join-now/")); ?>" class="button header-join-today">Join Today</a>
                         <?php endif; ?>
                     </div>
                 </div>

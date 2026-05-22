@@ -1,0 +1,538 @@
+/**
+ * Join Now Block - Frontend Styles
+ *
+ * @package iHowz Theme
+ */
+
+/* ==========================================================================
+   Block Container
+   ========================================================================== */
+
+.wp-block-ihowz-join-now,
+.ihowz-join-now {
+    width: 90%;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 60px 20px;
+    border-radius: 16px;
+    font-family: var(--primary-font, "Mona Sans", sans-serif);
+}
+
+.wp-block-ihowz-join-now.alignfull,
+.ihowz-join-now.alignfull {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    border-radius: 0;
+}
+
+.wp-block-ihowz-join-now.alignwide,
+.ihowz-join-now.alignwide {
+    max-width: 1200px;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.join-now-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.join-now-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.join-now-eyebrow {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--primary-green, #9FC045);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.join-now-heading {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--primary-charcoal, #263238);
+    line-height: 1.2;
+    margin: 0 0 16px 0;
+}
+
+.join-now-description {
+    font-size: clamp(0.9375rem, 1.1vw, 1.125rem);
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--neutral-gray, #757575);
+    margin: 0;
+}
+
+/* ==========================================================================
+   Form Layout
+   ========================================================================== */
+
+.join-now-form-wrapper {
+    background: var(--background-pure-white, #FFFFFF);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(38, 50, 56, 0.08);
+    border: 1px solid #F0F0F0;
+    padding: 40px;
+}
+
+.join-now-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.join-now-field-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.join-now-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.join-now-field-full {
+    grid-column: 1 / -1;
+}
+
+/* ==========================================================================
+   Labels & Inputs
+   ========================================================================== */
+
+.join-now-field label {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--primary-charcoal, #263238);
+}
+
+.join-now-field label .required {
+    color: var(--error-red, #D32F2F);
+}
+
+.join-now-input {
+    height: 56px;
+    padding: 16px;
+    border: 1px solid var(--neutral-gray, #757575);
+    border-radius: 8px;
+    background: var(--background-pure-white, #FFFFFF);
+    color: var(--primary-charcoal, #263238);
+    font-family: var(--primary-font, "Mona Sans", sans-serif);
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+}
+
+.join-now-input::placeholder {
+    color: var(--light-gray, #BDBDBD);
+}
+
+.join-now-input:focus {
+    outline: none;
+    border: 2px solid var(--primary-green, #9FC045);
+    box-shadow: 0 0 0 3px rgba(159, 192, 69, 0.15);
+}
+
+.join-now-input:invalid:not(:placeholder-shown) {
+    border-color: var(--error-red, #D32F2F);
+}
+
+.join-now-input.input-error {
+    border-color: var(--error-red, #D32F2F) !important;
+    background-color: #FFEBEE;
+}
+
+/* ==========================================================================
+   Membership Type Cards
+   ========================================================================== */
+
+.membership-type-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.membership-type-card {
+    position: relative;
+    padding: 20px;
+    border: 2px solid #E0E0E0;
+    border-radius: 12px;
+    background: var(--background-pure-white, #FFFFFF);
+    cursor: pointer;
+    transition: all 0.25s ease-out;
+}
+
+.membership-type-card:hover {
+    border-color: var(--secondary-sage-green, #C8E085);
+    box-shadow: 0 2px 8px rgba(38, 50, 56, 0.06);
+}
+
+.membership-type-card.selected {
+    border-color: var(--primary-green, #9FC045);
+    background: var(--secondary-light-green, #F4F9E8);
+    box-shadow: 0 4px 16px rgba(159, 192, 69, 0.15);
+}
+
+.membership-type-card input[type="radio"] {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    accent-color: var(--primary-green, #9FC045);
+    cursor: pointer;
+}
+
+.membership-type-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    padding-right: 36px;
+}
+
+.membership-type-name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--primary-charcoal, #263238);
+}
+
+.membership-type-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--success-green, #388E3C);
+}
+
+.membership-type-desc {
+    font-size: 0.9375rem;
+    color: var(--neutral-gray, #757575);
+    line-height: 1.5;
+    margin: 0 0 12px 0;
+}
+
+.membership-type-benefits {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.membership-type-benefits li {
+    font-size: 0.875rem;
+    color: var(--neutral-gray, #757575);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.membership-type-benefits li::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239FC045' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Checkbox (Terms)
+   ========================================================================== */
+
+.join-now-checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.9375rem;
+    color: var(--neutral-gray, #757575);
+    cursor: pointer;
+    line-height: 1.5;
+}
+
+.join-now-checkbox-label input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    accent-color: var(--primary-green, #9FC045);
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.join-now-checkbox-label a {
+    color: var(--primary-green, #9FC045);
+    text-decoration: underline;
+}
+
+.join-now-checkbox-label a:hover {
+    color: var(--secondary-forest-green, #5F8422);
+}
+
+/* ==========================================================================
+   Payment Section
+   ========================================================================== */
+
+.join-now-payment-section {
+    padding-top: 24px;
+    border-top: 1px solid #E0E0E0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.join-now-payment-heading {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--primary-charcoal, #263238);
+    margin: 0;
+}
+
+.join-now-payment-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: var(--secondary-light-green, #F4F9E8);
+    border-radius: 8px;
+}
+
+.payment-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--primary-charcoal, #263238);
+}
+
+.payment-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--success-green, #388E3C);
+}
+
+/* Stripe Card Element */
+.stripe-card-element {
+    padding: 16px;
+    border: 1px solid var(--neutral-gray, #757575);
+    border-radius: 8px;
+    background: var(--background-pure-white, #FFFFFF);
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stripe-card-element.StripeElement--focus {
+    border: 2px solid var(--primary-green, #9FC045);
+    box-shadow: 0 0 0 3px rgba(159, 192, 69, 0.15);
+    outline: none;
+}
+
+.stripe-card-element.StripeElement--invalid {
+    border-color: var(--error-red, #D32F2F);
+}
+
+.stripe-card-errors {
+    font-size: 0.875rem;
+    color: var(--error-red, #D32F2F);
+    margin-top: 8px;
+    min-height: 20px;
+}
+
+/* ==========================================================================
+   Submit Button
+   ========================================================================== */
+
+.join-now-submit-wrapper {
+    text-align: center;
+    padding-top: 8px;
+}
+
+.join-now-submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 40px;
+    font-family: var(--primary-font, "Mona Sans", sans-serif);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--accent-gold, #FF8F00);
+    color: #fff;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease-out;
+    min-width: 280px;
+    box-shadow: 0 4px 12px rgba(255, 143, 0, 0.3);
+}
+
+.join-now-submit-btn:hover {
+    background: #e67e00;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 143, 0, 0.4);
+}
+
+.join-now-submit-btn:disabled {
+    background: var(--light-gray, #BDBDBD);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.join-now-submit-btn .btn-spinner {
+    display: inline-flex;
+    align-items: center;
+}
+
+.spinner-icon {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   Messages
+   ========================================================================== */
+
+.join-now-messages {
+    min-height: 0;
+    transition: all 0.3s ease;
+}
+
+.join-now-message {
+    padding: 16px 20px;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    margin-top: 16px;
+}
+
+.join-now-message-success {
+    background: #E8F5E9;
+    border: 1px solid #A5D6A7;
+    color: var(--success-green, #388E3C);
+}
+
+.join-now-message-error {
+    background: #FFEBEE;
+    border: 1px solid #EF9A9A;
+    color: var(--error-red, #D32F2F);
+}
+
+.join-now-message-info {
+    background: #E3F2FD;
+    border: 1px solid #90CAF9;
+    color: var(--accent-blue, #1976D2);
+}
+
+/* ==========================================================================
+   Widget Context Adjustments
+   ========================================================================== */
+
+.in-widget .join-now-form-wrapper {
+    padding: 24px;
+}
+
+.in-widget .join-now-field-group {
+    grid-template-columns: 1fr;
+}
+
+.in-widget .join-now-header {
+    margin-bottom: 24px;
+}
+
+.in-widget .join-now-heading {
+    font-size: 1.5rem;
+}
+
+.in-widget .membership-type-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.in-widget .join-now-submit-btn {
+    min-width: 100%;
+    width: 100%;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .wp-block-ihowz-join-now,
+    .ihowz-join-now {
+        padding: 40px 16px;
+    }
+
+    .join-now-form-wrapper {
+        padding: 24px;
+    }
+
+    .join-now-field-group {
+        grid-template-columns: 1fr;
+    }
+
+    .join-now-payment-summary {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+
+    .join-now-submit-btn {
+        min-width: 100%;
+        width: 100%;
+    }
+
+    .membership-type-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+}
+
+@media (max-width: 540px) {
+    .join-now-container {
+        max-width: 100%;
+    }
+
+    .join-now-header {
+        margin-bottom: 24px;
+    }
+
+    .join-now-heading {
+        font-size: 1.5rem;
+    }
+
+    .membership-type-card {
+        padding: 16px;
+    }
+
+    .membership-type-name {
+        font-size: 1rem;
+    }
+
+    .membership-type-price {
+        font-size: 1.125rem;
+    }
+}

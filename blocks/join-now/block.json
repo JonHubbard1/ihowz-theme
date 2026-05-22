@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "ihowz/join-now",
+    "version": "1.0.0",
+    "title": "Join Now",
+    "category": "ihowz-blocks",
+    "icon": "groups",
+    "description": "A membership signup form with Stripe payment integration.",
+    "keywords": ["join", "signup", "membership", "register", "stripe"],
+    "textdomain": "ihowz-theme",
+    "attributes": {
+        "eyebrowText": {
+            "type": "string",
+            "default": "Become a Member"
+        },
+        "heading": {
+            "type": "string",
+            "default": "Join iHowz Today"
+        },
+        "description": {
+            "type": "string",
+            "default": "Join our community of landlords and property professionals."
+        },
+        "membershipTypeId": {
+            "type": "string",
+            "default": ""
+        },
+        "backgroundColor": {
+            "type": "string",
+            "default": "#F7FCF0"
+        },
+        "showPricing": {
+            "type": "boolean",
+            "default": true
+        },
+        "successMessage": {
+            "type": "string",
+            "default": "Thank you for joining iHowz! Your membership is now active."
+        }
+    },
+    "supports": {
+        "inserter": true,
+        "html": false,
+        "align": ["wide", "full"],
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "editorStyle": "ihowz-join-now-style",
+    "style": "ihowz-join-now-style",
+    "render": "file:./render.php"
+}

@@ -1089,6 +1089,39 @@ function ihowz_register_blocks() {
         'style' => 'ihowz-news-headlines-style',
         'editor_style' => 'ihowz-news-headlines-editor-style',
     ));
+
+    // Join Now block
+    $jn_version = '1.0.' . filemtime(get_template_directory() . '/blocks/join-now/style.css');
+
+    wp_register_script(
+        'ihowz-join-now-editor',
+        get_template_directory_uri() . '/blocks/join-now/index.js',
+        array('wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-server-side-render', 'wp-i18n'),
+        $jn_version,
+        true
+    );
+
+    wp_register_script(
+        'ihowz-join-now-frontend',
+        get_template_directory_uri() . '/blocks/join-now/script.js',
+        array('jquery'),
+        $jn_version,
+        true
+    );
+
+    wp_register_style(
+        'ihowz-join-now-style',
+        get_template_directory_uri() . '/blocks/join-now/style.css',
+        array(),
+        $jn_version
+    );
+
+    register_block_type(get_template_directory() . '/blocks/join-now', array(
+        'editor_script' => 'ihowz-join-now-editor',
+        'view_script' => 'ihowz-join-now-frontend',
+        'style' => 'ihowz-join-now-style',
+        'editor_style' => 'ihowz-join-now-style',
+    ));
 }
 add_action('init', 'ihowz_register_blocks');
 
