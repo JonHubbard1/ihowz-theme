@@ -298,7 +298,7 @@ if ($stripe_publishable_key && !wp_script_is('stripe-js', 'enqueued')) {
                 <!-- Address -->
                 <div class="join-now-field join-now-field-full">
                     <label for="<?php echo esc_attr($form_id); ?>-address">
-                        <?php _e('Address', 'ihowz-theme'); ?> <span class="required">*</span>
+                        <?php _e('Address Line 1', 'ihowz-theme'); ?> <span class="required">*</span>
                     </label>
                     <input type="text"
                            id="<?php echo esc_attr($form_id); ?>-address"
@@ -307,6 +307,30 @@ if ($stripe_publishable_key && !wp_script_is('stripe-js', 'enqueued')) {
                            placeholder="<?php esc_attr_e('Street address', 'ihowz-theme'); ?>"
                            required
                            autocomplete="street-address">
+                </div>
+
+                <div class="join-now-field join-now-field-full">
+                    <label for="<?php echo esc_attr($form_id); ?>-address2">
+                        <?php _e('Address Line 2', 'ihowz-theme'); ?>
+                    </label>
+                    <input type="text"
+                           id="<?php echo esc_attr($form_id); ?>-address2"
+                           name="address2"
+                           class="join-now-input"
+                           placeholder="<?php esc_attr_e('Flat, floor, building (optional)', 'ihowz-theme'); ?>"
+                           autocomplete="address-line2">
+                </div>
+
+                <div class="join-now-field join-now-field-full">
+                    <label for="<?php echo esc_attr($form_id); ?>-address3">
+                        <?php _e('Address Line 3', 'ihowz-theme'); ?>
+                    </label>
+                    <input type="text"
+                           id="<?php echo esc_attr($form_id); ?>-address3"
+                           name="address3"
+                           class="join-now-input"
+                           placeholder="<?php esc_attr_e('District, neighbourhood (optional)', 'ihowz-theme'); ?>"
+                           autocomplete="address-line3">
                 </div>
 
                 <div class="join-now-field-group">
@@ -324,6 +348,20 @@ if ($stripe_publishable_key && !wp_script_is('stripe-js', 'enqueued')) {
                     </div>
 
                     <div class="join-now-field">
+                        <label for="<?php echo esc_attr($form_id); ?>-county">
+                            <?php _e('County', 'ihowz-theme'); ?>
+                        </label>
+                        <input type="text"
+                               id="<?php echo esc_attr($form_id); ?>-county"
+                               name="county"
+                               class="join-now-input"
+                               placeholder="<?php esc_attr_e('e.g. Wiltshire', 'ihowz-theme'); ?>"
+                               autocomplete="address-level1">
+                    </div>
+                </div>
+
+                <div class="join-now-field-group">
+                    <div class="join-now-field">
                         <label for="<?php echo esc_attr($form_id); ?>-postcode">
                             <?php _e('Postcode', 'ihowz-theme'); ?> <span class="required">*</span>
                         </label>
@@ -334,6 +372,18 @@ if ($stripe_publishable_key && !wp_script_is('stripe-js', 'enqueued')) {
                                placeholder="<?php esc_attr_e('e.g. SW1A 1AA', 'ihowz-theme'); ?>"
                                required
                                autocomplete="postal-code">
+                    </div>
+
+                    <div class="join-now-field">
+                        <label for="<?php echo esc_attr($form_id); ?>-country">
+                            <?php _e('Country', 'ihowz-theme'); ?>
+                        </label>
+                        <input type="text"
+                               id="<?php echo esc_attr($form_id); ?>-country"
+                               name="country"
+                               class="join-now-input"
+                               value="<?php esc_attr_e('United Kingdom', 'ihowz-theme'); ?>"
+                               autocomplete="country-name">
                     </div>
                 </div>
 
