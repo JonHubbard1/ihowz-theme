@@ -419,7 +419,7 @@
 
 /* Ensure dropdowns don't overflow viewport */
 @media (min-width: 1024px) {
-    .main-navigation li:nth-last-child(-n+2) .sub-menu:not(.megamenu-dropdown) {
+    .main-navigation > ul > li:nth-last-child(-n+2) > .sub-menu:not(.megamenu-dropdown) {
         left: auto;
         right: 0;
     }

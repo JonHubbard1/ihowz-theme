@@ -64,7 +64,7 @@ add_action('after_setup_theme', 'ihowz_theme_setup');
  * Enqueue scripts and styles
  */
 function ihowz_theme_scripts() {
-    $theme_version = '1.4.4';
+    $theme_version = '1.4.7';
 
     // Main stylesheet (base styles, variables, fonts, reset)
     wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), $theme_version);
