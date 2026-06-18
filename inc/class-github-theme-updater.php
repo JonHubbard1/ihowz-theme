@@ -55,8 +55,13 @@ class IHowz_GitHub_Theme_Updater {
             return $transient;
         }
 
-        $theme = wp_get_theme($this->theme_slug);
-        $current_version = $theme->get('Version');
+        // WordPress populates $transient->checked with the version it detected.
+        // Use that value instead of re-reading style.css on disk.
+        $current_version = $transient->checked[$this->theme_slug] ?? null;
+        if (!$current_version) {
+            $theme = wp_get_theme($this->theme_slug);
+            $current_version = $theme->get('Version');
+        }
 
         $release = $this->get_latest_release();
         if (!$release || is_wp_error($release)) {
@@ -132,7 +137,7 @@ class IHowz_GitHub_Theme_Updater {
         $transient = get_site_transient('update_themes');
         $has_update = isset($transient->response[$this->theme_slug]);
         $latest = $transient->response[$this->theme_slug]['new_version'] ?? '';
-        $installed = wp_get_theme($this->theme_slug)->get('Version');
+        $installed = $transient->checked[$this->theme_slug] ?? wp_get_theme($this->theme_slug)->get('Version');
 
         $message = $has_update
             ? sprintf(
