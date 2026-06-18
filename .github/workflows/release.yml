@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Read theme version from style.css
         id: version
@@ -27,36 +29,40 @@ jobs:
           echo "tag=v$THEME_VERSION" >> $GITHUB_OUTPUT
           echo "Theme version: $THEME_VERSION"
 
-      - name: Check if tag already exists
+      - name: Ensure tag exists
         id: tag_check
         run: |
-          if git rev-parse "refs/tags/${{ steps.version.outputs.tag }}" >/dev/null 2>&1; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-            echo "Tag ${{ steps.version.outputs.tag }} already exists. Skipping release."
+          TAG="${{ steps.version.outputs.tag }}"
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          if git rev-parse "refs/tags/$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists locally."
           else
-            echo "exists=false" >> $GITHUB_OUTPUT
+            git tag -a "$TAG" -m "Release $TAG"
           fi
+          git push origin "$TAG" || true
 
       - name: Build release zip
-        if: steps.tag_check.outputs.exists == 'false'
         run: |
           mkdir -p dist
-          zip -r "dist/ihowz-theme-${{ steps.version.outputs.version }}.zip" . \
+          THEME_SLUG="ihowz"
+          mkdir -p "$THEME_SLUG"
+          # Copy tracked files into the theme folder so WordPress extracts into wp-content/themes/ihowz/
+          git ls-files | tar -cf - -T - | tar -xf - -C "$THEME_SLUG"
+          zip -r "dist/ihowz-theme-${{ steps.version.outputs.version }}.zip" "$THEME_SLUG" \
             -x '*.git*' \
             -x '*/.github/*' \
             -x 'node_modules/*' \
             -x 'dist/*' \
-            -x '*.md' \
-            -x 'docs/*' \
             -x '*.log'
 
-      - name: Create GitHub Release
-        if: steps.tag_check.outputs.exists == 'false'
+      - name: Create or update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.tag }}
           name: iHowz Theme ${{ steps.version.outputs.version }}
           files: dist/ihowz-theme-${{ steps.version.outputs.version }}.zip
           generate_release_notes: true
+          fail_on_unmatched_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
