@@ -1,0 +1,62 @@
+name: Release Theme
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Read theme version from style.css
+        id: version
+        run: |
+          THEME_VERSION=$(grep -E "^Version:" style.css | sed -E 's/^Version:[[:space:]]*//')
+          if [ -z "$THEME_VERSION" ]; then
+            echo "Could not read theme version from style.css" >&2
+            exit 1
+          fi
+          echo "version=$THEME_VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$THEME_VERSION" >> $GITHUB_OUTPUT
+          echo "Theme version: $THEME_VERSION"
+
+      - name: Check if tag already exists
+        id: tag_check
+        run: |
+          if git rev-parse "refs/tags/${{ steps.version.outputs.tag }}" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Tag ${{ steps.version.outputs.tag }} already exists. Skipping release."
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build release zip
+        if: steps.tag_check.outputs.exists == 'false'
+        run: |
+          mkdir -p dist
+          zip -r "dist/ihowz-theme-${{ steps.version.outputs.version }}.zip" . \
+            -x '*.git*' \
+            -x '*/.github/*' \
+            -x 'node_modules/*' \
+            -x 'dist/*' \
+            -x '*.md' \
+            -x 'docs/*' \
+            -x '*.log'
+
+      - name: Create GitHub Release
+        if: steps.tag_check.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: iHowz Theme ${{ steps.version.outputs.version }}
+          files: dist/ihowz-theme-${{ steps.version.outputs.version }}.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

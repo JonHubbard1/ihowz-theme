@@ -14,6 +14,11 @@ if (!defined('ABSPATH')) {
 require_once get_template_directory() . '/inc/class-megamenu-walker.php';
 
 /**
+ * Load GitHub update checker
+ */
+require_once get_template_directory() . '/inc/class-github-theme-updater.php';
+
+/**
  * Load Testimonials CPT and Migration Tool
  */
 require_once get_template_directory() . '/inc/post-types/testimonials.php';
@@ -64,7 +69,8 @@ add_action('after_setup_theme', 'ihowz_theme_setup');
  * Enqueue scripts and styles
  */
 function ihowz_theme_scripts() {
-    $theme_version = '1.4.7';
+    // Use the version declared in style.css as the single source of truth.
+    $theme_version = wp_get_theme()->get('Version');
 
     // Main stylesheet (base styles, variables, fonts, reset)
     wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), $theme_version);
@@ -92,7 +98,7 @@ function ihowz_theme_scripts() {
     wp_enqueue_style('ihowz-responsive', get_template_directory_uri() . '/assets/css/responsive.css', array('ihowz-style', 'ihowz-layout', 'ihowz-components', 'ihowz-templates', 'ihowz-blocks'), $theme_version);
 
     // Custom JavaScript
-    wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), '1.0.10', true);
+    wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), $theme_version, true);
 
     // Localize script with AJAX URL for login form
     wp_localize_script('ihowz-script', 'ihowz_ajax', array(
@@ -1264,7 +1270,7 @@ function ihowz_login_branding() {
     echo 'body.login { background: ' . $light_green_bg . '; font-family: ' . $font_family . '; }';
 
     // iHowz logo image on login page
-    $logo_url = 'https://ihowz.greatnew.site/wp-content/uploads/2025/07/short-ihowz-logobmp-6cm.jpg';
+    $logo_url = '/wp-content/uploads/2025/07/short-ihowz-logobmp-6cm.jpg';
     echo '#login h1 a {';
     echo 'background-image: url(' . $logo_url . ') !important;';
     echo 'background-size: contain !important;';
@@ -1415,7 +1421,7 @@ add_filter('update_footer', 'ihowz_update_footer_text', 11);
 
 // Add iHowz logo as the first item in the admin bar
 function ihowz_admin_bar_add_logo($wp_admin_bar) {
-    $logo_url = 'https://ihowz.greatnew.site/wp-content/uploads/2025/07/short-ihowz-logobmp-6cm.jpg';
+    $logo_url = '/wp-content/uploads/2025/07/short-ihowz-logobmp-6cm.jpg';
     $wp_admin_bar->add_node(array(
         'id'    => 'ihowz-logo',
         'title' => '<img src="' . esc_url($logo_url) . '" style="height:20px;width:auto;vertical-align:middle;" alt="iHowz">',
