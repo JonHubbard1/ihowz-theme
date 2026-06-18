@@ -34,6 +34,10 @@ class IHowz_GitHub_Theme_Updater {
 
     public function __construct() {
         add_filter('site_transient_update_themes', [$this, 'check_update']);
+
+        // Add a "Check for updates" link on the theme list and update pages.
+        add_filter('theme_row_meta', [$this, 'add_check_link'], 10, 2);
+        add_action('admin_init', [$this, 'handle_manual_check']);
     }
 
     /**
@@ -78,6 +82,76 @@ class IHowz_GitHub_Theme_Updater {
         }
 
         return $transient;
+    }
+
+    /**
+     * Add a "Check GitHub for updates" link under the theme on the themes page.
+     *
+     * @param array  $links
+     * @param string $theme_key
+     * @return array
+     */
+    public function add_check_link(array $links, string $theme_key): array {
+        if ($theme_key !== $this->theme_slug) {
+            return $links;
+        }
+
+        $url = wp_nonce_url(
+            add_query_arg([
+                'ihowz_action' => 'check_theme_update',
+            ], admin_url('themes.php')),
+            'ihowz_check_theme_update',
+            'ihowz_nonce'
+        );
+
+        $links[] = '<a href="' . esc_url($url) . '" class="ihowz-check-update">' . esc_html__('Check GitHub for updates', 'ihowz-theme') . '</a>';
+
+        return $links;
+    }
+
+    /**
+     * Handle the manual "Check for updates" action.
+     */
+    public function handle_manual_check(): void {
+        if (!is_admin() || !current_user_can('manage_options')) {
+            return;
+        }
+
+        if (!isset($_GET['ihowz_action']) || $_GET['ihowz_action'] !== 'check_theme_update') {
+            return;
+        }
+
+        if (!isset($_GET['ihowz_nonce']) || !wp_verify_nonce($_GET['ihowz_nonce'], 'ihowz_check_theme_update')) {
+            wp_die(esc_html__('Security check failed.', 'ihowz-theme'));
+        }
+
+        delete_transient($this->cache_key);
+        set_site_transient('update_themes', new stdClass());
+        wp_update_themes();
+
+        $transient = get_site_transient('update_themes');
+        $has_update = isset($transient->response[$this->theme_slug]);
+        $latest = $transient->response[$this->theme_slug]['new_version'] ?? '';
+        $installed = wp_get_theme($this->theme_slug)->get('Version');
+
+        $message = $has_update
+            ? sprintf(
+                /* translators: 1: installed version, 2: latest version */
+                __('Theme update check complete. Installed: %1$s, latest on GitHub: %2$s.'),
+                $installed,
+                $latest
+            )
+            : sprintf(
+                /* translators: 1: installed version */
+                __('Theme update check complete. Installed version %1$s is up to date with GitHub.'),
+                $installed
+            );
+
+        wp_redirect(add_query_arg([
+            'ihowz_notice' => urlencode($message),
+            'ihowz_notice_type' => $has_update ? 'warning' : 'success',
+        ], admin_url('themes.php')));
+        exit;
     }
 
     /**
@@ -135,8 +209,7 @@ class IHowz_GitHub_Theme_Updater {
     /**
      * Return the best zip URL from a release payload.
      *
-     * Prefers the first release asset ending in .zip, otherwise falls back
-     * to the auto-generated source archive.
+     * Prefers the first release asset ending in .zip.
      *
      * @param array $release
      * @return string
