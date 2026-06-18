@@ -14,7 +14,7 @@
                 <!-- Logo Column -->
                 <div class="footer-section footer-logo">
                     <a href="<?php echo esc_url(home_url('/')); ?>" rel="home">
-                        <img src="<?php echo esc_url(home_url('/wp-content/uploads/2025/07/short-ihowz-logobmp-6cm-244-80.jpg')); ?>" alt="<?php bloginfo('name'); ?>" class="footer-logo-img">
+                        <img src="/wp-content/uploads/2025/07/short-ihowz-logobmp-6cm-244-80.jpg" alt="<?php bloginfo('name'); ?>" class="footer-logo-img">
                     </a>
                     <p class="footer-company-info">iHowz Landlords' Association</p>
                     <p class="footer-company-details">Riverside Centre, River Lawn Road,<br>Tonbridge, TN9 1EP</p>
