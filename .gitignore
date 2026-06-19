@@ -15,6 +15,10 @@ wp-content/cache/*
 !wp-content/cache/.htaccess
 
 # Screenshots and reference images (local only)
+# Theme preview screenshot must be included in the release
+!screenshot.png
+!screenshot.jpg
+
 screenshots/
 *.png
 *.jpg
