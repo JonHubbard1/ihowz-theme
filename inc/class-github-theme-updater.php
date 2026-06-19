@@ -33,7 +33,10 @@ class IHowz_GitHub_Theme_Updater {
     private int $cache_duration = HOUR_IN_SECONDS;
 
     public function __construct() {
+        // Inject the GitHub update into the transient both when it is read
+        // and when WordPress writes it after checking wordpress.org.
         add_filter('site_transient_update_themes', [$this, 'check_update']);
+        add_filter('pre_set_site_transient_update_themes', [$this, 'check_update']);
 
         // Add a "Check for updates" link on the theme list and update pages.
         add_filter('theme_row_meta', [$this, 'add_check_link'], 10, 2);
