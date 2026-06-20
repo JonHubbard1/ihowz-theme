@@ -137,6 +137,19 @@
             }
         });
 
+        // Password visibility toggle
+        $('.password-toggle-btn').on('click', function() {
+            var $btn = $(this);
+            var $input = $('#' + $btn.attr('aria-controls'));
+            var isShown = $btn.attr('aria-pressed') === 'true';
+            var strings = (typeof ihowz_ajax !== 'undefined' && ihowz_ajax.strings) ? ihowz_ajax.strings : {};
+
+            $input.attr('type', isShown ? 'password' : 'text');
+            $btn.attr('aria-pressed', String(!isShown));
+            $btn.attr('aria-label', isShown ? (strings.show_password || 'Show password') : (strings.hide_password || 'Hide password'));
+            $input.focus();
+        });
+
         // Handle login form submission via AJAX
         $('#header-login-form').on('submit', function(e) {
             e.preventDefault();

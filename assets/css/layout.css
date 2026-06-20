@@ -260,6 +260,58 @@
     color: #BDBDBD;
 }
 
+.login-form-password .password-input-wrapper {
+    position: relative;
+}
+
+.login-form-password input[type="password"],
+.login-form-password input[type="text"] {
+    padding-right: 44px;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #757575;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.password-toggle-btn:hover,
+.password-toggle-btn:focus {
+    color: var(--primary-green);
+    outline: none;
+    background-color: rgba(159, 192, 69, 0.12);
+}
+
+.password-toggle-btn:focus-visible {
+    outline: 2px solid var(--primary-green);
+    outline-offset: 1px;
+}
+
+.password-toggle-icon-hide {
+    display: none;
+}
+
+.password-toggle-btn[aria-pressed="true"] .password-toggle-icon-show {
+    display: none;
+}
+
+.password-toggle-btn[aria-pressed="true"] .password-toggle-icon-hide {
+    display: inline-block;
+}
+
 .login-remember {
     margin-bottom: 20px;
 }

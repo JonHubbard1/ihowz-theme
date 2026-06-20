@@ -104,6 +104,10 @@ function ihowz_theme_scripts() {
     wp_localize_script('ihowz-script', 'ihowz_ajax', array(
         'ajax_url' => admin_url('admin-ajax.php'),
         'nonce'    => wp_create_nonce('ajax-login-nonce'),
+        'strings'  => array(
+            'show_password' => __('Show password', 'ihowz'),
+            'hide_password' => __('Hide password', 'ihowz'),
+        ),
     ));
 
     // Comment reply script
