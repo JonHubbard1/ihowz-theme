@@ -469,58 +469,27 @@
     }
 
     .main-navigation {
-        /* Off-canvas panel: slides in from the left at 80% screen width. */
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        height: 100dvh;
-        width: 80%;
-        max-width: 320px;
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 100%;
+        max-width: 300px;
         background: var(--background-pure-white);
-        box-shadow: 0 0 24px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         z-index: 1001;
-        overflow-y: auto;
-        padding: 4.5rem 0 2rem;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
+        padding: 1rem 0;
+        border-radius: 8px;
+        margin-top: 10px;
     }
 
     .main-navigation.toggled {
-        transform: translateX(0);
+        display: block;
     }
 
     .main-navigation ul {
         flex-direction: column;
         gap: 0;
-    }
-
-    /* Accordion sub-menus: collapsed by default, expanded via JS slideToggle. */
-    .main-navigation .sub-menu,
-    .main-navigation .megamenu-dropdown {
-        display: none;
-        position: static;
-        width: 100%;
-        box-shadow: none;
-        padding-left: 1.25rem;
-    }
-
-    /* Expandable caret on parent items. */
-    .main-navigation .menu-item-has-children > a,
-    .main-navigation .megamenu-enabled > a {
-        position: relative;
-        padding-right: 3rem;
-    }
-    .main-navigation .menu-item-has-children > a::after,
-    .main-navigation .megamenu-enabled > a::after {
-        content: '\25B8';
-        position: absolute;
-        right: 1.25rem;
-        transition: transform 0.2s ease;
-    }
-    .main-navigation .menu-open > a::after {
-        transform: rotate(90deg);
     }
 
     .main-navigation a {
@@ -531,27 +500,15 @@
     }
 
     .main-navigation a:hover,
-    .main-navigation .current-menu-item > a {
+    .main-navigation .current-menu-item a {
         background-color: var(--primary-green);
         color: white;
     }
 
-    /* Backdrop overlay (element added in header.php). */
-    .menu-overlay {
-        display: none;
+    /* When header is scrolled and sticky */
+    .header-scrolled .main-navigation {
         position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.45);
-        z-index: 1000;
-        cursor: pointer;
-    }
-    .menu-overlay.active {
-        display: block;
-    }
-
-    /* Lock body scroll while the menu is open. */
-    body.menu-open {
-        overflow: hidden;
+        top: 100px; /* Adjust based on sticky header height */
     }
 }
 
