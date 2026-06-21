@@ -117,9 +117,12 @@
             });
         }
 
-        function showPromoMessage(text, type) {
+        // The message may contain the "Remove" link, so render as HTML. Content
+        // is built from server-controlled values (discount label + amount) plus
+        // a fixed Remove anchor - no user input - so innerHTML is safe here.
+        function showPromoMessage(html, type) {
             if (!promoMessage) return;
-            promoMessage.textContent = text || '';
+            promoMessage.innerHTML = html || '';
             promoMessage.className = 'promo-message' + (type ? ' promo-message-' + type : '');
         }
 
