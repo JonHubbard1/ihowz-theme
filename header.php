@@ -128,6 +128,9 @@
         </div>
     </header>
 
+    <!-- Mobile menu backdrop (click to close the slide-in menu) -->
+    <div class="menu-overlay" aria-hidden="true"></div>
+
 <?php
 /**
  * Fallback menu if no menu is assigned

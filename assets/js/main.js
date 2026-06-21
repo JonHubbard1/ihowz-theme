@@ -8,14 +8,23 @@
     // Document ready
     $(document).ready(function() {
 
-        // Mobile menu toggle
+        // Mobile menu toggle (slide-in from the left)
         $('.menu-toggle').on('click', function() {
-            $(this).toggleClass('toggled');
-            $('.main-navigation').toggleClass('toggled');
+            var $btn = $(this);
+            var opening = !$btn.hasClass('toggled');
+            $btn.toggleClass('toggled', opening);
+            $('.main-navigation').toggleClass('toggled', opening);
+            $('.menu-overlay').toggleClass('active', opening);
+            $('body').toggleClass('menu-open', opening);
+            $btn.attr('aria-expanded', opening ? 'true' : 'false');
+        });
 
-            // Update aria-expanded attribute
-            var expanded = $(this).attr('aria-expanded') === 'true';
-            $(this).attr('aria-expanded', !expanded);
+        // Close the slide-in menu when the backdrop is clicked.
+        $('.menu-overlay').on('click', function() {
+            $('.menu-toggle').removeClass('toggled').attr('aria-expanded', 'false');
+            $('.main-navigation').removeClass('toggled');
+            $('.menu-overlay').removeClass('active');
+            $('body').removeClass('menu-open');
         });
 
         // MegaMenu Mobile Dropdown Toggle
@@ -43,6 +52,10 @@
                 // Desktop - remove mobile classes and inline styles
                 $('.menu-item-has-children, .megamenu-enabled').removeClass('menu-open');
                 $('.sub-menu, .megamenu-dropdown').removeAttr('style');
+                $('.menu-toggle').removeClass('toggled').attr('aria-expanded', 'false');
+                $('.main-navigation').removeClass('toggled');
+                $('.menu-overlay').removeClass('active');
+                $('body').removeClass('menu-open');
 
                 // Recalculate MegaMenu positions
                 positionMegaMenus();
