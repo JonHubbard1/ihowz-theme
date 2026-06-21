@@ -89,13 +89,17 @@
         transform: rotate(180deg);
     }
 
-    /* Backdrop overlay + body scroll lock while the menu is open. */
+    /* Backdrop overlay + body scroll lock while the menu is open.
+       z-index is BELOW .site-header (100): the nav panel lives inside the
+       header's stacking context, so this keeps the panel (and hamburger)
+       above the overlay (clicks reach the menu, the overlay only catches
+       clicks on the dimmed page content to close). */
     .menu-overlay {
         display: none;
         position: fixed;
         inset: 0;
         background: rgba(0, 0, 0, 0.45);
-        z-index: 1000;
+        z-index: 90;
         cursor: pointer;
     }
     .menu-overlay.active {
