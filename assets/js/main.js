@@ -27,24 +27,31 @@
             $('body').removeClass('menu-open');
         });
 
-        // MegaMenu Mobile Dropdown Toggle
-        if ($(window).width() < 1024) {
-            $('.menu-item-has-children > a, .megamenu-enabled > a').on('click', function(e) {
-                // Only prevent default on mobile
-                var $parent = $(this).parent();
+        // MegaMenu accordion toggle (mobile only).
+        // Evaluated at click time via matchMedia so it matches the CSS
+        // max-width:1023px breakpoint exactly. jQuery's width() excludes the
+        // scrollbar and can mismatch the CSS (attaching the accordion on a
+        // 1024px desktop viewport), which broke desktop hover dropdowns and
+        // stopped parent links navigating. On desktop this bails out and the
+        // link navigates normally with CSS hover dropdowns.
+        $('.menu-item-has-children > a, .megamenu-enabled > a').on('click', function(e) {
+            if (!window.matchMedia('(max-width: 1023px)').matches) {
+                return;
+            }
 
-                if ($parent.hasClass('menu-item-has-children') || $parent.hasClass('megamenu-enabled')) {
-                    e.preventDefault();
+            var $parent = $(this).parent();
 
-                    // Close other open menus at the same level
-                    $parent.siblings('.menu-open').removeClass('menu-open').find('.sub-menu, .megamenu-dropdown').slideUp(200);
+            if ($parent.hasClass('menu-item-has-children') || $parent.hasClass('megamenu-enabled')) {
+                e.preventDefault();
 
-                    // Toggle this menu
-                    $parent.toggleClass('menu-open');
-                    $parent.children('.sub-menu, .megamenu-dropdown').slideToggle(200);
-                }
-            });
-        }
+                // Close other open menus at the same level
+                $parent.siblings('.menu-open').removeClass('menu-open').find('.sub-menu, .megamenu-dropdown').slideUp(200);
+
+                // Toggle this menu
+                $parent.toggleClass('menu-open');
+                $parent.children('.sub-menu, .megamenu-dropdown').slideToggle(200);
+            }
+        });
 
         // Re-initialize mobile menu on window resize
         $(window).on('resize', function() {
