@@ -71,7 +71,28 @@
         gap: 0;
     }
 
-    /* Accordion: sub-menus collapse unless the parent has .menu-open (JS). */
+    /* Accordion: sub-menus collapse unless the parent has .menu-open (JS),
+       and expand inline (pushing the menu down) rather than floating as
+       dropdowns. Overrides megamenu.css's position:absolute / opacity:0 /
+       visibility:hidden / hover-show dropdown behaviour. */
+    .main-navigation .sub-menu,
+    .main-navigation .megamenu-dropdown {
+        position: static;
+        top: auto;
+        left: auto;
+        min-width: 0;
+        width: 100%;
+        background: transparent;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        margin: 0;
+        padding: 0 0 0 1.25rem;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        transition: none;
+    }
     .main-navigation .menu-item-has-children > .sub-menu,
     .main-navigation .megamenu-enabled > .megamenu-dropdown {
         display: none;
@@ -80,9 +101,15 @@
     .main-navigation .megamenu-enabled.menu-open > .megamenu-dropdown {
         display: block;
     }
-    /* Don't reveal megamenu panels on hover/tap-1; the JS toggle owns it. */
+    /* Don't reveal sub-menus on hover/tap-1; the JS .menu-open toggle owns it. */
+    .main-navigation .menu-item-has-children:hover > .sub-menu,
     .main-navigation .megamenu-enabled:hover > .megamenu-dropdown {
         display: none;
+    }
+    .main-navigation .sub-menu a,
+    .main-navigation .megamenu-dropdown a {
+        white-space: normal;
+        padding: 0.75rem 1.5rem;
     }
     /* Rotate the dropdown-indicator arrow when a parent is open. */
     .main-navigation .menu-open > a .dropdown-indicator {
