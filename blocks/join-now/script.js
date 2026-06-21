@@ -23,6 +23,7 @@
         var stripe = null;
         var cardElement = null;
         var currentMethod = 'card';
+        var appliedPromo = null; // { code, final_amount, discount_amount, is_free } once a code is validated
 
         // ==========================================
         // Payment Method Toggle (always active)
@@ -72,6 +73,12 @@
             var selected = form.querySelector('input[name="membership_type_id"]:checked');
             if (!selected) return;
 
+            // Switching membership type changes the price, so any previously
+            // applied promo (computed against the old price) no longer applies.
+            if (appliedPromo) {
+                clearAppliedPromo();
+            }
+
             typeCards.forEach(function (card) {
                 var radio = card.querySelector('input[type="radio"]');
                 if (radio && radio.checked) {
@@ -91,6 +98,139 @@
             }
         }
         updateSelection();
+
+        // ==========================================
+        // Promotional code
+        // ==========================================
+        var promoInput = document.getElementById(formId + '-promo-code');
+        var promoApplyBtn = document.getElementById(formId + '-promo-apply');
+        var promoMessage = document.getElementById(formId + '-promo-message');
+
+        function formatMoney(n) {
+            return '\u00a3' + parseFloat(n).toFixed(2);
+        }
+
+        function setAmountDisplays(amount) {
+            var formatted = formatMoney(amount);
+            amountDisplays.forEach(function (el) {
+                if (el) el.textContent = formatted;
+            });
+        }
+
+        function showPromoMessage(text, type) {
+            if (!promoMessage) return;
+            promoMessage.textContent = text || '';
+            promoMessage.className = 'promo-message' + (type ? ' promo-message-' + type : '');
+        }
+
+        function clearAppliedPromo() {
+            appliedPromo = null;
+            if (promoInput) promoInput.value = '';
+            showPromoMessage('');
+            updateAmountFromSelection();
+        }
+
+        // Recompute the (full-price) display from the selected type card.
+        function updateAmountFromSelection() {
+            var selectedCard = form.querySelector('.membership-type-card.selected');
+            if (selectedCard) {
+                setAmountDisplays(parseFloat(selectedCard.dataset.price || 0));
+            }
+        }
+
+        function applyPromoCode() {
+            if (!promoInput) return;
+            var code = promoInput.value.trim();
+
+            if (!code) {
+                if (appliedPromo) {
+                    clearAppliedPromo();
+                } else {
+                    showPromoMessage('Please enter a promo code.', 'error');
+                }
+                return;
+            }
+
+            var selected = form.querySelector('input[name="membership_type_id"]:checked');
+            if (!selected) {
+                showPromoMessage('Please choose a membership type first.', 'error');
+                return;
+            }
+
+            promoApplyBtn.disabled = true;
+            var body = new FormData();
+            body.append('action', 'ihowz_validate_promo_code');
+            body.append('nonce', config.nonce);
+            body.append('membership_type_id', selected.value);
+            body.append('promo_code', code);
+
+            fetch(config.ajax_url, { method: 'POST', body: body })
+                .then(function (r) { return r.json(); })
+                .then(function (result) {
+                    if (!result.success) {
+                        appliedPromo = null;
+                        updateAmountFromSelection();
+                        showPromoMessage((result.data && result.data.message) || 'That promo code is not valid.', 'error');
+                        return;
+                    }
+                    var d = result.data;
+                    appliedPromo = {
+                        code: d.code,
+                        final_amount: parseFloat(d.final_amount),
+                        discount_amount: parseFloat(d.discount_amount),
+                        is_free: !!d.is_free
+                    };
+                    setAmountDisplays(d.final_amount);
+                    showPromoMessage(
+                        (d.message || 'Code applied.') + ' <a href="#" class="promo-remove-link">Remove</a>',
+                        'success'
+                    );
+                })
+                .catch(function () {
+                    showPromoMessage('Could not validate the promo code. Please try again.', 'error');
+                })
+                .finally(function () {
+                    promoApplyBtn.disabled = false;
+                });
+        }
+
+        if (promoApplyBtn) {
+            promoApplyBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                applyPromoCode();
+            });
+        }
+
+        if (promoInput) {
+            // Editing the code after applying clears the applied state.
+            promoInput.addEventListener('input', function () {
+                if (appliedPromo && promoInput.value.toUpperCase() !== appliedPromo.code) {
+                    clearAppliedPromo();
+                }
+            });
+            promoInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    applyPromoCode();
+                }
+            });
+        }
+
+        // Delegate clicks on the "Remove" link inside the promo message.
+        form.addEventListener('click', function (e) {
+            if (e.target && e.target.classList.contains('promo-remove-link')) {
+                e.preventDefault();
+                clearAppliedPromo();
+            }
+        });
+
+        // Pre-fill + auto-apply a promo code resolved server-side from the page
+        // URL / query param (see render.php). Runs after updateSelection() so a
+        // membership type is already selected when the validation call fires.
+        if (config.preselected_promo_code && promoInput) {
+            promoInput.value = config.preselected_promo_code;
+            applyPromoCode();
+        }
 
         // ==========================================
         // Stripe-dependent setup (bail gracefully if no key)
@@ -143,12 +283,40 @@
 
             setLoading(form, true);
 
-            if (currentMethod === 'bacs_debit' && config.bacs_debit_enabled) {
+            // A promo code that brings the total below the Stripe minimum skips
+            // Stripe entirely and completes a free signup server-side.
+            if (appliedPromo && appliedPromo.is_free) {
+                submitFreeFlow(form, config);
+            } else if (currentMethod === 'bacs_debit' && config.bacs_debit_enabled) {
                 submitBacsFlow(form, stripe, config);
             } else {
                 submitCardFlow(form, stripe, config, cardElement);
             }
         });
+
+        // ==========================================
+        // FREE SIGNUP FLOW (100% / sub-minimum promo code)
+        // ==========================================
+        function submitFreeFlow(form, config) {
+            var formData = new FormData(form);
+            formData.append('action', 'ihowz_complete_free_join');
+            formData.append('nonce', config.nonce);
+
+            fetch(config.ajax_url, { method: 'POST', body: formData })
+                .then(function (r) { return r.json(); })
+                .then(function (result) {
+                    if (!result.success) {
+                        throw new Error(result.data && result.data.message ? result.data.message : 'Failed to complete signup.');
+                    }
+                    handleSuccess(form, config, result);
+                })
+                .catch(function (error) {
+                    showMessage(form, error.message, 'error');
+                })
+                .finally(function () {
+                    setLoading(form, false);
+                });
+        }
 
         // ==========================================
         // CARD FLOW

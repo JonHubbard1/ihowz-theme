@@ -155,6 +155,17 @@
     background-color: #FFEBEE;
 }
 
+/* Password visibility toggle (matches the main login box in header.php).
+   The .password-toggle-btn and icon rules are global in theme layout.css;
+   here we only position the wrapper and reserve room for the button. */
+.join-now-field .password-input-wrapper {
+    position: relative;
+}
+
+.join-now-field .password-input-wrapper .join-now-input {
+    padding-right: 44px;
+}
+
 /* ==========================================================================
    Membership Type Cards
    ========================================================================== */
@@ -639,4 +650,63 @@
 .bacs-field.input-error {
     border-color: #D32F2F !important;
     background: #FFF5F5;
+}
+
+/* ==========================================================================
+   Promotional Code
+   ========================================================================== */
+.promo-code-row {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+}
+
+.promo-code-input {
+    flex: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.promo-apply-btn {
+    flex: 0 0 auto;
+    padding: 0 24px;
+    height: 56px;
+    border: 1px solid var(--primary-green, #9FC045);
+    border-radius: 8px;
+    background: var(--primary-green, #9FC045);
+    color: #fff;
+    font-family: var(--primary-font, "Mona Sans", sans-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.promo-apply-btn:hover {
+    background: var(--primary-green-dark, #7FA032);
+}
+
+.promo-apply-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.promo-message {
+    margin-top: 8px;
+    font-size: 0.875rem;
+    min-height: 1.25em;
+}
+
+.promo-message-success {
+    color: var(--primary-green-dark, #5E7A1F);
+}
+
+.promo-message-error {
+    color: var(--error-red, #D32F2F);
+}
+
+.promo-remove-link {
+    margin-left: 6px;
+    font-weight: 600;
+    text-decoration: underline;
 }

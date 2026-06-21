@@ -55,6 +55,26 @@ $stripe_publishable_key = $stripe_mode === 'live'
 // Bacs Direct Debit flag (via Stripe)
 $bacs_debit_enabled = get_option('ihowz_bacs_debit_enabled', true);
 
+// Resolve a promo code to pre-fill: either from a ?promo= (/?promocode= /?code=)
+// query parameter, or by matching the current page URL against the codes'
+// share_url values (supports pretty-permalink landing pages like
+// /register/show-special-20-discount/). Only valid, redeemable codes are used.
+$preselected_promo_code = '';
+if (class_exists('IHowz_Promotional_Codes_Module')) {
+    $promo_module = IHowz_Promotional_Codes_Module::get_instance();
+    if ($promo_module && method_exists($promo_module, 'get_service')) {
+        $promo_svc = $promo_module->get_service();
+        if ($promo_svc) {
+            $query_code = '';
+            if (isset($_GET['promo']))      { $query_code = sanitize_text_field($_GET['promo']); }
+            elseif (isset($_GET['promocode'])) { $query_code = sanitize_text_field($_GET['promocode']); }
+            elseif (isset($_GET['code']))   { $query_code = sanitize_text_field($_GET['code']); }
+            $current_url = home_url(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/');
+            $preselected_promo_code = $promo_svc->get_preselected_code($query_code, $current_url);
+        }
+    }
+}
+
 // Localize data for frontend JS
 $join_data = array(
     'ajax_url' => admin_url('admin-ajax.php'),
@@ -64,6 +84,7 @@ $join_data = array(
     'form_id' => $form_id,
     'success_message' => $success_message,
     'bacs_debit_enabled' => $bacs_debit_enabled,
+    'preselected_promo_code' => $preselected_promo_code,
     'membership_types' => array_map(function($type) {
         return array(
             'id' => $type->id,
@@ -80,6 +101,11 @@ $join_data = array(
 if ($stripe_publishable_key && !wp_script_is('stripe-js', 'enqueued')) {
     wp_enqueue_script('stripe-js', 'https://js.stripe.com/v3/', array(), null, true);
 }
+
+// Ensure the block's frontend script + style load even when this template is
+// rendered via the [ihowz_join_now] shortcode (which does not auto-enqueue them).
+wp_enqueue_script('ihowz-join-now-frontend');
+wp_enqueue_style('ihowz-join-now-style');
 
 ?>
 
@@ -166,6 +192,22 @@ if ($stripe_publishable_key && !wp_script_is('stripe-js', 'enqueued')) {
                     <input type="hidden" name="payment_method_type" id="<?php echo esc_attr($form_id); ?>-payment-method" value="card">
                 </div>
                 <?php endif; ?>
+
+                <!-- Promotional Code -->
+                <div class="join-now-field join-now-field-full">
+                    <label for="<?php echo esc_attr($form_id); ?>-promo-code"><?php _e('Promo Code', 'ihowz-theme'); ?></label>
+                    <div class="promo-code-row">
+                        <input type="text"
+                               id="<?php echo esc_attr($form_id); ?>-promo-code"
+                               name="promo_code"
+                               class="join-now-input promo-code-input"
+                               placeholder="<?php esc_attr_e('Enter code if you have one', 'ihowz-theme'); ?>"
+                               autocomplete="off"
+                               style="text-transform:uppercase;">
+                        <button type="button" class="promo-apply-btn" id="<?php echo esc_attr($form_id); ?>-promo-apply"><?php _e('Apply', 'ihowz-theme'); ?></button>
+                    </div>
+                    <div class="promo-message" id="<?php echo esc_attr($form_id); ?>-promo-message" role="status" aria-live="polite"></div>
+                </div>
 
                 <!-- Card Payment Section -->
                 <div class="payment-section payment-section-card" id="<?php echo esc_attr($form_id); ?>-payment-card">
@@ -393,28 +435,52 @@ if ($stripe_publishable_key && !wp_script_is('stripe-js', 'enqueued')) {
                         <label for="<?php echo esc_attr($form_id); ?>-password">
                             <?php _e('Password', 'ihowz-theme'); ?> <span class="required">*</span>
                         </label>
-                        <input type="password"
-                               id="<?php echo esc_attr($form_id); ?>-password"
-                               name="password"
-                               class="join-now-input"
-                               placeholder="<?php esc_attr_e('Min 8 characters', 'ihowz-theme'); ?>"
-                               required
-                               minlength="8"
-                               autocomplete="new-password">
+                        <div class="password-input-wrapper">
+                            <input type="password"
+                                   id="<?php echo esc_attr($form_id); ?>-password"
+                                   name="password"
+                                   class="join-now-input"
+                                   placeholder="<?php esc_attr_e('Min 8 characters', 'ihowz-theme'); ?>"
+                                   required
+                                   minlength="8"
+                                   autocomplete="new-password">
+                            <button type="button" class="password-toggle-btn" aria-label="<?php esc_attr_e('Show password', 'ihowz-theme'); ?>" aria-pressed="false" aria-controls="<?php echo esc_attr($form_id); ?>-password">
+                                <svg class="password-toggle-icon password-toggle-icon-show" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg class="password-toggle-icon password-toggle-icon-hide" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-10-8-10-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 10 8 10 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="join-now-field">
                         <label for="<?php echo esc_attr($form_id); ?>-password-confirm">
                             <?php _e('Confirm Password', 'ihowz-theme'); ?> <span class="required">*</span>
                         </label>
-                        <input type="password"
-                               id="<?php echo esc_attr($form_id); ?>-password-confirm"
-                               name="password_confirm"
-                               class="join-now-input"
-                               placeholder="<?php esc_attr_e('Re-enter password', 'ihowz-theme'); ?>"
-                               required
-                               minlength="8"
-                               autocomplete="new-password">
+                        <div class="password-input-wrapper">
+                            <input type="password"
+                                   id="<?php echo esc_attr($form_id); ?>-password-confirm"
+                                   name="password_confirm"
+                                   class="join-now-input"
+                                   placeholder="<?php esc_attr_e('Re-enter password', 'ihowz-theme'); ?>"
+                                   required
+                                   minlength="8"
+                                   autocomplete="new-password">
+                            <button type="button" class="password-toggle-btn" aria-label="<?php esc_attr_e('Show password', 'ihowz-theme'); ?>" aria-pressed="false" aria-controls="<?php echo esc_attr($form_id); ?>-password-confirm">
+                                <svg class="password-toggle-icon password-toggle-icon-show" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg class="password-toggle-icon password-toggle-icon-hide" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-10-8-10-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 10 8 10 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
 

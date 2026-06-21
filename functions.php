@@ -1100,8 +1100,11 @@ function ihowz_register_blocks() {
         'editor_style' => 'ihowz-news-headlines-editor-style',
     ));
 
-    // Join Now block
-    $jn_version = '1.0.' . filemtime(get_template_directory() . '/blocks/join-now/style.css');
+    // Join Now block — version from the newest of the asset files so editing
+    // either the script or the style busts the browser cache for both.
+    $jn_style_mtime = filemtime(get_template_directory() . '/blocks/join-now/style.css');
+    $jn_script_mtime = filemtime(get_template_directory() . '/blocks/join-now/script.js');
+    $jn_version = '1.0.' . max($jn_style_mtime, $jn_script_mtime);
 
     wp_register_script(
         'ihowz-join-now-editor',
