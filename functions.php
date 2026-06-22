@@ -8,6 +8,40 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/*
+ * Auto-clear OPcache after a theme file change.
+ *
+ * This server runs PHP with opcache.validate_timestamps=0, so edited theme PHP
+ * files are NOT picked up automatically and a manual php-fpm reload would
+ * otherwise be required after every theme edit/deploy. We read the newest mtime
+ * among the theme's root-level PHP files + style.css (stat() bypasses OPcache,
+ * so it reflects the on-disk files even while the running bytecode is stale) and
+ * call opcache_reset() when it changes. Running this at the top of functions.php
+ * — before the templates are loaded — means the reset takes effect for the same
+ * request: header.php, page.php etc. then compile fresh from disk. The newest
+ * mtime is stored in an autoloaded option so the per-request cost is a small
+ * number of stat() calls.
+ */
+if (function_exists('opcache_reset')) {
+    $_ihowz_theme_dir = get_template_directory();
+    $_ihowz_theme_files = (array) glob($_ihowz_theme_dir . '/*.php');
+    if (is_file($_ihowz_theme_dir . '/style.css')) {
+        $_ihowz_theme_files[] = $_ihowz_theme_dir . '/style.css';
+    }
+    $_ihowz_theme_newest = 0;
+    foreach ($_ihowz_theme_files as $_ihowz_theme_f) {
+        $_ihowz_theme_m = @filemtime($_ihowz_theme_f);
+        if ($_ihowz_theme_m > $_ihowz_theme_newest) {
+            $_ihowz_theme_newest = $_ihowz_theme_m;
+        }
+    }
+    if ($_ihowz_theme_newest && get_option('ihowz_theme_opcache_mtime', 0) != $_ihowz_theme_newest) {
+        opcache_reset();
+        update_option('ihowz_theme_opcache_mtime', $_ihowz_theme_newest);
+    }
+    unset($_ihowz_theme_dir, $_ihowz_theme_files, $_ihowz_theme_f, $_ihowz_theme_m, $_ihowz_theme_newest);
+}
+
 /**
  * Load MegaMenu Walker
  */
