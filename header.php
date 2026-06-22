@@ -85,7 +85,7 @@
                                             <?php _e('Sign In', 'ihowz'); ?>
                                         </button>
                                         <div class="login-form-links">
-                                            <a href="<?php echo esc_url(wp_lostpassword_url()); ?>"><?php _e('Forgot password?', 'ihowz'); ?></a>
+                                            <a href="<?php echo esc_url(wp_lostpassword_url()); ?>"><?php _e('Problems logging in?', 'ihowz'); ?></a>
                                         </div>
                                     </form>
                                 </div>
