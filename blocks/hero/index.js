@@ -216,7 +216,59 @@
                                 onChange: function (value) {
                                     setAttributes({ backgroundVideo: value, backgroundVideoId: 0 });
                                 }
-                            })
+                            }),
+                            createElement(
+                                'div',
+                                { style: { marginBottom: '16px' } },
+                                createElement('label', { style: { display: 'block', marginBottom: '8px', fontWeight: '500' } }, 'Backup Image (Poster)'),
+                                createElement('p', { style: { marginTop: 0, marginBottom: '8px', fontSize: '12px', color: '#757575' } }, 'Shown while the video loads and if a browser blocks autoplay (e.g. Safari Low Power Mode).'),
+                                createElement(
+                                    MediaUploadCheck,
+                                    null,
+                                    createElement(MediaUpload, {
+                                        onSelect: function (media) {
+                                            setAttributes({
+                                                backgroundImage: media.url,
+                                                backgroundImageId: media.id
+                                            });
+                                        },
+                                        allowedTypes: ['image'],
+                                        value: backgroundImageId,
+                                        render: function (obj) {
+                                            return createElement(
+                                                'div',
+                                                null,
+                                                backgroundImageId
+                                                    ? createElement(
+                                                        'div',
+                                                        null,
+                                                        createElement('img', {
+                                                            src: backgroundImage,
+                                                            style: { maxWidth: '100%', marginBottom: '10px', borderRadius: '4px' }
+                                                        }),
+                                                        createElement(
+                                                            Button,
+                                                            { onClick: obj.open, variant: 'secondary', style: { marginRight: '8px' } },
+                                                            'Replace Image'
+                                                        ),
+                                                        createElement(
+                                                            Button,
+                                                            {
+                                                                onClick: function () {
+                                                                    setAttributes({ backgroundImage: '', backgroundImageId: 0 });
+                                                                },
+                                                                variant: 'tertiary',
+                                                                isDestructive: true
+                                                            },
+                                                            'Remove'
+                                                        )
+                                                    )
+                                                    : createElement(Button, { onClick: obj.open, variant: 'secondary' }, 'Select Image from Library')
+                                            );
+                                        }
+                                    })
+                                )
+                            )
                         ),
                         createElement(RangeControl, {
                             label: 'Overlay Opacity',

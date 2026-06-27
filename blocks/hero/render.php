@@ -12,6 +12,15 @@ $is_widget_context = did_action('dynamic_sidebar_before') > did_action('dynamic_
 $background_type = isset($attributes['backgroundType']) ? $attributes['backgroundType'] : 'image';
 $background_image = isset($attributes['backgroundImage']) ? esc_url($attributes['backgroundImage']) : '';
 $background_video = isset($attributes['backgroundVideo']) ? esc_url($attributes['backgroundVideo']) : '';
+$background_video_id = isset($attributes['backgroundVideoId']) ? intval($attributes['backgroundVideoId']) : 0;
+// Append a filemtime cache-buster so re-encoded/replaced videos reach the
+// browser (the attachment URL has no version query of its own).
+if ($background_video && $background_video_id && function_exists('get_attached_file')) {
+    $video_path = get_attached_file($background_video_id);
+    if ($video_path && is_file($video_path)) {
+        $background_video = add_query_arg('v', filemtime($video_path), $background_video);
+    }
+}
 $overlay_opacity = isset($attributes['overlayOpacity']) ? intval($attributes['overlayOpacity']) : 30;
 $overlay_color = isset($attributes['overlayColor']) ? sanitize_hex_color($attributes['overlayColor']) : '#1a365d';
 $heading = isset($attributes['heading']) ? $attributes['heading'] : '';
@@ -60,10 +69,13 @@ $overlay_rgba = "rgba({$r}, {$g}, {$b}, " . ($overlay_opacity / 100) . ")";
 
     <?php if ($background_type === 'video' && $background_video) : ?>
         <div class="hero-video-wrapper">
-            <video class="hero-video" autoplay muted loop playsinline>
+            <video class="hero-video" autoplay muted loop playsinline<?php if ($background_image) : ?> poster="<?php echo esc_url($background_image); ?>"<?php endif; ?>>
                 <source src="<?php echo esc_url($background_video); ?>" type="video/mp4">
             </video>
         </div>
+    <?php elseif ($background_type === 'video' && $background_image) : ?>
+        <?php // Video source missing: fall back to the backup image alone. ?>
+        <div class="hero-video-wrapper" style="background-image: url('<?php echo esc_url($background_image); ?>'); background-size: cover; background-position: center center;"></div>
     <?php endif; ?>
 
     <div class="hero-overlay" style="background: <?php echo esc_attr($overlay_rgba); ?>;"></div>

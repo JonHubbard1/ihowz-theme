@@ -17,12 +17,30 @@
             $('.menu-overlay').toggleClass('active', opening);
             $('body').toggleClass('menu-open', opening);
             $btn.attr('aria-expanded', opening ? 'true' : 'false');
+
+            // Position the panel's first item below the visible header.
+            // The header is taller while the gray bar is showing (~130px)
+            // than when scrolled/sticky (~88px), so a fixed CSS padding-top
+            // can't clear both. Measure the menu bar's bottom edge at open
+            // time and use it as the panel's top padding.
+            if (opening) {
+                var menuBar = $('.header-menu-bar')[0];
+                if (menuBar) {
+                    var headerBottom = Math.round(menuBar.getBoundingClientRect().bottom);
+                    // Fallback to the CSS default if measurement fails.
+                    if (headerBottom > 0) {
+                        $('.main-navigation').css('padding-top', headerBottom + 'px');
+                    }
+                }
+            } else {
+                $('.main-navigation').css('padding-top', '');
+            }
         });
 
         // Close the slide-in menu when the backdrop is clicked.
         $('.menu-overlay').on('click', function() {
             $('.menu-toggle').removeClass('toggled').attr('aria-expanded', 'false');
-            $('.main-navigation').removeClass('toggled');
+            $('.main-navigation').removeClass('toggled').css('padding-top', '');
             $('.menu-overlay').removeClass('active');
             $('body').removeClass('menu-open');
         });
@@ -60,7 +78,7 @@
                 $('.menu-item-has-children, .megamenu-enabled').removeClass('menu-open');
                 $('.sub-menu, .megamenu-dropdown').removeAttr('style');
                 $('.menu-toggle').removeClass('toggled').attr('aria-expanded', 'false');
-                $('.main-navigation').removeClass('toggled');
+                $('.main-navigation').removeClass('toggled').css('padding-top', '');
                 $('.menu-overlay').removeClass('active');
                 $('body').removeClass('menu-open');
 
@@ -474,66 +492,46 @@
         // Initialize on page load in case user refreshes while scrolled
         $(window).trigger('scroll');
 
-        // Hero video loading - Safari autoplay fix
-        var heroVideo = document.getElementById('hero-background-video');
-        if (heroVideo) {
-            // Remove controls attribute if present (Safari sometimes adds it)
-            heroVideo.removeAttribute('controls');
+        // Hero video autoplay - safety net only.
+        // The block hero <video> already has autoplay+muted+playsinline, which
+        // native-autoplays on Chrome, Firefox and Safari (muted). Do NOT call
+        // .load() or force .play() on a video that is already playing — reloading
+        // an already-playing video triggers Safari's green-frame compositor bug.
+        // We only nudge .play() when the video is actually paused, and retry on
+        // the first user interaction for iOS Low Power Mode (which blocks even
+        // muted autoplay until interaction).
+        var heroVideos = document.querySelectorAll('.hero-video');
+        if (heroVideos.length) {
+            heroVideos.forEach(function (heroVideo) {
+                heroVideo.removeAttribute('controls');
+                heroVideo.muted = true;
+                heroVideo.defaultMuted = true;
 
-            // Ensure muted (required for autoplay in Safari)
-            heroVideo.muted = true;
-            heroVideo.setAttribute('muted', '');
-            heroVideo.setAttribute('playsinline', '');
-            heroVideo.defaultMuted = true;
-            heroVideo.volume = 0;
-
-            var hasPlayed = false;
-
-            // Function to attempt playing the video
-            function attemptPlay() {
-                if (hasPlayed) {
-                    return;
+                function attemptPlay() {
+                    // Don't touch a video that is already playing.
+                    if (heroVideo.paused === false || heroVideo.ended) {
+                        return;
+                    }
+                    var playPromise = heroVideo.play();
+                    if (playPromise && typeof playPromise.catch === 'function') {
+                        playPromise.catch(function () {
+                            // Autoplay blocked — the poster/backup image shows
+                            // until the first interaction retries via playOnInteraction.
+                        });
+                    }
                 }
 
-                var playPromise = heroVideo.play();
+                // Nudge once the browser has enough to play, and shortly after load.
+                heroVideo.addEventListener('canplay', attemptPlay);
+                heroVideo.addEventListener('canplaythrough', attemptPlay);
+                setTimeout(attemptPlay, 500);
 
-                if (playPromise !== undefined) {
-                    playPromise.then(function() {
-                        hasPlayed = true;
-                        heroVideo.removeAttribute('controls');
-                    }).catch(function() {
-                        // Autoplay blocked - will retry on user interaction
-                    });
-                }
-            }
-
-            // Try to play when video is ready
-            heroVideo.addEventListener('canplay', function() {
-                attemptPlay();
+                // Low Power Mode / blocked autoplay: start on first interaction.
+                function playOnInteraction() { attemptPlay(); }
+                ['click', 'scroll', 'touchstart', 'keydown'].forEach(function (evt) {
+                    document.addEventListener(evt, playOnInteraction, { once: true });
+                });
             });
-
-            heroVideo.addEventListener('canplaythrough', function() {
-                attemptPlay();
-            });
-
-            // Start loading the video
-            heroVideo.load();
-
-            // Try to play after a short delay
-            setTimeout(attemptPlay, 500);
-
-            // Fallback: Play on any user interaction (required for Safari)
-            function playOnInteraction() {
-                if (!hasPlayed) {
-                    attemptPlay();
-                }
-            }
-
-            // Listen for user interactions
-            document.addEventListener('click', playOnInteraction, { once: true });
-            document.addEventListener('scroll', playOnInteraction, { once: true });
-            document.addEventListener('touchstart', playOnInteraction, { once: true });
-            document.addEventListener('keydown', playOnInteraction, { once: true });
         }
 
     });
