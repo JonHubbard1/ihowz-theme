@@ -497,6 +497,36 @@ wp_enqueue_style('ihowz-join-now-style');
                     </label>
                 </div>
 
+                <!-- Privacy preferences (optional marketing/newsletter consent + contact method) -->
+                <div class="join-now-field join-now-field-full">
+                    <p class="join-now-field-label"><?php _e('Your privacy preferences (optional)', 'ihowz-theme'); ?></p>
+                    <p style="font-size:0.875rem;color:#666;margin:0 0 12px 0;">
+                        <?php _e('Tick any you would like to opt in to. You can change these any time in the Privacy tab of your member portal.', 'ihowz-theme'); ?>
+                    </p>
+                    <label class="join-now-checkbox-label">
+                        <input type="checkbox" name="consents[MARKETING]" value="1">
+                        <span><?php _e('Send me marketing communications and promotional offers by email.', 'ihowz-theme'); ?></span>
+                    </label>
+                    <label class="join-now-checkbox-label">
+                        <input type="checkbox" name="consents[NEWSLETTER]" value="1">
+                        <span><?php _e('Send me the regular newsletter with updates and news.', 'ihowz-theme'); ?></span>
+                    </label>
+                    <label class="join-now-checkbox-label">
+                        <input type="checkbox" name="consents[THIRD_PARTY]" value="1">
+                        <span><?php _e('Share my contact details with trusted third parties so they can send me marketing offers.', 'ihowz-theme'); ?></span>
+                    </label>
+                </div>
+
+                <!-- Preferred contact method -->
+                <div class="join-now-field">
+                    <label for="<?php echo esc_attr($form_id); ?>-preferred-contact" class="join-now-field-label"><?php _e('Preferred contact method', 'ihowz-theme'); ?></label>
+                    <select name="preferences[preferred_contact_method]" id="<?php echo esc_attr($form_id); ?>-preferred-contact" class="join-now-input">
+                        <option value="email" selected><?php _e('Email', 'ihowz-theme'); ?></option>
+                        <option value="phone"><?php _e('Phone', 'ihowz-theme'); ?></option>
+                        <option value="sms"><?php _e('SMS', 'ihowz-theme'); ?></option>
+                    </select>
+                </div>
+
                 <!-- Submit Button -->
                 <div class="join-now-submit-wrapper">
                     <button type="submit" class="join-now-submit-btn ihowz-btn-cta" id="<?php echo esc_attr($form_id); ?>-submit">
