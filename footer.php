@@ -17,7 +17,7 @@
                         <img src="/wp-content/uploads/2025/07/short-ihowz-logobmp-6cm-244-80.jpg" alt="<?php bloginfo('name'); ?>" class="footer-logo-img">
                     </a>
                     <p class="footer-company-info">iHowz Landlords' Association</p>
-                    <p class="footer-company-details">Riverside Centre, River Lawn Road,<br>Tonbridge, TN9 1EP</p>
+                    <p class="footer-company-details">Marlowe Innovation Centre, Marlowe Way,<br>Ramsgate, CT12 6FA</p>
                     <p class="footer-company-details"><a href="tel:01732565601">01732 56 56 01</a><br><a href="mailto:info@ihowz.uk">info@ihowz.uk</a></p>
                     <p class="footer-company-details"><small>Company No. 06935628</small></p>
                 </div>
