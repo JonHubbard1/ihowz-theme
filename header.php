@@ -112,6 +112,17 @@
                         ));
                         ?>
                     </nav>
+
+                    <div class="header-search-menu">
+                        <button class="header-search-toggle" type="button" aria-expanded="false" aria-controls="header-search-dropdown" aria-label="<?php esc_attr_e('Search iHowz', 'ihowz'); ?>">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <div id="header-search-dropdown" class="header-search-dropdown">
+                            <?php get_search_form(); ?>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

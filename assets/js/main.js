@@ -323,6 +323,41 @@
             }
         });
 
+        // Header Search Dropdown Toggle
+        var searchMenu = $('.header-search-menu');
+        var searchButton = searchMenu.find('.header-search-toggle');
+        var searchDropdown = searchMenu.find('.header-search-dropdown');
+
+        searchButton.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var isActive = searchMenu.hasClass('active');
+            searchMenu.toggleClass('active');
+            searchButton.attr('aria-expanded', !isActive);
+
+            if (!isActive) {
+                setTimeout(function() {
+                    searchDropdown.find('.search-field').first().focus();
+                }, 100);
+            }
+        });
+
+        $(document).on('click', function(e) {
+            if (searchMenu.hasClass('active') && !searchMenu.is(e.target) && searchMenu.has(e.target).length === 0) {
+                searchMenu.removeClass('active');
+                searchButton.attr('aria-expanded', 'false');
+            }
+        });
+
+        $(document).on('keydown', function(e) {
+            if (e.key === 'Escape' && searchMenu.hasClass('active')) {
+                searchMenu.removeClass('active');
+                searchButton.attr('aria-expanded', 'false');
+                searchButton.focus();
+            }
+        });
+
         // Password visibility toggle
         $('.password-toggle-btn').on('click', function() {
             var $btn = $(this);

@@ -435,6 +435,122 @@
     }
 }
 
+/* Header Search (in the sticky menu bar) */
+.header-search-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+}
+
+.header-search-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--primary-charcoal);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.header-search-toggle:hover,
+.header-search-menu.active .header-search-toggle {
+    background-color: rgba(159, 192, 69, 0.14);
+    color: var(--primary-green);
+}
+
+.header-search-dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    background: var(--primary-white);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    width: 360px;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.25s ease;
+    z-index: 10001;
+}
+
+.header-search-menu.active .header-search-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Let the reused search form fill the panel */
+.header-search-dropdown .search-form {
+    margin: 0;
+}
+
+.header-search-dropdown .search-form input[type="search"] {
+    width: 100%;
+}
+
+/* Arrow indicator for the search dropdown */
+.header-search-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 14px;
+    width: 16px;
+    height: 16px;
+    background: var(--primary-white);
+    transform: rotate(45deg);
+    box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Mobile: keep the icon in the right cluster, sitting left of the hamburger */
+@media (max-width: 1023px) {
+    .menubar-menu .header-search-menu {
+        order: -1;
+        margin-left: 0;
+        margin-right: 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-search-dropdown {
+        width: 300px;
+        right: -40px;
+        padding: 16px;
+    }
+
+    .header-search-dropdown::before {
+        right: 54px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-search-dropdown {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        border-radius: 16px 16px 0 0;
+        padding: 24px;
+        transform: translateY(100%);
+    }
+
+    .header-search-menu.active .header-search-dropdown {
+        transform: translateY(0);
+    }
+
+    .header-search-dropdown::before {
+        display: none;
+    }
+}
+
 .header-menu-bar {
     display: flex;
     flex-flow: row;
