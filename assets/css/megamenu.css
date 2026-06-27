@@ -209,28 +209,37 @@
     z-index: 1001;
 }
 
-/* Show flyout on hover */
-.megamenu-dropdown > li:hover > .sub-menu {
+/* Make every item that holds a flyout a positioning context for its submenu,
+   so left:100%/right:100% are relative to the immediate parent at every
+   level (the top-level columns are already relative via the .megamenu-dropdown
+   > li rule above; this extends that to nested flyout items). */
+.megamenu-dropdown li.menu-item-has-children {
+    position: relative;
+}
+
+/* Show flyout on hover — at every level, not just the top-level columns */
+.megamenu-dropdown li:hover > .sub-menu {
     display: block;
     opacity: 1;
     visibility: visible;
     transform: translateX(0);
 }
 
-/* Hide dropdown indicator on flyout items, use right arrow instead */
-.megamenu-dropdown > li.menu-item-has-children > a .dropdown-indicator {
+/* Hide dropdown indicator on flyout items, use right arrow instead
+   (applies at every level, not just the top-level columns) */
+.megamenu-dropdown li.menu-item-has-children > a .dropdown-indicator {
     display: none;
 }
 
 /* Right arrow for flyout items */
-.megamenu-dropdown > li.menu-item-has-children > a {
+.megamenu-dropdown li.menu-item-has-children > a {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
 }
 
-.megamenu-dropdown > li.menu-item-has-children > a::after {
+.megamenu-dropdown li.menu-item-has-children > a::after {
     content: '';
     display: inline-block;
     width: 0;
@@ -242,7 +251,7 @@
     opacity: 0.5;
 }
 
-.megamenu-dropdown > li.menu-item-has-children:hover > a::after {
+.megamenu-dropdown li.menu-item-has-children:hover > a::after {
     opacity: 1;
 }
 
@@ -257,6 +266,39 @@
 .megamenu-dropdown .sub-menu a:hover {
     background-color: rgba(159, 192, 69, 0.75);
     color: #fff;
+}
+
+/* Keep flyout items intact when a too-tall flyout is split into columns
+   (set via JS on hover) — never break a single <li> across two columns. */
+.megamenu-dropdown .sub-menu li {
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+/* Subtle thin scrollbar for megamenu areas that scroll (panel or flyouts
+   capped to the viewport height via JS). Harmless on elements that don't. */
+.megamenu-dropdown,
+.megamenu-dropdown .sub-menu {
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-forest-green) transparent;
+}
+
+.megamenu-dropdown::-webkit-scrollbar,
+.megamenu-dropdown .sub-menu::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.megamenu-dropdown::-webkit-scrollbar-thumb,
+.megamenu-dropdown .sub-menu::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.megamenu-dropdown::-webkit-scrollbar-track,
+.megamenu-dropdown .sub-menu::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 /* Featured Items */
@@ -345,12 +387,13 @@
         border-radius: 0;
     }
 
-    /* Show dropdown indicator on mobile, hide the right arrow */
-    .megamenu-dropdown > li.menu-item-has-children > a .dropdown-indicator {
+    /* Show dropdown indicator on mobile, hide the right arrow
+       (at every level, matching the desktop rule above) */
+    .megamenu-dropdown li.menu-item-has-children > a .dropdown-indicator {
         display: block;
     }
 
-    .megamenu-dropdown > li.menu-item-has-children > a::after {
+    .megamenu-dropdown li.menu-item-has-children > a::after {
         display: none;
     }
 

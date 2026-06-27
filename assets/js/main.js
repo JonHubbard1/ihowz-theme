@@ -97,6 +97,172 @@
             }, 250);
         });
 
+        // Fit nested flyout submenus inside the viewport: decide, on hover,
+        // both the side (flip) and the height strategy (single column /
+        // multi-column / scroll) together, because adding columns widens
+        // the flyout and changes which side it should open on.
+        //
+        // CSS opens these flyouts to the right of their parent
+        // (.megamenu-dropdown .sub-menu { left: 100%; }) with no collision
+        // or height check, so a flyout can run off the right edge or off the
+        // bottom of the screen. Here we measure on hover and:
+        //   - if it fits vertically  -> single column, honour the flip;
+        //   - if too tall, with horizontal room -> split into 2-3 columns,
+        //     each capped to the viewport height;
+        //   - if too tall, no room for 2+ columns -> single scrollable column;
+        //   - if 3 columns still isn't enough -> the columned block scrolls.
+        //
+        // Works at every level (each .menu-item-has-children li is a
+        // positioning context for its own .sub-menu, and the measurements
+        // are level-agnostic). Mobile uses the accordion (matchMedia), where
+        // flyouts are static, so this is desktop-only.
+        var flyoutFitStyles = ['left', 'right', 'maxHeight', 'overflowY', 'overflowX', 'columnCount', 'columnGap', 'columnFill', 'width'];
+
+        $('.megamenu-dropdown li.menu-item-has-children').on('mouseenter', function() {
+            if (window.matchMedia('(max-width: 1023px)').matches) {
+                return;
+            }
+
+            var $li = $(this);
+            var $flyout = $li.children('.sub-menu');
+            if (!$flyout.length) {
+                return;
+            }
+
+            var el = $flyout[0];
+
+            // Reset every inline style we may set so we measure the natural
+            // (single-column, to-the-right) state, then reflow via offsetHeight
+            // so the measurement is valid even though the flyout is
+            // display:none until :hover.
+            var reset = {};
+            flyoutFitStyles.forEach(function(k) { reset[k] = ''; });
+            $flyout.css(reset);
+
+            var naturalHeight = el.offsetHeight;
+            if (!naturalHeight) {
+                return;
+            }
+            var naturalWidth = el.offsetWidth;
+
+            // left: 100% places the flyout's top at the parent's top, so its
+            // available vertical space is the viewport below that point.
+            var flyoutTop = el.getBoundingClientRect().top;
+            var availableH = window.innerHeight - flyoutTop - 12; // 12px breathing room
+
+            var parentRight = $li[0].getBoundingClientRect().right;
+            var parentLeft = $li[0].getBoundingClientRect().left;
+            var spaceRight = window.innerWidth - parentRight;
+            var spaceLeft = parentLeft;
+
+            var colWidth = naturalWidth;
+            var gap = 16; // 1rem, matches the megamenu grid gap
+
+            // Prefer opening right; flip left only if the right lacks room
+            // and the left has enough.
+            function sideFor(width) {
+                return (width > spaceRight && width <= spaceLeft) ? 'left' : 'right';
+            }
+
+            if (naturalHeight <= availableH) {
+                // Fits vertically — single column, just honour the flip.
+                if (sideFor(naturalWidth) === 'left') {
+                    $flyout.css({ left: 'auto', right: '100%' });
+                }
+                return;
+            }
+
+            // Too tall — try columns (cap 3), else scroll.
+            var neededCols = Math.ceil(naturalHeight / availableH);
+            var maxColsRight = Math.floor((spaceRight + gap) / (colWidth + gap));
+            var maxColsLeft = Math.floor((spaceLeft + gap) / (colWidth + gap));
+            var colsRight = Math.min(neededCols, maxColsRight, 3);
+            var colsLeft = Math.min(neededCols, maxColsLeft, 3);
+
+            var cols = 0;
+            var side = 'right';
+            if (colsRight >= 2) {
+                cols = colsRight;
+                side = 'right';
+            } else if (colsLeft >= 2) {
+                cols = colsLeft;
+                side = 'left';
+            }
+
+            if (cols >= 2) {
+                // Multi-column: each column is capped at availableH via
+                // column-fill:auto, and overflow-y:auto makes the block
+                // scroll if 3 columns still isn't enough. An explicit width
+                // is required so column-count doesn't derive tiny columns
+                // from the narrow parent li.
+                $flyout.css({
+                    columnCount: cols,
+                    columnGap: gap + 'px',
+                    columnFill: 'auto',
+                    maxHeight: availableH + 'px',
+                    width: (cols * colWidth + (cols - 1) * gap) + 'px',
+                    overflowY: 'auto',
+                    overflowX: 'hidden',
+                    left: side === 'left' ? 'auto' : '100%',
+                    right: side === 'left' ? '100%' : ''
+                });
+            } else {
+                // No horizontal room for 2+ columns — single scrollable column.
+                var s = sideFor(naturalWidth);
+                $flyout.css({
+                    maxHeight: availableH + 'px',
+                    overflowY: 'auto',
+                    overflowX: 'hidden',
+                    left: s === 'left' ? 'auto' : '100%',
+                    right: s === 'left' ? '100%' : ''
+                });
+            }
+        });
+
+        // Clear inline fit styles when the pointer leaves the li subtree so
+        // each hover re-measures cleanly. (mouseleave only fires once the
+        // pointer leaves the li AND its descendants, so it won't fire while
+        // moving inside the open flyout.)
+        $('.megamenu-dropdown li.menu-item-has-children').on('mouseleave', function() {
+            if (window.matchMedia('(max-width: 1023px)').matches) {
+                return;
+            }
+            var $flyout = $(this).children('.sub-menu');
+            if ($flyout.length) {
+                var reset = {};
+                flyoutFitStyles.forEach(function(k) { reset[k] = ''; });
+                $flyout.css(reset);
+            }
+        });
+
+        // Cap the top-level megamenu panel to the viewport height so a tall
+        // panel scrolls instead of running off the bottom. The panel is
+        // already a multi-column grid (column count set per-item in admin),
+        // so we only scroll it — we don't re-column it. Desktop only.
+        $('.megamenu-enabled').on('mouseenter', function() {
+            if (window.matchMedia('(max-width: 1023px)').matches) {
+                return;
+            }
+            var $panel = $(this).children('.megamenu-dropdown');
+            if (!$panel.length) {
+                return;
+            }
+            $panel.css({ maxHeight: '', overflowY: '', overflowX: '' });
+            var panelTop = $panel[0].getBoundingClientRect().top;
+            var availableH = window.innerHeight - panelTop - 12;
+            $panel.css({ maxHeight: availableH + 'px', overflowY: 'auto', overflowX: 'hidden' });
+        });
+
+        $('.megamenu-enabled').on('mouseleave', function() {
+            if (window.matchMedia('(max-width: 1023px)').matches) {
+                return;
+            }
+            var $panel = $(this).children('.megamenu-dropdown');
+            if ($panel.length) {
+                $panel.css({ maxHeight: '', overflowY: '', overflowX: '' });
+            }
+        });
+
         // Smooth scrolling for anchor links
         $('a[href*="#"]:not([href="#"])').on('click', function() {
             if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
