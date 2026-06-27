@@ -74,6 +74,8 @@
                 <span class="footer-legal-separator">|</span>
                 <a href="<?php echo esc_url(home_url('/cookie-policy/')); ?>">Cookie Policy</a>
                 <span class="footer-legal-separator">|</span>
+                <a href="#" data-ihowz-cookie-settings="1">Cookie Settings</a>
+                <span class="footer-legal-separator">|</span>
                 <a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>">Privacy Policy</a>
             </div>
 
