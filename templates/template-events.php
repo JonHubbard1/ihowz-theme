@@ -65,6 +65,33 @@ $event_id = isset($_GET['event_id']) ? intval($_GET['event_id']) : 0;
         <!-- All Events Grid -->
         <section class="events-grid-section">
             <div class="container">
+                <?php
+                // Build category/tag filter dropdowns from terms actually used by published events.
+                $event_filter_cats = array();
+                $event_filter_tags = array();
+                if (class_exists('IHowz_Events')) {
+                    $ihowz_events_svc = IHowz_Events::get_instance()->get_events_service();
+                    $ihowz_filter_events = $ihowz_events_svc->get_events(1, 500, array('status' => 'published'));
+                    $ihowz_event_ids = array();
+                    foreach ($ihowz_filter_events as $ihowz_ev) {
+                        $ihowz_event_ids[] = (int) $ihowz_ev->get_id();
+                    }
+                    if ($ihowz_event_ids) {
+                        $cats = wp_get_object_terms($ihowz_event_ids, 'category', array('fields' => 'all'));
+                        if (!is_wp_error($cats)) {
+                            foreach ($cats as $t) {
+                                $event_filter_cats[(int) $t->term_id] = $t->name;
+                            }
+                        }
+                        $tags = wp_get_object_terms($ihowz_event_ids, 'post_tag', array('fields' => 'all'));
+                        if (!is_wp_error($tags)) {
+                            foreach ($tags as $t) {
+                                $event_filter_tags[(int) $t->term_id] = $t->name;
+                            }
+                        }
+                    }
+                }
+                ?>
                 <div class="section-header">
                     <h2><?php _e('All Events', 'ihowz-theme'); ?></h2>
                     <div class="events-filters">
@@ -74,6 +101,22 @@ $event_id = isset($_GET['event_id']) ? intval($_GET['event_id']) : 0;
                         <button class="filter-btn" data-type="training"><?php _e('Training', 'ihowz-theme'); ?></button>
                         <button class="filter-btn" data-type="webinar"><?php _e('Webinars', 'ihowz-theme'); ?></button>
                         <button class="filter-btn" data-type="forum"><?php _e('Forums', 'ihowz-theme'); ?></button>
+                        <?php if (!empty($event_filter_cats)) : ?>
+                        <select class="filter-select" data-filter="category" aria-label="<?php esc_attr_e('Filter by category', 'ihowz-theme'); ?>">
+                            <option value=""><?php _e('All Categories', 'ihowz-theme'); ?></option>
+                            <?php foreach ($event_filter_cats as $cid => $cname) : ?>
+                                <option value="<?php echo esc_attr($cid); ?>"><?php echo esc_html($cname); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <?php endif; ?>
+                        <?php if (!empty($event_filter_tags)) : ?>
+                        <select class="filter-select" data-filter="tag" aria-label="<?php esc_attr_e('Filter by tag', 'ihowz-theme'); ?>">
+                            <option value=""><?php _e('All Tags', 'ihowz-theme'); ?></option>
+                            <?php foreach ($event_filter_tags as $tid => $tname) : ?>
+                                <option value="<?php echo esc_attr($tid); ?>"><?php echo esc_html($tname); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <?php endif; ?>
                     </div>
                 </div>
 
@@ -338,6 +381,23 @@ $event_id = isset($_GET['event_id']) ? intval($_GET['event_id']) : 0;
     border-color: #1e3a5f;
 }
 
+.template-events .filter-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+}
+
+.template-events .filter-select:hover,
+.template-events .filter-select:focus {
+    border-color: #1e3a5f;
+    color: #1e3a5f;
+    outline: none;
+}
+
 .template-events .event-categories-section {
     padding: 60px 0;
     background: #f8f9fa;
@@ -444,22 +504,20 @@ $event_id = isset($_GET['event_id']) ? intval($_GET['event_id']) : 0;
 
 <script>
 jQuery(document).ready(function($) {
-    // Event type filter buttons
-    $('.events-filters .filter-btn').on('click', function() {
-        var type = $(this).data('type');
-
-        $('.filter-btn').removeClass('active');
-        $(this).addClass('active');
-
-        // Reload events with filter
-        var url = '<?php echo admin_url('admin-ajax.php'); ?>';
+    // Reload the events grid honouring type + category + tag filters.
+    function loadEvents() {
+        var type = $('.events-filters .filter-btn.active').data('type') || '';
+        var category = $('.events-filters .filter-select[data-filter="category"]').val() || '';
+        var tag = $('.events-filters .filter-select[data-filter="tag"]').val() || '';
 
         $.ajax({
-            url: url,
+            url: '<?php echo admin_url('admin-ajax.php'); ?>',
             type: 'POST',
             data: {
                 action: 'ihowz_filter_events',
                 type: type,
+                category: category,
+                tag: tag,
                 nonce: '<?php echo wp_create_nonce('ihowz_filter_events'); ?>'
             },
             beforeSend: function() {
@@ -474,7 +532,17 @@ jQuery(document).ready(function($) {
                 $('#events-container').removeClass('loading');
             }
         });
+    }
+
+    // Event type filter buttons
+    $('.events-filters .filter-btn').on('click', function() {
+        $('.filter-btn').removeClass('active');
+        $(this).addClass('active');
+        loadEvents();
     });
+
+    // Category / Tag dropdowns
+    $('.events-filters .filter-select').on('change', loadEvents);
 });
 </script>
 
