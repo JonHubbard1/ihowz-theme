@@ -5,6 +5,11 @@ All notable changes to the iHowz WordPress theme will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.9] - 2026-06-28
+
+### Changed
+- **Password policy unified** — the Join Now form now requires the same as the profile change-password form: minimum 12 characters, at least one uppercase letter and one number. The "Min 8 characters" hint is corrected to "Min 12 characters, 1 uppercase & 1 number", `minlength` raised to 12, and the client-side validation now checks length, uppercase and number with messages matching the server-side checks.
+
 ## [1.7.8] - 2026-06-28
 
 ### Added
@@ -118,6 +123,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Clean, minimal aesthetic
 - Optimized for readability
 
+[1.7.9]: https://github.com/JonHubbard1/ihowz-theme/releases/tag/v1.7.9
 [1.7.8]: https://github.com/JonHubbard1/ihowz-theme/releases/tag/v1.7.8
 [1.7.7]: https://github.com/JonHubbard1/ihowz-theme/releases/tag/v1.7.7
 [1.7.2]: https://github.com/JonHubbard1/ihowz-theme/releases/tag/v1.7.2
