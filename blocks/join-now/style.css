@@ -10,7 +10,7 @@
 
 .wp-block-ihowz-join-now,
 .ihowz-join-now {
-    width: 90%;
+    width: 100%;
     max-width: 1600px;
     margin-left: auto;
     margin-right: auto;
@@ -330,6 +330,27 @@
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--success-green, #388E3C);
+}
+
+/* Standalone "Total to pay" row (lifted out of the card/bacs sections so it
+   sits above the payment-method selector). */
+.join-now-total-summary {
+    margin-top: 8px;
+}
+
+/* Section dividers between form groups (e.g. membership type → personal
+   details, address → password). Matches the .join-now-payment-section
+   border colour. */
+.join-now-divider {
+    border: none;
+    border-top: 1px solid #E0E0E0;
+    margin: 24px 0;
+}
+
+/* Extra breathing room above the Payment Method selector (it follows the
+   Total To Pay row with no divider between them). */
+.join-now-payment-method-field {
+    margin-top: 24px;
 }
 
 /* Stripe Card Element */

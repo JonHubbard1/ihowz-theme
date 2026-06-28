@@ -1,5 +1,20 @@
+<?php
+/**
+ * Text-size accessibility preference.
+ *
+ * The visitor's chosen step is read from the ihowz_textsize cookie and applied
+ * as a class on <html> server-side, before paint — so there is no flash of the
+ * default size on reload. The cookie is only ever written by main.js once the
+ * visitor has accepted the cookie-consent banner; reading it here needs no
+ * consent. Typography is rem-based, so a single html { font-size: N% } rule
+ * (see layout.css) scales the whole site.
+ */
+$ihowz_textsize_steps = array( 'xs', 'sm', 'md', 'lg', 'xl' );
+$ihowz_textsize      = isset( $_COOKIE['ihowz_textsize'] ) ? sanitize_key( wp_unslash( $_COOKIE['ihowz_textsize'] ) ) : '';
+$ihowz_textsize_class = in_array( $ihowz_textsize, $ihowz_textsize_steps, true ) ? ' ihowz-textsize-' . $ihowz_textsize : '';
+?>
 <!DOCTYPE html>
-<html <?php language_attributes(); ?>>
+<html <?php language_attributes(); ?> class="<?php echo esc_attr( trim( $ihowz_textsize_class ) ); ?>">
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -112,6 +127,15 @@
                         ));
                         ?>
                     </nav>
+
+                    <div class="header-textsize-menu">
+                        <button class="header-textsize-toggle header-textsize-decrease" type="button" aria-label="<?php esc_attr_e('Smaller text', 'ihowz'); ?>" aria-disabled="false">
+                            <span class="header-textsize-label" aria-hidden="true">A&minus;</span>
+                        </button>
+                        <button class="header-textsize-toggle header-textsize-increase" type="button" aria-label="<?php esc_attr_e('Larger text', 'ihowz'); ?>" aria-disabled="false">
+                            <span class="header-textsize-label" aria-hidden="true">A+</span>
+                        </button>
+                    </div>
 
                     <div class="header-search-menu">
                         <button class="header-search-toggle" type="button" aria-expanded="false" aria-controls="header-search-dropdown" aria-label="<?php esc_attr_e('Search iHowz', 'ihowz'); ?>">

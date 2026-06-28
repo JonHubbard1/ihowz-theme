@@ -435,6 +435,92 @@
     }
 }
 
+/* Header Text-size control (A- / A+ in the sticky menu bar).
+   Typography is rem-based, so scaling the root font-size cascades through
+   the whole site. The class is applied to <html> server-side from the
+   ihowz_textsize cookie (header.php) and toggled by main.js. */
+.header-textsize-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+    gap: 2px;
+}
+
+.header-textsize-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--primary-charcoal);
+    border-radius: 8px;
+    cursor: pointer;
+    line-height: 1;
+    font-weight: 700;
+    transition: background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+
+.header-textsize-toggle:hover,
+.header-textsize-toggle:focus-visible {
+    background-color: rgba(159, 192, 69, 0.14);
+    color: var(--primary-green);
+    outline: none;
+}
+
+.header-textsize-toggle[aria-disabled="true"] {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.header-textsize-toggle[aria-disabled="true"]:hover {
+    background-color: transparent;
+    color: var(--primary-charcoal);
+}
+
+/* Visually convey direction: the decrease glyph is smaller than increase. */
+.header-textsize-decrease .header-textsize-label {
+    font-size: 0.9rem;
+}
+
+.header-textsize-increase .header-textsize-label {
+    font-size: 1.15rem;
+}
+
+/* Root font-size steps — rem-based typography scales with these. */
+html.ihowz-textsize-xs {
+    font-size: 90%;
+}
+
+html.ihowz-textsize-sm {
+    font-size: 95%;
+}
+
+html.ihowz-textsize-md {
+    font-size: 100%;
+}
+
+html.ihowz-textsize-lg {
+    font-size: 112.5%;
+}
+
+html.ihowz-textsize-xl {
+    font-size: 125%;
+}
+
+/* Mobile: keep the controls in the right cluster, sitting left of the
+   hamburger, beside the search icon. */
+@media (max-width: 1023px) {
+    .menubar-menu .header-textsize-menu {
+        order: -1;
+        margin-left: 0;
+        margin-right: 8px;
+    }
+}
+
 /* Header Search (in the sticky menu bar) */
 .header-search-menu {
     position: relative;

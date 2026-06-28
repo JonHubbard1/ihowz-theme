@@ -131,7 +131,7 @@ wp_enqueue_style('ihowz-join-now-style');
             <form id="<?php echo esc_attr($form_id); ?>" class="join-now-form" method="post" novalidate>
                 <?php wp_nonce_field('ihowz_join_nonce', 'ihowz_join_nonce_field'); ?>
 
-                <!-- Membership Type Selection -->
+                <!-- 1. Membership Type Selection -->
                 <?php if (!empty($membership_types)) : ?>
                     <div class="join-now-field join-now-field-full">
                         <label><?php _e('Membership Type', 'ihowz-theme'); ?> <span class="required">*</span></label>
@@ -174,101 +174,9 @@ wp_enqueue_style('ihowz-join-now-style');
                     </div>
                 <?php endif; ?>
 
-                <!-- Payment Method Selector -->
-                <?php if ($bacs_debit_enabled) : ?>
-                <div class="join-now-field join-now-field-full">
-                    <label><?php _e('Payment Method', 'ihowz-theme'); ?> <span class="required">*</span></label>
-                    <div class="payment-method-toggle">
-                        <button type="button" class="payment-method-option active" data-method="card">
-                            <span class="payment-method-icon">&#x1f4b3;</span>
-                            <span class="payment-method-label"><?php _e('Credit / Debit Card', 'ihowz-theme'); ?></span>
-                        </button>
-                        <button type="button" class="payment-method-option" data-method="bacs_debit">
-                            <span class="payment-method-icon">&#x1f3e6;</span>
-                            <span class="payment-method-label"><?php _e('Direct Debit', 'ihowz-theme'); ?></span>
-                            <span class="payment-method-note"><?php _e('Pay directly from your bank account', 'ihowz-theme'); ?></span>
-                        </button>
-                    </div>
-                    <input type="hidden" name="payment_method_type" id="<?php echo esc_attr($form_id); ?>-payment-method" value="card">
-                </div>
-                <?php endif; ?>
+                <hr class="join-now-divider" aria-hidden="true">
 
-                <!-- Promotional Code -->
-                <div class="join-now-field join-now-field-full">
-                    <label for="<?php echo esc_attr($form_id); ?>-promo-code"><?php _e('Promo Code', 'ihowz-theme'); ?></label>
-                    <div class="promo-code-row">
-                        <input type="text"
-                               id="<?php echo esc_attr($form_id); ?>-promo-code"
-                               name="promo_code"
-                               class="join-now-input promo-code-input"
-                               placeholder="<?php esc_attr_e('Enter code if you have one', 'ihowz-theme'); ?>"
-                               autocomplete="off"
-                               style="text-transform:uppercase;">
-                        <button type="button" class="promo-apply-btn" id="<?php echo esc_attr($form_id); ?>-promo-apply"><?php _e('Apply', 'ihowz-theme'); ?></button>
-                    </div>
-                    <div class="promo-message" id="<?php echo esc_attr($form_id); ?>-promo-message" role="status" aria-live="polite"></div>
-                </div>
-
-                <!-- Card Payment Section -->
-                <div class="payment-section payment-section-card" id="<?php echo esc_attr($form_id); ?>-payment-card">
-                    <div class="join-now-payment-section">
-                        <div class="join-now-payment-summary">
-                            <span class="payment-label"><?php _e('Total to pay:', 'ihowz-theme'); ?></span>
-                            <span class="payment-amount" id="<?php echo esc_attr($form_id); ?>-payment-amount">&pound;0.00</span>
-                        </div>
-                        <?php if ($stripe_publishable_key) : ?>
-                        <div class="join-now-field join-now-field-full">
-                            <label><?php _e('Card Details', 'ihowz-theme'); ?></label>
-                            <div id="<?php echo esc_attr($form_id); ?>-card-element" class="stripe-card-element">
-                                <!-- Stripe Element will be mounted here -->
-                            </div>
-                            <div id="<?php echo esc_attr($form_id); ?>-card-errors" class="stripe-card-errors" role="alert"></div>
-                        </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-
-                <!-- Bacs Direct Debit Section -->
-                <?php if ($bacs_debit_enabled && $stripe_publishable_key) : ?>
-                <div class="payment-section payment-section-bacs" id="<?php echo esc_attr($form_id); ?>-payment-bacs" style="display:none;">
-                    <div class="join-now-payment-section">
-                        <div class="join-now-payment-summary">
-                            <span class="payment-label"><?php _e('Total to pay:', 'ihowz-theme'); ?></span>
-                            <span class="payment-amount" id="<?php echo esc_attr($form_id); ?>-payment-amount-bacs">&pound;0.00</span>
-                        </div>
-                        <p class="bacs-instruction"><?php _e('Enter your bank details to set up a Direct Debit. Your payment will be processed within 3 working days.', 'ihowz-theme'); ?></p>
-                        <div class="join-now-field-group">
-                            <div class="join-now-field">
-                                <label><?php _e('Sort Code', 'ihowz-theme'); ?> <span class="required">*</span></label>
-                                <input type="text" id="<?php echo esc_attr($form_id); ?>-sort-code" class="join-now-input bacs-field" placeholder="12-34-56" maxlength="8" autocomplete="off">
-                            </div>
-                            <div class="join-now-field">
-                                <label><?php _e('Account Number', 'ihowz-theme'); ?> <span class="required">*</span></label>
-                                <input type="text" id="<?php echo esc_attr($form_id); ?>-account-number" class="join-now-input bacs-field" placeholder="12345678" maxlength="8" autocomplete="off">
-                            </div>
-                        </div>
-                        <div class="join-now-field join-now-field-full">
-                            <label><?php _e('Account Holder Name', 'ihowz-theme'); ?> <span class="required">*</span></label>
-                            <input type="text" id="<?php echo esc_attr($form_id); ?>-account-name" class="join-now-input bacs-field" placeholder="<?php esc_attr_e('Name on bank account', 'ihowz-theme'); ?>" autocomplete="off">
-                        </div>
-                        <div id="<?php echo esc_attr($form_id); ?>-bacs-errors" class="stripe-card-errors" role="alert"></div>
-                        <div class="bacs-mandate-notice">
-                            <p><?php _e('By submitting this form you authorise iHowz to send instructions to your bank to debit your account. Your Direct Debit will be collected on or shortly after the anniversary of your membership.', 'ihowz-theme'); ?></p>
-                            <div class="bacs-guarantee">
-                                <strong><?php _e('The Direct Debit Guarantee', 'ihowz-theme'); ?></strong>
-                                <ul>
-                                    <li><?php _e('This Guarantee is offered by all banks and building societies', 'ihowz-theme'); ?></li>
-                                    <li><?php _e('If the amounts to be paid or the payment dates change, you will be notified in advance', 'ihowz-theme'); ?></li>
-                                    <li><?php _e('You can cancel a Direct Debit at any time by contacting your bank', 'ihowz-theme'); ?></li>
-                                    <li><?php _e('If an error is made, your bank must refund you immediately', 'ihowz-theme'); ?></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <?php endif; ?>
-
-                <!-- Personal Details -->
+                <!-- 2. Personal Details (name / contact / address) -->
                 <div class="join-now-field-group">
                     <div class="join-now-field">
                         <label for="<?php echo esc_attr($form_id); ?>-first-name">
@@ -429,7 +337,9 @@ wp_enqueue_style('ihowz-join-now-style');
                     </div>
                 </div>
 
-                <!-- Password -->
+                <hr class="join-now-divider" aria-hidden="true">
+
+                <!-- 3. Password -->
                 <div class="join-now-field-group">
                     <div class="join-now-field">
                         <label for="<?php echo esc_attr($form_id); ?>-password">
@@ -484,7 +394,9 @@ wp_enqueue_style('ihowz-join-now-style');
                     </div>
                 </div>
 
-                <!-- Consent -->
+                <hr class="join-now-divider" aria-hidden="true">
+
+                <!-- 4. Privacy Preferences (terms consent + marketing/newsletter opt-ins + preferred contact) -->
                 <div class="join-now-field join-now-field-full">
                     <label class="join-now-checkbox-label">
                         <input type="checkbox" name="terms_accepted" value="1" required>
@@ -527,7 +439,103 @@ wp_enqueue_style('ihowz-join-now-style');
                     </select>
                 </div>
 
-                <!-- Submit Button -->
+                <hr class="join-now-divider" aria-hidden="true">
+
+                <!-- 5. Total To Pay (standalone summary; updated by script.js via the -payment-amount id) -->
+                <div class="join-now-field join-now-field-full join-now-total-summary">
+                    <div class="join-now-payment-summary">
+                        <span class="payment-label"><?php _e('Total to pay:', 'ihowz-theme'); ?></span>
+                        <span class="payment-amount" id="<?php echo esc_attr($form_id); ?>-payment-amount">&pound;0.00</span>
+                    </div>
+                </div>
+
+                <!-- 6. Payment Method Selector -->
+                <?php if ($bacs_debit_enabled) : ?>
+                <div class="join-now-field join-now-field-full join-now-payment-method-field">
+                    <label><?php _e('Payment Method', 'ihowz-theme'); ?> <span class="required">*</span></label>
+                    <div class="payment-method-toggle">
+                        <button type="button" class="payment-method-option active" data-method="card">
+                            <span class="payment-method-icon">&#x1f4b3;</span>
+                            <span class="payment-method-label"><?php _e('Credit / Debit Card', 'ihowz-theme'); ?></span>
+                        </button>
+                        <button type="button" class="payment-method-option" data-method="bacs_debit">
+                            <span class="payment-method-icon">&#x1f3e6;</span>
+                            <span class="payment-method-label"><?php _e('Direct Debit', 'ihowz-theme'); ?></span>
+                            <span class="payment-method-note"><?php _e('Pay directly from your bank account', 'ihowz-theme'); ?></span>
+                        </button>
+                    </div>
+                    <input type="hidden" name="payment_method_type" id="<?php echo esc_attr($form_id); ?>-payment-method" value="card">
+                </div>
+                <?php endif; ?>
+
+                <!-- Card Payment Section (details only; total shown above) -->
+                <div class="payment-section payment-section-card" id="<?php echo esc_attr($form_id); ?>-payment-card">
+                    <div class="join-now-payment-section">
+                        <?php if ($stripe_publishable_key) : ?>
+                        <div class="join-now-field join-now-field-full">
+                            <label><?php _e('Card Details', 'ihowz-theme'); ?></label>
+                            <div id="<?php echo esc_attr($form_id); ?>-card-element" class="stripe-card-element">
+                                <!-- Stripe Element will be mounted here -->
+                            </div>
+                            <div id="<?php echo esc_attr($form_id); ?>-card-errors" class="stripe-card-errors" role="alert"></div>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <!-- Bacs Direct Debit Section (details only; total shown above) -->
+                <?php if ($bacs_debit_enabled && $stripe_publishable_key) : ?>
+                <div class="payment-section payment-section-bacs" id="<?php echo esc_attr($form_id); ?>-payment-bacs" style="display:none;">
+                    <div class="join-now-payment-section">
+                        <p class="bacs-instruction"><?php _e('Enter your bank details to set up a Direct Debit. Your payment will be processed within 3 working days.', 'ihowz-theme'); ?></p>
+                        <div class="join-now-field-group">
+                            <div class="join-now-field">
+                                <label><?php _e('Sort Code', 'ihowz-theme'); ?> <span class="required">*</span></label>
+                                <input type="text" id="<?php echo esc_attr($form_id); ?>-sort-code" class="join-now-input bacs-field" placeholder="12-34-56" maxlength="8" autocomplete="off">
+                            </div>
+                            <div class="join-now-field">
+                                <label><?php _e('Account Number', 'ihowz-theme'); ?> <span class="required">*</span></label>
+                                <input type="text" id="<?php echo esc_attr($form_id); ?>-account-number" class="join-now-input bacs-field" placeholder="12345678" maxlength="8" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="join-now-field join-now-field-full">
+                            <label><?php _e('Account Holder Name', 'ihowz-theme'); ?> <span class="required">*</span></label>
+                            <input type="text" id="<?php echo esc_attr($form_id); ?>-account-name" class="join-now-input bacs-field" placeholder="<?php esc_attr_e('Name on bank account', 'ihowz-theme'); ?>" autocomplete="off">
+                        </div>
+                        <div id="<?php echo esc_attr($form_id); ?>-bacs-errors" class="stripe-card-errors" role="alert"></div>
+                        <div class="bacs-mandate-notice">
+                            <p><?php _e('By submitting this form you authorise iHowz to send instructions to your bank to debit your account. Your Direct Debit will be collected on or shortly after the anniversary of your membership.', 'ihowz-theme'); ?></p>
+                            <div class="bacs-guarantee">
+                                <strong><?php _e('The Direct Debit Guarantee', 'ihowz-theme'); ?></strong>
+                                <ul>
+                                    <li><?php _e('This Guarantee is offered by all banks and building societies', 'ihowz-theme'); ?></li>
+                                    <li><?php _e('If the amounts to be paid or the payment dates change, you will be notified in advance', 'ihowz-theme'); ?></li>
+                                    <li><?php _e('You can cancel a Direct Debit at any time by contacting your bank', 'ihowz-theme'); ?></li>
+                                    <li><?php _e('If an error is made, your bank must refund you immediately', 'ihowz-theme'); ?></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
+
+                <!-- 7. Promotional Code -->
+                <div class="join-now-field join-now-field-full">
+                    <label for="<?php echo esc_attr($form_id); ?>-promo-code"><?php _e('Promo Code', 'ihowz-theme'); ?></label>
+                    <div class="promo-code-row">
+                        <input type="text"
+                               id="<?php echo esc_attr($form_id); ?>-promo-code"
+                               name="promo_code"
+                               class="join-now-input promo-code-input"
+                               placeholder="<?php esc_attr_e('Enter code if you have one', 'ihowz-theme'); ?>"
+                               autocomplete="off"
+                               style="text-transform:uppercase;">
+                        <button type="button" class="promo-apply-btn" id="<?php echo esc_attr($form_id); ?>-promo-apply"><?php _e('Apply', 'ihowz-theme'); ?></button>
+                    </div>
+                    <div class="promo-message" id="<?php echo esc_attr($form_id); ?>-promo-message" role="status" aria-live="polite"></div>
+                </div>
+
+                <!-- 8. Submit Button -->
                 <div class="join-now-submit-wrapper">
                     <button type="submit" class="join-now-submit-btn ihowz-btn-cta" id="<?php echo esc_attr($form_id); ?>-submit">
                         <span class="btn-text"><?php _e('Join Now & Pay', 'ihowz-theme'); ?></span>
