@@ -492,6 +492,38 @@
             }
         });
 
+        // UK postcode — only enforced when the country is the UK.
+        var postcode = form.querySelector('input[name="postcode"]');
+        var country = form.querySelector('input[name="country"]');
+        if (postcode && postcode.value.trim()) {
+            var isUK = !country || !country.value.trim() || /united kingdom|^gb$|^uk$|great britain/i.test(country.value.trim());
+            if (isUK) {
+                var pcVal = postcode.value.replace(/\s/g, '').toUpperCase();
+                if (!pcVal.match(/^[A-Z]{1,2}[0-9R][0-9A-Z]?[0-9][ABD-HJLNP-UW-Z]{2}$/)) {
+                    postcode.classList.add('input-error');
+                    showMessage(form, 'Please enter a valid UK postcode.', 'error');
+                    valid = false;
+                }
+            }
+        }
+
+        // Phone — leading 0 must pass UK format; leading + accepts international.
+        var phone = form.querySelector('input[name="phone"]');
+        if (phone && phone.value.trim()) {
+            var pv = phone.value.trim();
+            var phoneOk = false;
+            if (pv.charAt(0) === '+') {
+                phoneOk = !!pv.replace(/[^0-9]/g, '').match(/^[1-9][0-9]{6,14}$/);
+            } else if (pv.charAt(0) === '0') {
+                phoneOk = !!pv.replace(/[^0-9]/g, '').match(/^0[1-9][0-9]{8,9}$/);
+            }
+            if (!phoneOk) {
+                phone.classList.add('input-error');
+                showMessage(form, 'Please enter a valid phone number. UK numbers start with 0 (e.g. 07123 456789); international numbers start with +.', 'error');
+                valid = false;
+            }
+        }
+
         var password = form.querySelector('input[name="password"]');
         var passwordConfirm = form.querySelector('input[name="password_confirm"]');
         if (password && passwordConfirm) {
