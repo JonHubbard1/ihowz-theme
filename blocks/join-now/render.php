@@ -350,9 +350,9 @@ wp_enqueue_style('ihowz-join-now-style');
                                    id="<?php echo esc_attr($form_id); ?>-password"
                                    name="password"
                                    class="join-now-input"
-                                   placeholder="<?php esc_attr_e('Min 8 characters', 'ihowz-theme'); ?>"
+                                   placeholder="<?php esc_attr_e('Min 12 characters, 1 uppercase & 1 number', 'ihowz-theme'); ?>"
                                    required
-                                   minlength="8"
+                                   minlength="12"
                                    autocomplete="new-password">
                             <button type="button" class="password-toggle-btn" aria-label="<?php esc_attr_e('Show password', 'ihowz-theme'); ?>" aria-pressed="false" aria-controls="<?php echo esc_attr($form_id); ?>-password">
                                 <svg class="password-toggle-icon password-toggle-icon-show" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -378,7 +378,7 @@ wp_enqueue_style('ihowz-join-now-style');
                                    class="join-now-input"
                                    placeholder="<?php esc_attr_e('Re-enter password', 'ihowz-theme'); ?>"
                                    required
-                                   minlength="8"
+                                   minlength="12"
                                    autocomplete="new-password">
                             <button type="button" class="password-toggle-btn" aria-label="<?php esc_attr_e('Show password', 'ihowz-theme'); ?>" aria-pressed="false" aria-controls="<?php echo esc_attr($form_id); ?>-password-confirm">
                                 <svg class="password-toggle-icon password-toggle-icon-show" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

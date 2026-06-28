@@ -532,9 +532,17 @@
                 showMessage(form, 'Passwords do not match.', 'error');
                 valid = false;
             }
-            if (password.value.length < 8) {
+            if (password.value.length < 12) {
                 password.classList.add('input-error');
-                showMessage(form, 'Password must be at least 8 characters.', 'error');
+                showMessage(form, 'Password must be at least 12 characters long.', 'error');
+                valid = false;
+            } else if (!/[A-Z]/.test(password.value)) {
+                password.classList.add('input-error');
+                showMessage(form, 'Password must contain at least one uppercase letter.', 'error');
+                valid = false;
+            } else if (!/[0-9]/.test(password.value)) {
+                password.classList.add('input-error');
+                showMessage(form, 'Password must contain at least one number.', 'error');
                 valid = false;
             }
         }
