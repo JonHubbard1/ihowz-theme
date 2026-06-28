@@ -70,6 +70,8 @@
                 imageUrl,
                 imageMinHeight,
                 imageAlignment,
+                imageCardLinkUrl,
+                imageCardLinkTarget,
                 features,
                 backgroundColor
             } = attributes;
@@ -91,7 +93,9 @@
                 const newFeatures = [...features, {
                     icon: 'lightbulb',
                     title: 'New Feature',
-                    description: 'Describe your feature here.'
+                    description: 'Describe your feature here.',
+                    linkUrl: '',
+                    linkTarget: '_self'
                 }];
                 setAttributes({ features: newFeatures });
             };
@@ -101,6 +105,47 @@
                 const newFeatures = features.filter((_, i) => i !== index);
                 setAttributes({ features: newFeatures });
             };
+
+            // Image card inner content (reused whether wrapped in a link or not)
+            const imageCardInner = el(
+                Fragment,
+                null,
+                imageUrl
+                    ? el('img', { src: imageUrl, className: 'features-banner-image', alt: imageCardTitle, style: { objectPosition: 'center ' + (imageAlignment || 'center') } })
+                    : el('div', { className: 'features-banner-image-placeholder' }, __('Select an image', 'ihowz-theme')),
+                el(
+                    'div',
+                    { className: 'features-banner-image-overlay' },
+                    el(
+                        'div',
+                        { className: 'features-banner-image-content' },
+                        el('h3', { className: 'features-banner-image-title' }, imageCardTitle),
+                        el('p', { className: 'features-banner-image-subtitle' }, imageCardSubtitle)
+                    ),
+                    el(
+                        'div',
+                        { className: 'features-banner-decorative-circle' },
+                        el('svg', { viewBox: '0 0 100 100', className: 'circular-progress' },
+                            el('circle', { cx: '50', cy: '50', r: '45', fill: 'none', stroke: 'rgba(255,255,255,0.2)', strokeWidth: '2' }),
+                            el('circle', { cx: '50', cy: '50', r: '45', fill: 'none', stroke: 'rgba(255,255,255,0.8)', strokeWidth: '2', strokeDasharray: '200 283', strokeLinecap: 'round' })
+                        )
+                    )
+                )
+            );
+
+            const imageCardEl = imageCardLinkUrl
+                ? el('a', {
+                    className: 'features-banner-image-card title-position-' + (imageCardTitlePosition || 'top') + ' is-linked',
+                    style: { minHeight: (imageMinHeight || 400) + 'px' },
+                    href: imageCardLinkUrl,
+                    target: imageCardLinkTarget || '_self',
+                    rel: (imageCardLinkTarget || '_self') === '_blank' ? 'noopener noreferrer' : undefined,
+                    onClick: (e) => e.preventDefault()
+                }, imageCardInner)
+                : el('div', {
+                    className: 'features-banner-image-card title-position-' + (imageCardTitlePosition || 'top'),
+                    style: { minHeight: (imageMinHeight || 400) + 'px' }
+                }, imageCardInner);
 
             return el(
                 Fragment,
@@ -164,6 +209,21 @@
                             ],
                             onChange: (value) => setAttributes({ imageAlignment: value })
                         }),
+                        el(TextControl, {
+                            label: __('Image Card Link', 'ihowz-theme'),
+                            value: imageCardLinkUrl || '',
+                            help: __('Optional URL for the image card to link to.', 'ihowz-theme'),
+                            onChange: (value) => setAttributes({ imageCardLinkUrl: value })
+                        }),
+                        el(SelectControl, {
+                            label: __('Image Card Link Target', 'ihowz-theme'),
+                            value: imageCardLinkTarget || '_self',
+                            options: [
+                                { label: __('Same window', 'ihowz-theme'), value: '_self' },
+                                { label: __('New tab / window', 'ihowz-theme'), value: '_blank' }
+                            ],
+                            onChange: (value) => setAttributes({ imageCardLinkTarget: value })
+                        }),
                         el(
                             MediaUploadCheck,
                             null,
@@ -220,6 +280,21 @@
                                     value: feature.description,
                                     onChange: (value) => updateFeature(index, 'description', value)
                                 }),
+                                el(TextControl, {
+                                    label: __('Feature Link', 'ihowz-theme'),
+                                    value: feature.linkUrl || '',
+                                    help: __('Optional URL for this feature card to link to.', 'ihowz-theme'),
+                                    onChange: (value) => updateFeature(index, 'linkUrl', value)
+                                }),
+                                el(SelectControl, {
+                                    label: __('Feature Link Target', 'ihowz-theme'),
+                                    value: feature.linkTarget || '_self',
+                                    options: [
+                                        { label: __('Same window', 'ihowz-theme'), value: '_self' },
+                                        { label: __('New tab / window', 'ihowz-theme'), value: '_blank' }
+                                    ],
+                                    onChange: (value) => updateFeature(index, 'linkTarget', value)
+                                }),
                                 el(Button, {
                                     onClick: () => removeFeature(index),
                                     variant: 'link',
@@ -263,41 +338,31 @@
                             'div',
                             { className: 'features-banner-grid' },
                             // Image Card
-                            el(
-                                'div',
-                                { className: 'features-banner-image-card title-position-' + (imageCardTitlePosition || 'top'), style: { minHeight: (imageMinHeight || 400) + 'px' } },
-                                imageUrl
-                                    ? el('img', { src: imageUrl, className: 'features-banner-image', alt: imageCardTitle, style: { objectPosition: 'center ' + (imageAlignment || 'center') } })
-                                    : el('div', { className: 'features-banner-image-placeholder' }, __('Select an image', 'ihowz-theme')),
-                                el(
-                                    'div',
-                                    { className: 'features-banner-image-overlay' },
-                                    el(
-                                        'div',
-                                        { className: 'features-banner-image-content' },
-                                        el('h3', { className: 'features-banner-image-title' }, imageCardTitle),
-                                        el('p', { className: 'features-banner-image-subtitle' }, imageCardSubtitle)
-                                    ),
-                                    el(
-                                        'div',
-                                        { className: 'features-banner-decorative-circle' },
-                                        el('svg', { viewBox: '0 0 100 100', className: 'circular-progress' },
-                                            el('circle', { cx: '50', cy: '50', r: '45', fill: 'none', stroke: 'rgba(255,255,255,0.2)', strokeWidth: '2' }),
-                                            el('circle', { cx: '50', cy: '50', r: '45', fill: 'none', stroke: 'rgba(255,255,255,0.8)', strokeWidth: '2', strokeDasharray: '200 283', strokeLinecap: 'round' })
-                                        )
-                                    )
-                                )
-                            ),
+                            imageCardEl,
                             // Feature Cards
-                            features.map((feature, index) =>
-                                el(
-                                    'div',
-                                    { key: index, className: 'features-banner-card' },
+                            features.map((feature, index) => {
+                                const featureInner = el(
+                                    Fragment,
+                                    null,
                                     el('div', { className: 'features-banner-card-icon' }, iconSvgs[feature.icon] || iconSvgs.lightbulb),
                                     el('h3', { className: 'features-banner-card-title' }, feature.title),
                                     el('p', { className: 'features-banner-card-description' }, feature.description)
-                                )
-                            )
+                                );
+                                const featureTarget = feature.linkTarget || '_self';
+                                return feature.linkUrl
+                                    ? el('a', {
+                                        key: index,
+                                        className: 'features-banner-card is-linked',
+                                        href: feature.linkUrl,
+                                        target: featureTarget,
+                                        rel: featureTarget === '_blank' ? 'noopener noreferrer' : undefined,
+                                        onClick: (e) => e.preventDefault()
+                                    }, featureInner)
+                                    : el('div', {
+                                        key: index,
+                                        className: 'features-banner-card'
+                                    }, featureInner);
+                            })
                         )
                     )
                 )

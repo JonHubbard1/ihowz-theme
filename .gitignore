@@ -25,6 +25,8 @@ screenshots/
 *.jpeg
 *.gif
 *.webp
+!favicons/*.png
+!favicons/*.ico
 
 # Node.js
 node_modules/

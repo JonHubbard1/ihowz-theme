@@ -23,6 +23,8 @@ $image_min_height = isset($attributes['imageMinHeight']) ? intval($attributes['i
 $image_alignment = isset($attributes['imageAlignment']) ? esc_attr($attributes['imageAlignment']) : 'center';
 $image_url = isset($attributes['imageUrl']) ? esc_url($attributes['imageUrl']) : '';
 $image_id = isset($attributes['imageId']) ? absint($attributes['imageId']) : 0;
+$image_card_link_url = isset($attributes['imageCardLinkUrl']) ? esc_url($attributes['imageCardLinkUrl']) : '';
+$image_card_link_target = isset($attributes['imageCardLinkTarget']) ? esc_attr($attributes['imageCardLinkTarget']) : '_self';
 $features = isset($attributes['features']) ? $attributes['features'] : array();
 $background_color = isset($attributes['backgroundColor']) ? esc_attr($attributes['backgroundColor']) : '#f5f5f5';
 
@@ -71,7 +73,11 @@ $wrapper_attributes = get_block_wrapper_attributes(array(
         <!-- Content Grid -->
         <div class="features-banner-grid">
             <!-- Featured Image Card -->
-            <div class="features-banner-image-card title-position-<?php echo $image_card_title_position; ?>" style="min-height: <?php echo $image_min_height; ?>px;">
+            <?php if ($image_card_link_url) : ?>
+                <a class="features-banner-image-card title-position-<?php echo $image_card_title_position; ?> is-linked" href="<?php echo $image_card_link_url; ?>" style="min-height: <?php echo $image_min_height; ?>px;" target="<?php echo $image_card_link_target; ?>"<?php echo '_blank' === $image_card_link_target ? ' rel="noopener noreferrer"' : ''; ?>>
+            <?php else : ?>
+                <div class="features-banner-image-card title-position-<?php echo $image_card_title_position; ?>" style="min-height: <?php echo $image_min_height; ?>px;">
+            <?php endif; ?>
                 <?php if ($image_url) : ?>
                     <img src="<?php echo $image_url; ?>" alt="<?php echo $image_card_title; ?>" class="features-banner-image" style="object-position: center <?php echo $image_alignment; ?>;" />
                 <?php else : ?>
@@ -90,7 +96,11 @@ $wrapper_attributes = get_block_wrapper_attributes(array(
                         </svg>
                     </div>
                 </div>
-            </div>
+            <?php if ($image_card_link_url) : ?>
+                </a>
+            <?php else : ?>
+                </div>
+            <?php endif; ?>
 
             <!-- Feature Cards -->
             <?php foreach ($features as $index => $feature) :
@@ -98,14 +108,24 @@ $wrapper_attributes = get_block_wrapper_attributes(array(
                 $icon_svg = isset($icons[$icon_key]) ? $icons[$icon_key] : $icons['lightbulb'];
                 $title = isset($feature['title']) ? esc_html($feature['title']) : '';
                 $description = isset($feature['description']) ? esc_html($feature['description']) : '';
+                $feature_link_url = isset($feature['linkUrl']) ? esc_url($feature['linkUrl']) : '';
+                $feature_link_target = isset($feature['linkTarget']) ? esc_attr($feature['linkTarget']) : '_self';
             ?>
-                <div class="features-banner-card">
+                <?php if ($feature_link_url) : ?>
+                    <a class="features-banner-card is-linked" href="<?php echo $feature_link_url; ?>" target="<?php echo $feature_link_target; ?>"<?php echo '_blank' === $feature_link_target ? ' rel="noopener noreferrer"' : ''; ?>>
+                <?php else : ?>
+                    <div class="features-banner-card">
+                <?php endif; ?>
                     <div class="features-banner-card-icon">
                         <?php echo $icon_svg; ?>
                     </div>
                     <h3 class="features-banner-card-title"><?php echo $title; ?></h3>
                     <p class="features-banner-card-description"><?php echo $description; ?></p>
-                </div>
+                <?php if ($feature_link_url) : ?>
+                    </a>
+                <?php else : ?>
+                    </div>
+                <?php endif; ?>
             <?php endforeach; ?>
         </div>
     </div>

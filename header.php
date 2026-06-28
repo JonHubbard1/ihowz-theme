@@ -19,6 +19,21 @@ $ihowz_textsize_class = in_array( $ihowz_textsize, $ihowz_textsize_steps, true )
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="profile" href="https://gmpg.org/xfn/11">
+
+    <?php
+    // Favicons generated from logo-1000px.png. Append filemtime so the browser
+    // fetches the new icons immediately instead of using a cached 404/absence.
+    $_ihowz_favicon_dir = get_template_directory() . '/favicons';
+    $_ihowz_favicon_uri = get_template_directory_uri() . '/favicons';
+    ?>
+    <!-- Favicons generated from logo-1000px.png -->
+    <link rel="icon" type="image/x-icon" href="<?php echo esc_url( $_ihowz_favicon_uri . '/favicon.ico?v=' . filemtime( $_ihowz_favicon_dir . '/favicon.ico' ) ); ?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url( $_ihowz_favicon_uri . '/favicon-32x32.png?v=' . filemtime( $_ihowz_favicon_dir . '/favicon-32x32.png' ) ); ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url( $_ihowz_favicon_uri . '/favicon-16x16.png?v=' . filemtime( $_ihowz_favicon_dir . '/favicon-16x16.png' ) ); ?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo esc_url( $_ihowz_favicon_uri . '/apple-touch-icon.png?v=' . filemtime( $_ihowz_favicon_dir . '/apple-touch-icon.png' ) ); ?>">
+    <link rel="manifest" href="<?php echo esc_url( $_ihowz_favicon_uri . '/site.webmanifest?v=' . filemtime( $_ihowz_favicon_dir . '/site.webmanifest' ) ); ?>">
+    <?php unset( $_ihowz_favicon_dir, $_ihowz_favicon_uri ); ?>
+
     <?php wp_head(); ?>
 </head>
 

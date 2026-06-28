@@ -78,7 +78,8 @@
 }
 
 /* Card hover states disabled in editor */
-.editor-styles-wrapper .features-banner-card:hover {
+.editor-styles-wrapper .features-banner-card:hover,
+.editor-styles-wrapper .features-banner-card.is-linked:hover {
     transform: none;
 }
 

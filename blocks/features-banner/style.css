@@ -62,11 +62,21 @@
 }
 
 /* Image Card */
-.features-banner-image-card {
+.features-banner-image-card,
+.features-banner-image-card.is-linked {
     position: relative;
+    display: block;
     border-radius: 16px;
     overflow: hidden;
     background: #1E3A5F;
+    text-decoration: none;
+    color: inherit;
+}
+
+.features-banner-image-card.is-linked:hover,
+.features-banner-image-card.is-linked:focus {
+    outline: 2px solid var(--primary-green, #9cc130);
+    outline-offset: 2px;
 }
 
 .features-banner-image {
@@ -126,7 +136,8 @@
 }
 
 /* Feature Cards */
-.features-banner-card {
+.features-banner-card,
+.features-banner-card.is-linked {
     background: #fff;
     border-radius: 16px;
     padding: clamp(25px, 3vw, 40px);
@@ -134,11 +145,20 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
+    text-decoration: none;
+    color: inherit;
 }
 
-.features-banner-card:hover {
+.features-banner-card:hover,
+.features-banner-card.is-linked:hover,
+.features-banner-card.is-linked:focus {
     transform: translateY(-5px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.features-banner-card.is-linked:focus {
+    outline: 2px solid var(--primary-green, #9cc130);
+    outline-offset: 2px;
 }
 
 .features-banner-card-icon {
