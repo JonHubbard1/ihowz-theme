@@ -45,6 +45,99 @@
             $('body').removeClass('menu-open');
         });
 
+        // Text-size accessibility control (A+ / A-).
+        // Scales the root font-size via an html class; rem-based typography
+        // cascades. The starting class is applied server-side in header.php
+        // from the ihowz_textsize cookie (no FOUC). The preference is a
+        // non-essential cookie, so it is only written once the visitor has
+        // accepted the cookie-consent banner — same gate as the impression
+        // tracker and documents-upsell scripts.
+        (function () {
+            var STEPS = ['xs', 'sm', 'md', 'lg', 'xl'];
+            var DEFAULT_IDX = 2; // md = 100%
+            var COOKIE = 'ihowz_textsize';
+            var TTL_DAYS = 365;
+
+            var $html = $(document.documentElement);
+            var $dec = $('.header-textsize-decrease');
+            var $inc = $('.header-textsize-increase');
+            if (!$dec.length && !$inc.length) {
+                return; // not on a page that renders the header controls
+            }
+
+            function currentStep() {
+                for (var i = 0; i < STEPS.length; i++) {
+                    if ($html.hasClass('ihowz-textsize-' + STEPS[i])) {
+                        return i;
+                    }
+                }
+                return DEFAULT_IDX;
+            }
+
+            function apply(idx) {
+                for (var i = 0; i < STEPS.length; i++) {
+                    $html.removeClass('ihowz-textsize-' + STEPS[i]);
+                }
+                $html.addClass('ihowz-textsize-' + STEPS[idx]);
+                $dec.attr('aria-disabled', idx <= 0 ? 'true' : 'false');
+                $inc.attr('aria-disabled', idx >= STEPS.length - 1 ? 'true' : 'false');
+            }
+
+            // Non-essential cookie — only persist when consent has been accepted.
+            function persist(idx) {
+                if (!window.ihowzCookieConsent || !window.ihowzCookieConsent.isAccepted()) {
+                    return;
+                }
+                var date = new Date();
+                date.setTime(date.getTime() + (TTL_DAYS * 24 * 60 * 60 * 1000));
+                var parts = [
+                    COOKIE + '=' + STEPS[idx],
+                    'expires=' + date.toUTCString(),
+                    'path=/',
+                    'SameSite=Lax'
+                ];
+                if (window.location.protocol === 'https:') {
+                    parts.push('Secure');
+                }
+                document.cookie = parts.join('; ');
+            }
+
+            function clearPreference() {
+                document.cookie = COOKIE + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax';
+            }
+
+            $dec.on('click', function () {
+                var i = currentStep();
+                if (i > 0) {
+                    apply(i - 1);
+                    persist(i - 1);
+                }
+            });
+
+            $inc.on('click', function () {
+                var i = currentStep();
+                if (i < STEPS.length - 1) {
+                    apply(i + 1);
+                    persist(i + 1);
+                }
+            });
+
+            // Sync the disabled state of the buttons to the server-applied class.
+            apply(currentStep());
+
+            // If consent is later rejected (or was already rejected), drop the
+            // preference and reset to the default size. onConsent fires
+            // immediately with the current status if a decision already exists.
+            if (window.ihowzCookieConsent && typeof window.ihowzCookieConsent.onConsent === 'function') {
+                window.ihowzCookieConsent.onConsent(function (status) {
+                    if (status === 'rejected') {
+                        clearPreference();
+                        apply(DEFAULT_IDX);
+                    }
+                });
+            }
+        })();
+
         // MegaMenu accordion toggle (mobile only).
         // Evaluated at click time via matchMedia so it matches the CSS
         // max-width:1023px breakpoint exactly. jQuery's width() excludes the
