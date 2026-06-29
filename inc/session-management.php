@@ -39,19 +39,37 @@ class iHowz_Session_Management {
     }
     
     /**
-     * Get client IP address
+     * Get client IP address.
+     *
+     * Handles proxied requests by parsing X-Forwarded-For and using the
+     * rightmost valid, non-private IP (the one added by the closest trusted
+     * proxy). Falls back to REMOTE_ADDR when no forwarded header is present.
      */
     private function get_client_ip() {
         $ip = '';
-        
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
+
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ips = array_map('trim', explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']));
+            // Use the rightmost valid, non-private/reserved IP in the chain.
+            foreach (array_reverse($ips) as $candidate) {
+                if (filter_var($candidate, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                    $ip = $candidate;
+                    break;
+                }
+            }
+        }
+
+        if (empty($ip) && !empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $candidate = $_SERVER['HTTP_CLIENT_IP'];
+            if (filter_var($candidate, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                $ip = $candidate;
+            }
+        }
+
+        if (empty($ip) && !empty($_SERVER['REMOTE_ADDR'])) {
             $ip = $_SERVER['REMOTE_ADDR'];
         }
-        
+
         return $ip;
     }
     
@@ -123,19 +141,21 @@ class iHowz_Session_Management {
             
             // Check if IP is different
             if (!empty($stored_ip) && $stored_ip !== $current_ip) {
-                // Store pending login info in transient
+                // Store pending login info in transient (never the password).
+                $confirm_token = wp_generate_password(32, false);
                 set_transient('ihowz_pending_login_' . $user_obj->ID, array(
-                    'username' => $username,
-                    'password' => $password,
+                    'user_id' => $user_obj->ID,
+                    'confirm_token' => $confirm_token,
                     'new_ip' => $current_ip,
                     'new_user_agent' => $this->get_user_agent(),
                     'existing_session' => $session_info
                 ), 600); // 10 minutes
-                
+
                 // Redirect to confirmation page
                 wp_redirect(add_query_arg(array(
                     'ihowz_session_confirm' => 'required',
-                    'user_id' => $user_obj->ID
+                    'user_id' => $user_obj->ID,
+                    'token' => $confirm_token
                 ), wp_login_url()));
                 exit;
             }
@@ -170,28 +190,36 @@ class iHowz_Session_Management {
             exit;
         }
 
+        // Verify confirmation token from URL (GET) and form (POST).
+        $request_token = '';
+        if (isset($_REQUEST['token'])) {
+            $request_token = sanitize_text_field(wp_unslash($_REQUEST['token']));
+        }
+        if (empty($request_token) || !isset($pending_login['confirm_token']) || !hash_equals($pending_login['confirm_token'], $request_token)) {
+            delete_transient('ihowz_pending_login_' . $user_id);
+            wp_redirect(wp_login_url());
+            exit;
+        }
+
         // Handle confirmation
         if (isset($_POST['confirm_session'])) {
             check_admin_referer('ihowz_session_confirm_' . $user_id);
-            
+
             // Destroy old session
             $this->destroy_user_sessions($user_id);
-            
-            // Authenticate user
-            $user = wp_authenticate($pending_login['username'], $pending_login['password']);
-            
-            if (!is_wp_error($user)) {
-                wp_set_current_user($user->ID);
-                wp_set_auth_cookie($user->ID, true);
-                
-                // Clear transient
-                delete_transient('ihowz_pending_login_' . $user_id);
-                
-                // Redirect to admin or home
-                $redirect_to = isset($_REQUEST['redirect_to']) ? $_REQUEST['redirect_to'] : admin_url();
-                wp_redirect($redirect_to);
-                exit;
-            }
+
+            // The user already authenticated successfully before reaching the
+            // confirmation page; we just need to create the session for them.
+            wp_set_current_user($user_id);
+            wp_set_auth_cookie($user_id, true);
+
+            // Clear transient
+            delete_transient('ihowz_pending_login_' . $user_id);
+
+            // Redirect safely to admin or the originally requested location.
+            $redirect_to = isset($_REQUEST['redirect_to']) ? wp_validate_redirect($_REQUEST['redirect_to'], admin_url()) : admin_url();
+            wp_redirect($redirect_to);
+            exit;
         }
         
         // Handle cancellation
@@ -208,7 +236,7 @@ class iHowz_Session_Management {
     public function store_session_info($user_login, $user) {
         $session_info = array(
             'ip' => $this->get_client_ip(),
-            'timestamp' => current_time('timestamp'),
+            'timestamp' => current_time('U'),
             'user_agent' => $this->get_user_agent()
         );
         
@@ -268,7 +296,7 @@ class iHowz_Session_Management {
         $existing_user_agent = isset($existing_session['user_agent']) ? $existing_session['user_agent'] : '';
         
         $browser_info = $this->parse_user_agent($existing_user_agent);
-        $formatted_time = $existing_timestamp ? date('F j, Y g:i A', $existing_timestamp) : 'Unknown time';
+        $formatted_time = $existing_timestamp ? wp_date('F j, Y g:i A', (int) $existing_timestamp) : 'Unknown time';
         
         ?>
         <!DOCTYPE html>
@@ -374,7 +402,8 @@ class iHowz_Session_Management {
                     <?php wp_nonce_field('ihowz_session_confirm_' . $user_id); ?>
                     <input type="hidden" name="ihowz_session_confirm" value="required">
                     <input type="hidden" name="user_id" value="<?php echo esc_attr($user_id); ?>">
-                    <?php if (isset($_REQUEST['redirect_to'])): ?>
+                    <input type="hidden" name="token" value="<?php echo esc_attr($pending_login['confirm_token']); ?>">
+                    <?php if (isset($_REQUEST['redirect_to'])) : ?>
                         <input type="hidden" name="redirect_to" value="<?php echo esc_attr($_REQUEST['redirect_to']); ?>">
                     <?php endif; ?>
                     

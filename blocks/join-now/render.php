@@ -22,13 +22,24 @@ $background_color = isset($attributes['backgroundColor']) ? esc_attr($attributes
 $show_pricing = isset($attributes['showPricing']) ? $attributes['showPricing'] : true;
 $success_message = isset($attributes['successMessage']) ? esc_html($attributes['successMessage']) : 'Thank you for joining iHowz! Your membership is now active.';
 
-// Get membership types from the plugin
+// Get membership types from the plugin (cached for 5 minutes to avoid a DB hit on every render).
 $membership_types = array();
 if (function_exists('IHowz_Membership_Module') || class_exists('IHowz_Membership_Module')) {
-    global $wpdb;
-    $membership_types = $wpdb->get_results(
-        "SELECT id, name, slug, price, duration_months, description, benefits FROM {$wpdb->prefix}ihowz_membership_types WHERE is_active = 1 AND is_join_visible = 1 ORDER BY price ASC"
-    );
+    $cache_key = 'ihowz_join_membership_types';
+    $membership_types = wp_cache_get($cache_key, 'ihowz');
+
+    if (false === $membership_types) {
+        global $wpdb;
+        $membership_types = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT id, name, slug, price, duration_months, description, benefits FROM %sihowz_membership_types WHERE is_active = %d AND is_join_visible = %d ORDER BY price ASC",
+                $wpdb->prefix,
+                1,
+                1
+            )
+        );
+        wp_cache_set($cache_key, $membership_types, 'ihowz', 300);
+    }
 }
 
 // Build wrapper classes

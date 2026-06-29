@@ -31,13 +31,13 @@ get_header(); ?>
                     <div class="progress-fill" style="width: <?php echo esc_attr($target_percentage); ?>%;"></div>
                 </div>
                 <div class="campaign-stats">
-                    <span class="stat-highlight"><?php echo number_format($participants); ?> <?php _e('Members Participated', 'ihowz-theme'); ?> | <?php echo esc_html($target_percentage); ?>% <?php _e('Target Reached', 'ihowz-theme'); ?></span>
+                    <span class="stat-highlight"><?php echo number_format($participants); ?> <?php esc_html_e('Members Participated', 'ihowz-theme'); ?> | <?php echo esc_html($target_percentage); ?>% <?php esc_html_e('Target Reached', 'ihowz-theme'); ?></span>
                 </div>
             <?php else : ?>
-                <h1><?php _e('Current Priority Campaign', 'ihowz-theme'); ?></h1>
-                <p><?php _e('Fight Unfair Legislation - Progress Bar & Impact Counter', 'ihowz-theme'); ?></p>
+                <h1><?php esc_html_e('Current Priority Campaign', 'ihowz-theme'); ?></h1>
+                <p><?php esc_html_e('Fight Unfair Legislation - Progress Bar & Impact Counter', 'ihowz-theme'); ?></p>
                 <div class="campaign-stats">
-                    <span class="stat-highlight"><?php _e('12,847 Members Participated | 89% Target Reached', 'ihowz-theme'); ?></span>
+                    <span class="stat-highlight"><?php esc_html_e('12,847 Members Participated | 89% Target Reached', 'ihowz-theme'); ?></span>
                 </div>
             <?php endif; ?>
         </div>
@@ -54,7 +54,7 @@ get_header(); ?>
             <div class="campaigns-impact-grid">
                 <!-- Active Campaigns -->
                 <div class="active-campaigns-column">
-                    <h2><?php _e('Active Campaigns', 'ihowz-theme'); ?></h2>
+                    <h2><?php esc_html_e('Active Campaigns', 'ihowz-theme'); ?></h2>
 
                     <?php
                     $active_campaigns = get_field('active_campaigns');
@@ -69,21 +69,21 @@ get_header(); ?>
                                 <div class="progress-bar">
                                     <div class="progress-fill" style="width: <?php echo esc_attr($campaign['progress']); ?>%;"></div>
                                 </div>
-                                <p class="progress-text"><?php echo esc_html($campaign['progress']); ?>% <?php _e('Complete', 'ihowz-theme'); ?></p>
+                                <p class="progress-text"><?php echo esc_html($campaign['progress']); ?>% <?php esc_html_e('Complete', 'ihowz-theme'); ?></p>
                             </div>
 
                             <!-- Stats -->
                             <div class="campaign-meta">
-                                <span class="participation-count"><?php echo number_format($campaign['participants']); ?> <?php _e('Participants', 'ihowz-theme'); ?></span>
+                                <span class="participation-count"><?php echo number_format($campaign['participants']); ?> <?php esc_html_e('Participants', 'ihowz-theme'); ?></span>
                                 <?php if ($campaign['deadline']) : ?>
-                                <span class="deadline"><?php _e('Deadline:', 'ihowz-theme'); ?> <?php echo date('F j, Y', strtotime($campaign['deadline'])); ?></span>
+                                <span class="deadline"><?php esc_html_e('Deadline:', 'ihowz-theme'); ?> <?php echo esc_html(wp_date('F j, Y', strtotime($campaign['deadline']))); ?></span>
                                 <?php endif; ?>
                             </div>
 
                             <!-- Action Buttons -->
                             <div class="campaign-actions">
-                                <a href="<?php echo esc_url($campaign['action_url']); ?>" class="btn btn-cta"><?php _e('Take Action Now', 'ihowz-theme'); ?></a>
-                                <a href="<?php echo esc_url($campaign['learn_more_url']); ?>" class="btn btn-primary"><?php _e('Learn More', 'ihowz-theme'); ?></a>
+                                <a href="<?php echo esc_url($campaign['action_url']); ?>" class="btn btn-cta"><?php esc_html_e('Take Action Now', 'ihowz-theme'); ?></a>
+                                <a href="<?php echo esc_url($campaign['learn_more_url']); ?>" class="btn btn-primary"><?php esc_html_e('Learn More', 'ihowz-theme'); ?></a>
                             </div>
                         </div>
                         <?php endforeach;
@@ -91,11 +91,11 @@ get_header(); ?>
                         <!-- Default campaign cards -->
                         <?php for ($i = 1; $i <= 2; $i++) : ?>
                         <div class="campaign-card">
-                            <h3><?php echo sprintf(__('Campaign %d', 'ihowz-theme'), $i); ?></h3>
-                            <p><?php _e('Title & Description • Progress indicator • Participation count • Deadline countdown • Quick action buttons', 'ihowz-theme'); ?></p>
+                            <h3><?php echo esc_html(sprintf(__('Campaign %d', 'ihowz-theme'), $i)); ?></h3>
+                            <p><?php esc_html_e('Title & Description • Progress indicator • Participation count • Deadline countdown • Quick action buttons', 'ihowz-theme'); ?></p>
                             <div class="campaign-actions">
-                                <a href="#" class="btn btn-cta"><?php _e('Take Action Now', 'ihowz-theme'); ?></a>
-                                <a href="#" class="btn btn-primary"><?php _e('Learn More', 'ihowz-theme'); ?></a>
+                                <a href="#" class="btn btn-cta"><?php esc_html_e('Take Action Now', 'ihowz-theme'); ?></a>
+                                <a href="#" class="btn btn-primary"><?php esc_html_e('Learn More', 'ihowz-theme'); ?></a>
                             </div>
                         </div>
                         <?php endfor; ?>
@@ -104,7 +104,7 @@ get_header(); ?>
 
                 <!-- Campaign Impact -->
                 <div class="campaign-impact-column">
-                    <h2><?php _e('Campaign Impact', 'ihowz-theme'); ?></h2>
+                    <h2><?php esc_html_e('Campaign Impact', 'ihowz-theme'); ?></h2>
 
                     <div class="impact-dashboard">
                         <?php
@@ -115,39 +115,39 @@ get_header(); ?>
                         ?>
 
                         <div class="impact-stat-card">
-                            <h3><?php _e('Member Savings This Year', 'ihowz-theme'); ?></h3>
+                            <h3><?php esc_html_e('Member Savings This Year', 'ihowz-theme'); ?></h3>
                             <p class="stat-value">£<?php echo esc_html($total_savings); ?></p>
                         </div>
 
                         <div class="impact-stat-card">
-                            <h3><?php _e('Policy Changes Achieved', 'ihowz-theme'); ?></h3>
+                            <h3><?php esc_html_e('Policy Changes Achieved', 'ihowz-theme'); ?></h3>
                             <p class="stat-value"><?php echo esc_html($policy_changes); ?></p>
                         </div>
 
                         <div class="impact-stat-card">
-                            <h3><?php _e('Media Coverage', 'ihowz-theme'); ?></h3>
-                            <p class="stat-value"><?php echo esc_html($media_mentions); ?> <?php _e('mentions', 'ihowz-theme'); ?></p>
+                            <h3><?php esc_html_e('Media Coverage', 'ihowz-theme'); ?></h3>
+                            <p class="stat-value"><?php echo esc_html($media_mentions); ?> <?php esc_html_e('mentions', 'ihowz-theme'); ?></p>
                         </div>
 
                         <div class="impact-stat-card">
-                            <h3><?php _e('Member Participation', 'ihowz-theme'); ?></h3>
+                            <h3><?php esc_html_e('Member Participation', 'ihowz-theme'); ?></h3>
                             <p class="stat-value"><?php echo esc_html($member_participation); ?>%</p>
                         </div>
                     </div>
 
                     <!-- Success Metrics Details -->
                     <div class="success-metrics">
-                        <h4><?php _e('What We Track', 'ihowz-theme'); ?></h4>
+                        <h4><?php esc_html_e('What We Track', 'ihowz-theme'); ?></h4>
                         <ul>
-                            <li><?php _e('Member participation stats', 'ihowz-theme'); ?></li>
-                            <li><?php _e('Policy change tracking', 'ihowz-theme'); ?></li>
-                            <li><?php _e('Media coverage highlights', 'ihowz-theme'); ?></li>
-                            <li><?php _e('Government responses', 'ihowz-theme'); ?></li>
+                            <li><?php esc_html_e('Member participation stats', 'ihowz-theme'); ?></li>
+                            <li><?php esc_html_e('Policy change tracking', 'ihowz-theme'); ?></li>
+                            <li><?php esc_html_e('Media coverage highlights', 'ihowz-theme'); ?></li>
+                            <li><?php esc_html_e('Government responses', 'ihowz-theme'); ?></li>
                         </ul>
                     </div>
 
                     <div class="impact-highlight">
-                        <span class="highlight-text"><?php _e('£2.3M Saved for Members This Year', 'ihowz-theme'); ?></span>
+                        <span class="highlight-text"><?php esc_html_e('£2.3M Saved for Members This Year', 'ihowz-theme'); ?></span>
                     </div>
                 </div>
             </div>
@@ -157,46 +157,46 @@ get_header(); ?>
     <!-- Advocacy Tools -->
     <section class="advocacy-tools-section">
         <div class="container">
-            <h2><?php _e('Advocacy Tools', 'ihowz-theme'); ?></h2>
+            <h2><?php esc_html_e('Advocacy Tools', 'ihowz-theme'); ?></h2>
             <div class="advocacy-tools-grid">
                 <div class="tool-card">
-                    <h3><?php _e('Letter Builder', 'ihowz-theme'); ?></h3>
+                    <h3><?php esc_html_e('Letter Builder', 'ihowz-theme'); ?></h3>
                     <ul>
-                        <li><?php _e('Template library', 'ihowz-theme'); ?></li>
-                        <li><?php _e('Personalization', 'ihowz-theme'); ?></li>
-                        <li><?php _e('MP finder', 'ihowz-theme'); ?></li>
+                        <li><?php esc_html_e('Template library', 'ihowz-theme'); ?></li>
+                        <li><?php esc_html_e('Personalization', 'ihowz-theme'); ?></li>
+                        <li><?php esc_html_e('MP finder', 'ihowz-theme'); ?></li>
                     </ul>
-                    <a href="#" class="btn btn-primary"><?php _e('Build Letter', 'ihowz-theme'); ?></a>
+                    <a href="#" class="btn btn-primary"><?php esc_html_e('Build Letter', 'ihowz-theme'); ?></a>
                 </div>
 
                 <div class="tool-card">
-                    <h3><?php _e('Petition Manager', 'ihowz-theme'); ?></h3>
+                    <h3><?php esc_html_e('Petition Manager', 'ihowz-theme'); ?></h3>
                     <ul>
-                        <li><?php _e('Digital signatures', 'ihowz-theme'); ?></li>
-                        <li><?php _e('Share tracking', 'ihowz-theme'); ?></li>
-                        <li><?php _e('Auto-submission', 'ihowz-theme'); ?></li>
+                        <li><?php esc_html_e('Digital signatures', 'ihowz-theme'); ?></li>
+                        <li><?php esc_html_e('Share tracking', 'ihowz-theme'); ?></li>
+                        <li><?php esc_html_e('Auto-submission', 'ihowz-theme'); ?></li>
                     </ul>
-                    <a href="#" class="btn btn-primary"><?php _e('Sign Petition', 'ihowz-theme'); ?></a>
+                    <a href="#" class="btn btn-primary"><?php esc_html_e('Sign Petition', 'ihowz-theme'); ?></a>
                 </div>
 
                 <div class="tool-card">
-                    <h3><?php _e('Social Media Kit', 'ihowz-theme'); ?></h3>
+                    <h3><?php esc_html_e('Social Media Kit', 'ihowz-theme'); ?></h3>
                     <ul>
-                        <li><?php _e('Ready-made posts', 'ihowz-theme'); ?></li>
-                        <li><?php _e('Hashtag campaigns', 'ihowz-theme'); ?></li>
-                        <li><?php _e('Image assets', 'ihowz-theme'); ?></li>
+                        <li><?php esc_html_e('Ready-made posts', 'ihowz-theme'); ?></li>
+                        <li><?php esc_html_e('Hashtag campaigns', 'ihowz-theme'); ?></li>
+                        <li><?php esc_html_e('Image assets', 'ihowz-theme'); ?></li>
                     </ul>
-                    <a href="#" class="btn btn-primary"><?php _e('Get Kit', 'ihowz-theme'); ?></a>
+                    <a href="#" class="btn btn-primary"><?php esc_html_e('Get Kit', 'ihowz-theme'); ?></a>
                 </div>
 
                 <div class="tool-card">
-                    <h3><?php _e('Event Organizer', 'ihowz-theme'); ?></h3>
+                    <h3><?php esc_html_e('Event Organizer', 'ihowz-theme'); ?></h3>
                     <ul>
-                        <li><?php _e('Local meetups', 'ihowz-theme'); ?></li>
-                        <li><?php _e('Demonstration planning', 'ihowz-theme'); ?></li>
-                        <li><?php _e('Volunteer coordination', 'ihowz-theme'); ?></li>
+                        <li><?php esc_html_e('Local meetups', 'ihowz-theme'); ?></li>
+                        <li><?php esc_html_e('Demonstration planning', 'ihowz-theme'); ?></li>
+                        <li><?php esc_html_e('Volunteer coordination', 'ihowz-theme'); ?></li>
                     </ul>
-                    <a href="#" class="btn btn-primary"><?php _e('Organize Event', 'ihowz-theme'); ?></a>
+                    <a href="#" class="btn btn-primary"><?php esc_html_e('Organize Event', 'ihowz-theme'); ?></a>
                 </div>
             </div>
         </div>
@@ -205,7 +205,7 @@ get_header(); ?>
     <!-- Campaign Archive & Success Stories -->
     <section class="campaign-archive-section">
         <div class="container">
-            <h2><?php _e('Campaign Archive & Success Stories', 'ihowz-theme'); ?></h2>
+            <h2><?php esc_html_e('Campaign Archive & Success Stories', 'ihowz-theme'); ?></h2>
             <div class="archive-grid">
                 <?php
                 // Query archived/completed campaigns
@@ -227,18 +227,18 @@ get_header(); ?>
                         </div>
                         <?php endif; ?>
                         <div class="campaign-outcome">
-                            <h4><?php _e('Outcome Achieved', 'ihowz-theme'); ?></h4>
+                            <h4><?php esc_html_e('Outcome Achieved', 'ihowz-theme'); ?></h4>
                             <p><?php echo wp_trim_words(get_the_excerpt(), 20); ?></p>
                         </div>
                         <?php
                         $impact_metrics = get_field('impact_metrics');
                         if ($impact_metrics) : ?>
                         <div class="impact-metrics">
-                            <h5><?php _e('Impact Metrics', 'ihowz-theme'); ?></h5>
+                            <h5><?php esc_html_e('Impact Metrics', 'ihowz-theme'); ?></h5>
                             <p><?php echo esc_html($impact_metrics); ?></p>
                         </div>
                         <?php endif; ?>
-                        <a href="<?php the_permalink(); ?>" class="read-more"><?php _e('Read Full Story', 'ihowz-theme'); ?> &rarr;</a>
+                        <a href="<?php the_permalink(); ?>" class="read-more"><?php esc_html_e('Read Full Story', 'ihowz-theme'); ?> &rarr;</a>
                     </article>
                     <?php endwhile;
                     wp_reset_postdata();
@@ -248,8 +248,8 @@ get_header(); ?>
                     <article class="archive-campaign-card">
                         <h3><?php echo sprintf(__('Historic Campaign %d', 'ihowz-theme'), $i); ?></h3>
                         <div class="campaign-outcome">
-                            <h4><?php _e('Outcome Achieved', 'ihowz-theme'); ?></h4>
-                            <p><?php _e('Campaign overview • Impact metrics • Member testimonials', 'ihowz-theme'); ?></p>
+                            <h4><?php esc_html_e('Outcome Achieved', 'ihowz-theme'); ?></h4>
+                            <p><?php esc_html_e('Campaign overview • Impact metrics • Member testimonials', 'ihowz-theme'); ?></p>
                         </div>
                     </article>
                     <?php endfor; ?>
@@ -257,7 +257,7 @@ get_header(); ?>
             </div>
 
             <div class="archive-actions">
-                <a href="#" class="btn btn-primary"><?php _e('View All Campaigns', 'ihowz-theme'); ?></a>
+                <a href="#" class="btn btn-primary"><?php esc_html_e('View All Campaigns', 'ihowz-theme'); ?></a>
             </div>
         </div>
     </section>
@@ -265,7 +265,7 @@ get_header(); ?>
     <!-- Campaign Supporters & Allies -->
     <section class="campaign-supporters-section">
         <div class="container">
-            <h2><?php _e('Campaign Supporters & Allies', 'ihowz-theme'); ?></h2>
+            <h2><?php esc_html_e('Campaign Supporters & Allies', 'ihowz-theme'); ?></h2>
             <div class="supporters-grid">
                 <?php if (is_active_sidebar('campaign-supporters')) : ?>
                     <?php dynamic_sidebar('campaign-supporters'); ?>

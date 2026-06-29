@@ -1258,10 +1258,33 @@ body.header-sticky-active {
     margin-bottom: 0;
 }
 
+.page-header-fullwidth .page-subtitle {
+    font-size: 1.125rem;
+    color: var(--neutral-gray);
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+    max-width: 800px;
+    line-height: 1.5;
+    position: relative;
+    z-index: 1;
+}
+
 .page-header-fullwidth .breadcrumb {
     margin-bottom: 0;
     position: relative;
     z-index: 1;
+}
+
+/* Single post meta displayed below the header bar */
+.single-post-meta-bar {
+    max-width: 800px;
+    margin: 1rem auto 2rem;
+    text-align: center;
+}
+
+.single-post-meta-bar .post-meta {
+    display: inline-block;
+    font-size: 0.875rem;
 }
 
 /* Full Width with Title - Responsive */

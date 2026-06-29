@@ -13,13 +13,11 @@ get_header(); ?>
 
     <?php while (have_posts()) : the_post(); ?>
 
-        <!-- Breadcrumb -->
         <?php
-        if (!is_front_page() && !is_home()) {
-            echo '<div class="container">';
-            ihowz_theme_breadcrumb();
-            echo '</div>';
-        }
+        ihowz_page_header_bar(array(
+            'title'    => get_the_title(),
+            'subtitle' => has_excerpt() ? get_the_excerpt() : '',
+        ));
         ?>
 
         <article id="post-<?php the_ID(); ?>" <?php post_class('fullwidth-article'); ?>>

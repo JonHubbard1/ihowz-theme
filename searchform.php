@@ -6,7 +6,7 @@
 
 <form role="search" method="get" class="search-form" action="<?php echo esc_url(home_url('/')); ?>">
     <label for="search-field" class="screen-reader-text"><?php esc_html_e('Search for:', 'ihowz-theme'); ?></label>
-    <input type="search" id="search-field" class="search-field" placeholder="<?php esc_attr_e('Search...', 'ihowz-theme'); ?>" value="<?php echo get_search_query(); ?>" name="s" />
+    <input type="search" id="search-field" class="search-field" placeholder="<?php esc_attr_e('Search...', 'ihowz-theme'); ?>" value="<?php echo esc_attr(get_search_query()); ?>" name="s" />
     <button type="submit" class="search-submit">
         <span class="screen-reader-text"><?php esc_html_e('Search', 'ihowz-theme'); ?></span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

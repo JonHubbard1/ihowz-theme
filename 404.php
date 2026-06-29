@@ -6,12 +6,15 @@
 get_header(); ?>
 
 <main class="site-main">
+
+    <?php
+    ihowz_page_header_bar(array(
+        'title'            => __('Oops! That page can&rsquo;t be found.', 'ihowz-theme'),
+        'show_breadcrumbs' => false,
+    ));
+    ?>
+
     <div class="container">
-
-        <div class="page-header">
-            <h1 class="page-title"><?php esc_html_e('Oops! That page can&rsquo;t be found.', 'ihowz-theme'); ?></h1>
-        </div>
-
         <div class="error-404">
             <div class="error-content">
                 <p><?php esc_html_e('It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'ihowz-theme'); ?></p>
@@ -45,7 +48,7 @@ get_header(); ?>
                                 <article class="post-card">
                                     <div class="post-card-content">
                                         <h4>
-                                            <a href="<?php echo get_permalink($post['ID']); ?>">
+                                            <a href="<?php echo esc_url(get_permalink($post['ID'])); ?>">
                                                 <?php echo esc_html($post['post_title']); ?>
                                             </a>
                                         </h4>
@@ -53,7 +56,7 @@ get_header(); ?>
                                             <span><?php echo get_the_date('', $post['ID']); ?></span>
                                         </div>
                                         <div class="post-excerpt">
-                                            <?php echo wp_trim_words($post['post_content'], 20); ?>
+                                            <?php echo esc_html(wp_trim_words($post['post_content'], 20)); ?>
                                         </div>
                                     </div>
                                 </article>

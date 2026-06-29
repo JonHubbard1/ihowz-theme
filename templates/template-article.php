@@ -12,8 +12,13 @@ get_header(); ?>
 
 <main id="primary" class="site-main template-article">
 
+    <?php
+    ihowz_page_header_bar(array(
+        'title' => get_the_title(),
+    ));
+    ?>
+
     <div class="container">
-        <?php ihowz_theme_breadcrumb(); ?>
         <div class="article-layout">
 
             <!-- Main Article Content -->
@@ -21,8 +26,6 @@ get_header(); ?>
                 <?php while (have_posts()) : the_post(); ?>
 
                 <header class="article-header">
-                    <h1 class="article-title"><?php the_title(); ?></h1>
-
                     <div class="article-meta">
                         <span class="author"><?php _e('By', 'ihowz-theme'); ?> <?php the_author(); ?></span>
                         <span class="date"><?php echo get_the_date(); ?></span>

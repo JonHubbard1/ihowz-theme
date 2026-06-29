@@ -1,0 +1,17 @@
+# Protect sensitive files and directories in the iHowz theme.
+# If you are using Nginx, add equivalent deny rules in your server block.
+
+# Deny access to the Git repository and any credential files.
+RedirectMatch 404 /\.git(/|$)
+RedirectMatch 404 /\.git-credentials$
+
+# Deny access to backup files created by editors or manual copies.
+RedirectMatch 404 \.(backup|bak|old|orig|swp)$
+
+# Deny access to hidden files (except the well-known list below).
+RedirectMatch 404 /\.
+
+# Allow standard dot-files that WordPress/servers need.
+<FilesMatch "^(\.htaccess|\.htpasswd)$">
+    Require all denied
+</FilesMatch>

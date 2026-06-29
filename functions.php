@@ -83,6 +83,8 @@ function ihowz_theme_setup() {
     add_theme_support('customize-selective-refresh-widgets');
     add_theme_support('align-wide');
     add_theme_support('editor-styles');
+    add_theme_support('wp-block-styles');
+    add_theme_support('responsive-embeds');
 
     // Register navigation menus
     register_nav_menus(array(
@@ -103,36 +105,45 @@ add_action('after_setup_theme', 'ihowz_theme_setup');
  * Enqueue scripts and styles
  */
 function ihowz_theme_scripts() {
-    // Use the version declared in style.css as the single source of truth.
+    // Version each theme asset by its file modification time so edits reach the
+    // browser immediately. Falls back to the theme header version if mtime fails.
     $theme_version = wp_get_theme()->get('Version');
+    $stylesheet_dir = get_stylesheet_directory();
+    $template_dir = get_template_directory();
+
+    $asset_version = function ($relative_path) use ($theme_version, $template_dir) {
+        $file = $template_dir . $relative_path;
+        $mtime = is_file($file) ? filemtime($file) : false;
+        return $mtime ? (string) $mtime : $theme_version;
+    };
 
     // Main stylesheet (base styles, variables, fonts, reset)
-    wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), $theme_version);
+    wp_enqueue_style('ihowz-style', get_stylesheet_uri(), array(), $asset_version('/style.css'));
 
     // Layout styles (header, footer, navigation structure)
-    wp_enqueue_style('ihowz-layout', get_template_directory_uri() . '/assets/css/layout.css', array('ihowz-style'), $theme_version);
+    wp_enqueue_style('ihowz-layout', get_template_directory_uri() . '/assets/css/layout.css', array('ihowz-style'), $asset_version('/assets/css/layout.css'));
 
     // Component styles (WordPress core, pagination, accessibility)
-    wp_enqueue_style('ihowz-components', get_template_directory_uri() . '/assets/css/components.css', array('ihowz-style'), $theme_version);
+    wp_enqueue_style('ihowz-components', get_template_directory_uri() . '/assets/css/components.css', array('ihowz-style'), $asset_version('/assets/css/components.css'));
 
     // MegaMenu styles
-    wp_enqueue_style('ihowz-megamenu', get_template_directory_uri() . '/assets/css/megamenu.css', array('ihowz-style'), $theme_version);
+    wp_enqueue_style('ihowz-megamenu', get_template_directory_uri() . '/assets/css/megamenu.css', array('ihowz-style'), $asset_version('/assets/css/megamenu.css'));
 
     // Template styles (page template specific styles)
-    wp_enqueue_style('ihowz-templates', get_template_directory_uri() . '/assets/css/templates.css', array('ihowz-style'), $theme_version);
+    wp_enqueue_style('ihowz-templates', get_template_directory_uri() . '/assets/css/templates.css', array('ihowz-style'), $asset_version('/assets/css/templates.css'));
 
     // Sidebar navigation styles
-    wp_enqueue_style('ihowz-sidebar-nav', get_template_directory_uri() . '/assets/css/sidebar-nav.css', array('ihowz-style'), $theme_version);
+    wp_enqueue_style('ihowz-sidebar-nav', get_template_directory_uri() . '/assets/css/sidebar-nav.css', array('ihowz-style'), $asset_version('/assets/css/sidebar-nav.css'));
 
     // Block common styles (shared by theme and plugin blocks)
-    wp_enqueue_style('ihowz-blocks', get_template_directory_uri() . '/assets/css/blocks.css', array('ihowz-style'), $theme_version);
+    wp_enqueue_style('ihowz-blocks', get_template_directory_uri() . '/assets/css/blocks.css', array('ihowz-style'), $asset_version('/assets/css/blocks.css'));
 
     // Responsive styles (media queries)
-    wp_enqueue_style("ihowz-footer-additions", get_template_directory_uri() . "/assets/css/footer-additions.css", array("ihowz-layout"), $theme_version);
-    wp_enqueue_style('ihowz-responsive', get_template_directory_uri() . '/assets/css/responsive.css', array('ihowz-style', 'ihowz-layout', 'ihowz-components', 'ihowz-templates', 'ihowz-blocks'), $theme_version);
+    wp_enqueue_style("ihowz-footer-additions", get_template_directory_uri() . "/assets/css/footer-additions.css", array("ihowz-layout"), $asset_version('/assets/css/footer-additions.css'));
+    wp_enqueue_style('ihowz-responsive', get_template_directory_uri() . '/assets/css/responsive.css', array('ihowz-style', 'ihowz-layout', 'ihowz-components', 'ihowz-templates', 'ihowz-blocks'), $asset_version('/assets/css/responsive.css'));
 
     // Custom JavaScript
-    wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), $theme_version, true);
+    wp_enqueue_script('ihowz-script', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), $asset_version('/assets/js/main.js'), true);
 
     // Localize script with AJAX URL for login form
     wp_localize_script('ihowz-script', 'ihowz_ajax', array(
@@ -211,7 +222,7 @@ function ihowz_theme_widgets_init() {
         'name'          => esc_html__('Page Sidebar', 'ihowz-theme'),
         'id'            => 'page-sidebar',
         'description'   => esc_html__('Sidebar that appears on the right side of pages.', 'ihowz-theme'),
-        'before_widget' => '<div class="widget %2$s">',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
         'after_widget'  => '</div>',
         'before_title'  => '<h3 class="widget-title">',
         'after_title'   => '</h3>',
@@ -385,12 +396,12 @@ function ihowz_theme_pagination() {
  */
 function ihowz_theme_post_meta() {
     echo '<div class="post-meta">';
-    echo '<span class="post-date">' . get_the_date() . '</span>';
+    echo '<span class="post-date">' . esc_html(get_the_date()) . '</span>';
     if (get_the_author()) {
-        echo ' <span class="post-author">by ' . get_the_author() . '</span>';
+        echo ' <span class="post-author">' . esc_html__('by', 'ihowz-theme') . ' ' . esc_html(get_the_author()) . '</span>';
     }
     if (get_the_category_list(', ')) {
-        echo ' <span class="post-categories">in ' . get_the_category_list(', ') . '</span>';
+        echo ' <span class="post-categories">' . esc_html__('in', 'ihowz-theme') . ' ' . get_the_category_list(', ') . '</span>';
     }
     echo '</div>';
 }
@@ -404,6 +415,26 @@ function ihowz_theme_logo() {
     } else {
         echo '<a href="' . esc_url(home_url('/')) . '" class="site-title">' . get_bloginfo('name') . '</a>';
     }
+}
+
+/**
+ * Get the iHowz logo URL.
+ *
+ * Returns the Customizer custom logo if set, otherwise the legacy uploaded
+ * logo. This centralises the fallback so it only needs updating in one place.
+ *
+ * @return string
+ */
+function ihowz_get_theme_logo_url() {
+    $custom_logo_id = get_theme_mod('custom_logo');
+    if ($custom_logo_id) {
+        $image = wp_get_attachment_image_src($custom_logo_id, 'full');
+        if (!empty($image[0])) {
+            return $image[0];
+        }
+    }
+
+    return '/wp-content/uploads/2025/07/short-ihowz-logobmp-6cm.jpg';
 }
 
 /**
@@ -453,6 +484,73 @@ function ihowz_theme_plugin_styles() {
 }
 
 /**
+ * Render a consistent full-width page header bar.
+ *
+ * Used across page templates to show the page title, optional subtitle,
+ * and breadcrumbs in the .page-header-fullwidth style.
+ *
+ * @param array $args {
+ *     Optional. Arguments to customise the header bar.
+ *
+ *     @type string $title            The H1 title. Defaults to the current post title inside the loop.
+ *     @type string $subtitle         Optional subtitle text. Defaults to the post excerpt when available.
+ *     @type bool   $show_breadcrumbs Whether to show breadcrumbs. Defaults to true, skipped on front page / home.
+ *     @type string $class            Extra CSS class(es) for the wrapper.
+ * }
+ */
+function ihowz_page_header_bar($args = array()) {
+    $defaults = array(
+        'title'            => '',
+        'subtitle'         => '',
+        'show_breadcrumbs' => true,
+        'class'            => '',
+    );
+
+    $args = wp_parse_args($args, $defaults);
+
+    // Default title to the current post title if in the loop or on a singular page.
+    if (empty($args['title']) && (in_the_loop() || is_singular())) {
+        $args['title'] = get_the_title();
+    }
+
+    // Default subtitle to the post excerpt when in the loop and one exists.
+    if (empty($args['subtitle']) && (in_the_loop() || is_singular())) {
+        if (has_excerpt()) {
+            $args['subtitle'] = get_the_excerpt();
+        }
+    }
+
+    // Skip if we have nothing to show.
+    if (empty($args['title'])) {
+        return;
+    }
+
+    $wrapper_classes = array('page-header-fullwidth');
+    if (!empty($args['class'])) {
+        $wrapper_classes[] = $args['class'];
+    }
+
+    echo '<div class="' . esc_attr(implode(' ', $wrapper_classes)) . '">';
+    echo '<div class="page-header-inner">';
+
+    echo '<header class="page-header">';
+    echo '<h1 class="page-title">' . esc_html($args['title']) . '</h1>';
+
+    if (!empty($args['subtitle'])) {
+        echo '<p class="page-subtitle">' . wp_kses_post($args['subtitle']) . '</p>';
+    }
+
+    echo '</header>';
+
+    if ($args['show_breadcrumbs'] && !is_front_page() && !is_home()) {
+        ihowz_theme_breadcrumb();
+    }
+
+    echo '</div>';
+    echo '</div>';
+}
+
+/**
  * Breadcrumb function
  */
 function ihowz_theme_breadcrumb() {
@@ -461,17 +559,17 @@ function ihowz_theme_breadcrumb() {
         $home_icon = '<svg class="breadcrumb-home-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>';
 
         echo '<nav class="breadcrumb">';
-        echo '<a href="' . home_url() . '" class="breadcrumb-pill breadcrumb-home">' . $home_icon . '<span>Home</span></a>';
+        echo '<a href="' . esc_url(home_url()) . '" class="breadcrumb-pill breadcrumb-home">' . $home_icon . '<span>' . esc_html__('Home', 'ihowz-theme') . '</span></a>';
 
         if (is_category() || is_single()) {
             if (is_single()) {
                 $category = get_the_category();
                 if ($category) {
-                    echo '<a href="' . get_category_link($category[0]->term_id) . '" class="breadcrumb-pill">' . esc_html($category[0]->name) . '</a>';
+                    echo '<a href="' . esc_url(get_category_link($category[0]->term_id)) . '" class="breadcrumb-pill">' . esc_html($category[0]->name) . '</a>';
                 }
-                echo '<span class="breadcrumb-pill breadcrumb-current">' . get_the_title() . '</span>';
+                echo '<span class="breadcrumb-pill breadcrumb-current">' . esc_html(get_the_title()) . '</span>';
             } else {
-                echo '<span class="breadcrumb-pill breadcrumb-current">' . single_cat_title('', false) . '</span>';
+                echo '<span class="breadcrumb-pill breadcrumb-current">' . esc_html(single_cat_title('', false)) . '</span>';
             }
         } elseif (is_page()) {
             global $post;
@@ -482,11 +580,11 @@ function ihowz_theme_breadcrumb() {
                 $ancestors = array_reverse($ancestors);
 
                 foreach ($ancestors as $ancestor_id) {
-                    echo '<a href="' . get_permalink($ancestor_id) . '" class="breadcrumb-pill">' . esc_html(get_the_title($ancestor_id)) . '</a>';
+                    echo '<a href="' . esc_url(get_permalink($ancestor_id)) . '" class="breadcrumb-pill">' . esc_html(get_the_title($ancestor_id)) . '</a>';
                 }
             }
 
-            echo '<span class="breadcrumb-pill breadcrumb-current">' . get_the_title() . '</span>';
+            echo '<span class="breadcrumb-pill breadcrumb-current">' . esc_html(get_the_title()) . '</span>';
         }
 
         echo '</nav>';
@@ -602,7 +700,8 @@ function ihowz_get_social_icons_html( $size = 20, $icon_class = 'footer-social-i
     $html = '';
 
     foreach ( ihowz_get_social_profiles() as $key => $profile ) {
-        $url = get_theme_mod( 'ihowz_social_' . $key, '' );
+        // Fall back to the profile default so fresh installs show the standard icons.
+        $url = get_theme_mod( 'ihowz_social_' . $key, $profile['default'] );
 
         if ( '' === trim( (string) $url ) ) {
             continue;
@@ -1158,6 +1257,10 @@ function ihowz_external_links_new_tab() {
     document.addEventListener("DOMContentLoaded", function() {
         var host = window.location.hostname;
         document.querySelectorAll("a[href]").forEach(function(link) {
+            // Respect author intent: skip links that already declare a target or rel.
+            if (link.hasAttribute("target") || link.hasAttribute("rel")) {
+                return;
+            }
             try {
                 var url = new URL(link.href);
                 if (url.hostname && url.hostname !== host && url.hostname !== "www." + host) {
@@ -1189,9 +1292,9 @@ function ihowz_login_branding() {
     echo 'body.login { background: ' . $light_green_bg . '; font-family: ' . $font_family . '; }';
 
     // iHowz logo image on login page
-    $logo_url = '/wp-content/uploads/2025/07/short-ihowz-logobmp-6cm.jpg';
+    $logo_url = ihowz_get_theme_logo_url();
     echo '#login h1 a {';
-    echo 'background-image: url(' . $logo_url . ') !important;';
+    echo 'background-image: url(' . esc_url($logo_url) . ') !important;';
     echo 'background-size: contain !important;';
     echo 'background-repeat: no-repeat !important;';
     echo 'background-position: center !important;';
@@ -1340,7 +1443,7 @@ add_filter('update_footer', 'ihowz_update_footer_text', 11);
 
 // Add iHowz logo as the first item in the admin bar
 function ihowz_admin_bar_add_logo($wp_admin_bar) {
-    $logo_url = '/wp-content/uploads/2025/07/short-ihowz-logobmp-6cm.jpg';
+    $logo_url = ihowz_get_theme_logo_url();
     $wp_admin_bar->add_node(array(
         'id'    => 'ihowz-logo',
         'title' => '<img src="' . esc_url($logo_url) . '" style="height:20px;width:auto;vertical-align:middle;" alt="iHowz">',
@@ -1360,25 +1463,6 @@ function ihowz_admin_bar_cleanup($wp_admin_bar) {
     $wp_admin_bar->remove_node('ihowz-advertiser-dashboard');
 }
 add_action('admin_bar_menu', 'ihowz_admin_bar_cleanup', 999);
-
-// Custom admin color scheme - iHowz Corporate
-function ihowz_admin_color_scheme() {
-    wp_admin_css_color(
-        'ihowz',
-        __('iHowz Corporate', 'ihowz-theme'),
-        '',
-        array('#9cc130', '#77ae02', '#263238', '#FF8F00'),
-        array(
-            'base'    => '#9cc130',
-            'focus'   => '#77ae02',
-            'current' => '#263238',
-        )
-    );
-}
-add_action('admin_init', 'ihowz_admin_color_scheme');
-
-// Force iHowz color scheme for all users (optional - comment out if you want users to choose)
-// add_filter('get_user_option_admin_color', function($color) { return 'ihowz'; });
 
 // Custom admin CSS for iHowz branding
 function ihowz_admin_branding_css() {
@@ -1461,4 +1545,3 @@ add_action('admin_head', 'ihowz_admin_branding_css');
  * Session Management - Prevent Login Sharing
  */
 require_once get_template_directory() . "/inc/session-management.php";
-require_once get_template_directory() . "/no-cache.php";

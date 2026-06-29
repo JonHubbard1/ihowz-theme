@@ -6,20 +6,21 @@
 get_header(); ?>
 
 <main class="site-main">
+
+    <?php
+    ihowz_page_header_bar(array(
+        'title' => get_the_title(),
+    ));
+    ?>
+
     <div class="container">
-
-        <?php ihowz_theme_breadcrumb(); ?>
-
         <?php while (have_posts()) : the_post(); ?>
 
             <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-                <header class="single-post-header">
-                    <h1 class="single-post-title"><?php the_title(); ?></h1>
-                    <div class="single-post-meta">
-                        <?php ihowz_theme_post_meta(); ?>
-                    </div>
-                </header>
+                <div class="single-post-meta-bar">
+                    <?php ihowz_theme_post_meta(); ?>
+                </div>
 
                 <?php if (has_post_thumbnail()) : ?>
                     <div class="post-thumbnail">

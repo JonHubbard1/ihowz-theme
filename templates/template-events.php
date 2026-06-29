@@ -334,10 +334,14 @@ $event_id = isset($_GET['event_id']) ? intval($_GET['event_id']) : 0;
     color: #2ecc71;
 }
 
-/* Mobile view - hide calendar completely */
+/* Mobile view - keep calendar accessible with horizontal scroll */
 @media (max-width: 768px) {
     .template-events .calendar-section {
-        display: none;
+        overflow-x: auto;
+    }
+
+    .template-events .ihowz-events-calendar-container {
+        min-width: 680px;
     }
 }
 

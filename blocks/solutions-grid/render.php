@@ -5,6 +5,10 @@
  * @package iHowz Theme
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 // Detect if rendering in a widget area
 $is_widget_context = did_action('dynamic_sidebar_before') > did_action('dynamic_sidebar_after');
 

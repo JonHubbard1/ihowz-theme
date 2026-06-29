@@ -7,6 +7,10 @@
  * @package iHowz Theme
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 // Get attributes with defaults
 $category = isset($attributes['category']) ? sanitize_text_field($attributes['category']) : '';
 $post_count = isset($attributes['postCount']) ? absint($attributes['postCount']) : 6;

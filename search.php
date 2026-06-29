@@ -11,16 +11,16 @@
 get_header(); ?>
 
 <main class="site-main search-results-page">
+
+    <?php
+    ihowz_page_header_bar(array(
+        'title'            => sprintf(__('Search results for "%s"', 'ihowz-theme'), get_search_query()),
+        'show_breadcrumbs' => false,
+    ));
+    ?>
+
     <div class="container">
-
-        <div class="page-header">
-            <h1 class="page-title">
-                <?php printf(esc_html__('Search results for "%s"', 'ihowz-theme'), get_search_query()); ?>
-            </h1>
-        </div>
-
         <?php echo do_shortcode('[ihowz_site_search_results]'); ?>
-
     </div>
 </main>
 

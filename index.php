@@ -6,16 +6,19 @@
 get_header(); ?>
 
 <main class="site-main">
+
+    <?php if (have_posts() && is_home()) : ?>
+        <?php
+        ihowz_page_header_bar(array(
+            'title'            => get_bloginfo('name'),
+            'subtitle'         => get_bloginfo('description'),
+            'show_breadcrumbs' => false,
+        ));
+        ?>
+    <?php endif; ?>
+
     <div class="container">
-
         <?php if (have_posts()) : ?>
-
-            <?php if (is_home()) : ?>
-                <div class="page-header">
-                    <h1 class="page-title"><?php echo get_bloginfo('name'); ?></h1>
-                    <p class="page-description"><?php echo get_bloginfo('description'); ?></p>
-                </div>
-            <?php endif; ?>
 
             <div class="posts-grid">
                 <?php while (have_posts()) : the_post(); ?>
