@@ -83,7 +83,7 @@ function ihowz_theme_comment($comment, $args, $depth) {
 
         <div class="comment-author vcard">
             <?php if ($args['avatar_size'] != 0) echo get_avatar($comment, $args['avatar_size']); ?>
-            <?php printf(__('<cite class="fn">%s</cite> <span class="says">says:</span>'), get_comment_author_link()); ?>
+            <?php printf(esc_html__('<cite class="fn">%s</cite> <span class="says">says:</span>', 'ihowz-theme'), get_comment_author_link()); ?>
         </div>
 
         <?php if ($comment->comment_approved == '0') : ?>
@@ -92,7 +92,7 @@ function ihowz_theme_comment($comment, $args, $depth) {
         <?php endif; ?>
 
         <div class="comment-meta commentmetadata">
-            <a href="<?php echo htmlspecialchars(get_comment_link($comment->comment_ID)); ?>">
+            <a href="<?php echo esc_url(get_comment_link($comment->comment_ID)); ?>">
                 <?php
                 printf(
                     esc_html__('%1$s at %2$s', 'ihowz-theme'),

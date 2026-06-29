@@ -22,20 +22,16 @@ $quote_icon = '<svg class="testimonial-quote-icon" xmlns="http://www.w3.org/2000
 ?>
 
 <main id="main-content" class="site-main">
-    <article class="page-testimonials">
-        <header class="page-header testimonials-header">
-            <div class="container">
-                <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-                    <h1 class="page-title"><?php the_title(); ?></h1>
-                    <?php if (get_the_content()) : ?>
-                        <div class="page-intro">
-                            <?php the_content(); ?>
-                        </div>
-                    <?php endif; ?>
-                <?php endwhile; endif; ?>
-            </div>
-        </header>
+    <?php while (have_posts()) : the_post(); ?>
+        <?php
+        ihowz_page_header_bar(array(
+            'title'    => get_the_title(),
+            'subtitle' => get_the_content() ? get_the_content() : '',
+        ));
+        ?>
+    <?php endwhile; ?>
 
+    <article class="page-testimonials">
         <section class="testimonials-list">
             <div class="container">
                 <?php if ($testimonials_query->have_posts()) : ?>

@@ -59,9 +59,9 @@ $ihowz_textsize_class = in_array( $ihowz_textsize, $ihowz_textsize_steps, true )
                                     <span class="header-member-arrow">▼</span>
                                 </button>
                                 <div class="header-member-dropdown">
-                                    <a href="/member-portal">Dashboard</a>
-                                    <a href="/member-portal/?view=profile">Profile</a>
-                                    <a href="<?php echo esc_url( wp_logout_url( home_url() ) ); ?>">Logout</a>
+                                    <a href="<?php echo esc_url(home_url('/member-portal/')); ?>"><?php esc_html_e('Dashboard', 'ihowz-theme'); ?></a>
+                                    <a href="<?php echo esc_url(home_url('/member-portal/?view=profile')); ?>"><?php esc_html_e('Profile', 'ihowz-theme'); ?></a>
+                                    <a href="<?php echo esc_url( wp_logout_url( home_url() ) ); ?>"><?php esc_html_e('Logout', 'ihowz-theme'); ?></a>
                                 </div>
                             </div>
                         <?php else : ?>
@@ -176,9 +176,9 @@ $ihowz_textsize_class = in_array( $ihowz_textsize, $ihowz_textsize_steps, true )
  */
 function ihowz_theme_fallback_menu() {
     echo '<ul>';
-    echo '<li><a href="' . home_url() . '">Home</a></li>';
-    echo '<li><a href="' . home_url('/news') . '">News</a></li>';
-    echo '<li><a href="' . home_url('/meetings') . '">Meetings</a></li>';
+    echo '<li><a href="' . esc_url(home_url()) . '">' . esc_html__('Home', 'ihowz-theme') . '</a></li>';
+    echo '<li><a href="' . esc_url(home_url('/news')) . '">' . esc_html__('News', 'ihowz-theme') . '</a></li>';
+    echo '<li><a href="' . esc_url(home_url('/meetings')) . '">' . esc_html__('Meetings', 'ihowz-theme') . '</a></li>';
     echo '</ul>';
 }
 ?>

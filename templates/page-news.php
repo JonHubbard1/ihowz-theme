@@ -10,14 +10,15 @@
 get_header(); ?>
 
 <main class="site-main">
+
+    <?php
+    ihowz_page_header_bar(array(
+        'title'    => __('Latest News', 'ihowz-theme'),
+        'subtitle' => __('Stay updated with the latest industry news and insights', 'ihowz-theme'),
+    ));
+    ?>
+
     <div class="container">
-
-        <div class="page-header">
-            <h1 class="page-title">Latest News</h1>
-            <p class="page-description">Stay updated with the latest industry news and insights</p>
-        </div>
-
-        <?php ihowz_theme_breadcrumb(); ?>
 
         <?php
         // Custom query for news posts

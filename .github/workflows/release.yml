@@ -54,7 +54,15 @@ jobs:
             -x '*/.github/*' \
             -x 'node_modules/*' \
             -x 'dist/*' \
-            -x '*.log'
+            -x '*.log' \
+            -x '*.backup' \
+            -x '*.backup.*' \
+            -x 'docs/screenshots/*' \
+            -x 'docs/screenshots/**/*' \
+            -x '.claude/*' \
+            -x '.claude/**/*' \
+            -x 'session-management-report.md' \
+            -x 'session-management-test-plan.md'
 
       - name: Create or update GitHub Release
         uses: softprops/action-gh-release@v2

@@ -1,5 +1,4 @@
 # WordPress
-.htaccess
 wp-config.php
 wp-content/uploads/
 wp-content/blogs.dir/
@@ -79,16 +78,6 @@ Thumbs.db
 # Package files
 *.zip
 *.tar.gz# Backup files
-*.backup
-*.backup.*
-
-
-# Backup files
-*.backup
-*.backup.*
-
-
-# Backup files
 *.backup
 *.backup.*
 
