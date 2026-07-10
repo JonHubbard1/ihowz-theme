@@ -85,6 +85,28 @@ if (class_exists('IHowz_Promotional_Codes_Module')) {
     }
 }
 
+// Categorise membership types for conditional field display on the frontend.
+$dual_type_ids = array();
+$corporate_type_ids = array();
+foreach ($membership_types as $type) {
+    if ($type->slug === 'dual-membership' || stripos($type->name, 'dual') !== false) {
+        $dual_type_ids[] = (int) $type->id;
+    }
+    if ($type->slug === 'corporate-membership' || stripos($type->name, 'corporate') !== false) {
+        $corporate_type_ids[] = (int) $type->id;
+    }
+}
+
+function ihowz_join_membership_category($type) {
+    if ($type->slug === 'dual-membership' || stripos($type->name, 'dual') !== false) {
+        return 'dual';
+    }
+    if ($type->slug === 'corporate-membership' || stripos($type->name, 'corporate') !== false) {
+        return 'corporate';
+    }
+    return 'single';
+}
+
 // Localize data for frontend JS
 $join_data = array(
     'ajax_url' => admin_url('admin-ajax.php'),
@@ -95,10 +117,13 @@ $join_data = array(
     'success_message' => $success_message,
     'bacs_debit_enabled' => $bacs_debit_enabled,
     'preselected_promo_code' => $preselected_promo_code,
+    'dual_type_ids' => $dual_type_ids,
+    'corporate_type_ids' => $corporate_type_ids,
     'membership_types' => array_map(function($type) {
         return array(
             'id' => $type->id,
             'name' => $type->name,
+            'slug' => $type->slug,
             'price' => floatval($type->price),
             'duration' => intval($type->duration_months),
             'description' => $type->description,
@@ -154,6 +179,7 @@ wp_enqueue_style('ihowz-join-now-style');
                                 ?>
                                 <div class="membership-type-card <?php echo $is_selected ? 'selected' : ''; ?>"
                                      data-type-id="<?php echo esc_attr($type->id); ?>"
+                                     data-category="<?php echo esc_attr(ihowz_join_membership_category($type)); ?>"
                                      data-price="<?php echo esc_attr($type->price); ?>"
                                      data-name="<?php echo esc_attr($type->name); ?>">
                                     <input type="radio"
@@ -241,17 +267,94 @@ wp_enqueue_style('ihowz-join-now-style');
                                required
                                autocomplete="tel">
                     </div>
+                </div>
 
-                    <div class="join-now-field">
+                <!-- Company details (Corporate memberships only) -->
+                <div class="join-now-conditional-section join-now-company-section" style="display: none;">
+                    <div class="join-now-field join-now-field-full">
                         <label for="<?php echo esc_attr($form_id); ?>-company">
-                            <?php _e('Company Name', 'ihowz-theme'); ?>
+                            <?php _e('Company Name', 'ihowz-theme'); ?> <span class="required">*</span>
                         </label>
                         <input type="text"
                                id="<?php echo esc_attr($form_id); ?>-company"
                                name="company_name"
                                class="join-now-input"
-                               placeholder="<?php esc_attr_e('Optional', 'ihowz-theme'); ?>"
+                               placeholder="<?php esc_attr_e('Enter company name', 'ihowz-theme'); ?>"
                                autocomplete="organization">
+                    </div>
+                </div>
+
+                <!-- Secondary member (Dual memberships only) -->
+                <div class="join-now-conditional-section join-now-secondary-member-section" style="display: none;">
+                    <hr class="join-now-divider" aria-hidden="true">
+
+                    <div class="join-now-field join-now-field-full">
+                        <p class="join-now-section-title"><?php _e('Secondary Member', 'ihowz-theme'); ?></p>
+                        <p class="join-now-section-description"><?php _e('The additional person included on this dual membership.', 'ihowz-theme'); ?></p>
+                    </div>
+
+                    <div class="join-now-field-group">
+                        <div class="join-now-field">
+                            <label for="<?php echo esc_attr($form_id); ?>-secondary-title">
+                                <?php _e('Title', 'ihowz-theme'); ?>
+                            </label>
+                            <input type="text"
+                                   id="<?php echo esc_attr($form_id); ?>-secondary-title"
+                                   name="secondary_title"
+                                   class="join-now-input"
+                                   placeholder="<?php esc_attr_e('e.g. Mr, Mrs, Dr', 'ihowz-theme'); ?>"
+                                   autocomplete="honorific-prefix">
+                        </div>
+
+                        <div class="join-now-field">
+                            <label for="<?php echo esc_attr($form_id); ?>-secondary-first-name">
+                                <?php _e('First Name', 'ihowz-theme'); ?> <span class="required">*</span>
+                            </label>
+                            <input type="text"
+                                   id="<?php echo esc_attr($form_id); ?>-secondary-first-name"
+                                   name="secondary_first_name"
+                                   class="join-now-input"
+                                   placeholder="<?php esc_attr_e('Enter first name', 'ihowz-theme'); ?>"
+                                   autocomplete="given-name">
+                        </div>
+                    </div>
+
+                    <div class="join-now-field-group">
+                        <div class="join-now-field">
+                            <label for="<?php echo esc_attr($form_id); ?>-secondary-last-name">
+                                <?php _e('Last Name', 'ihowz-theme'); ?> <span class="required">*</span>
+                            </label>
+                            <input type="text"
+                                   id="<?php echo esc_attr($form_id); ?>-secondary-last-name"
+                                   name="secondary_last_name"
+                                   class="join-now-input"
+                                   placeholder="<?php esc_attr_e('Enter last name', 'ihowz-theme'); ?>"
+                                   autocomplete="family-name">
+                        </div>
+
+                        <div class="join-now-field">
+                            <label for="<?php echo esc_attr($form_id); ?>-secondary-email">
+                                <?php _e('Email Address', 'ihowz-theme'); ?>
+                            </label>
+                            <input type="email"
+                                   id="<?php echo esc_attr($form_id); ?>-secondary-email"
+                                   name="secondary_email"
+                                   class="join-now-input"
+                                   placeholder="<?php esc_attr_e('secondary@email.com', 'ihowz-theme'); ?>"
+                                   autocomplete="email">
+                        </div>
+                    </div>
+
+                    <div class="join-now-field join-now-field-full">
+                        <label for="<?php echo esc_attr($form_id); ?>-secondary-phone">
+                            <?php _e('Phone Number', 'ihowz-theme'); ?>
+                        </label>
+                        <input type="tel"
+                               id="<?php echo esc_attr($form_id); ?>-secondary-phone"
+                               name="secondary_phone"
+                               class="join-now-input"
+                               placeholder="<?php esc_attr_e('e.g. 07123 456789', 'ihowz-theme'); ?>"
+                               autocomplete="tel">
                     </div>
                 </div>
 

@@ -738,6 +738,29 @@
 }
 
 /* ==========================================================================
+   Conditional Sections (Dual / Corporate)
+   ========================================================================== */
+
+.join-now-section-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--primary-charcoal, #263238);
+    margin: 0 0 4px 0;
+}
+
+.join-now-section-description {
+    font-size: 0.9375rem;
+    color: var(--neutral-gray, #757575);
+    margin: 0 0 16px 0;
+    line-height: 1.5;
+}
+
+.join-now-company-section .join-now-field,
+.join-now-secondary-member-section .join-now-field {
+    margin-bottom: 0;
+}
+
+/* ==========================================================================
    Full-width-with-widgets template alignment
    ========================================================================== */
 

@@ -59,6 +59,18 @@
             document.getElementById(formId + '-payment-amount-bacs')
         ];
 
+        // Conditional sections toggled by membership type.
+        var companySection = form.querySelector('.join-now-company-section');
+        var secondarySection = form.querySelector('.join-now-secondary-member-section');
+        var companyInput = document.getElementById(formId + '-company');
+        var secondaryInputs = {
+            title: document.getElementById(formId + '-secondary-title'),
+            first_name: document.getElementById(formId + '-secondary-first-name'),
+            last_name: document.getElementById(formId + '-secondary-last-name'),
+            email: document.getElementById(formId + '-secondary-email'),
+            phone: document.getElementById(formId + '-secondary-phone')
+        };
+
         typeCards.forEach(function (card) {
             card.addEventListener('click', function () {
                 var radio = card.querySelector('input[type="radio"]');
@@ -96,6 +108,29 @@
                     if (el) el.textContent = formatted;
                 });
             }
+
+            // Show/hide conditional sections based on the selected type.
+            var selectedTypeId = parseInt(selected.value, 10);
+            var isDual = config.dual_type_ids.indexOf(selectedTypeId) !== -1;
+            var isCorporate = config.corporate_type_ids.indexOf(selectedTypeId) !== -1;
+
+            if (companySection) {
+                companySection.style.display = isCorporate ? 'block' : 'none';
+            }
+            if (companyInput) {
+                companyInput.required = isCorporate;
+            }
+
+            if (secondarySection) {
+                secondarySection.style.display = isDual ? 'block' : 'none';
+            }
+            Object.keys(secondaryInputs).forEach(function (key) {
+                var input = secondaryInputs[key];
+                if (input) {
+                    // First and last name are required for dual; title/email/phone are optional.
+                    input.required = isDual && (key === 'first_name' || key === 'last_name');
+                }
+            });
         }
         updateSelection();
 
