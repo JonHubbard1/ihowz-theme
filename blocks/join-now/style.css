@@ -736,3 +736,15 @@
     font-weight: 600;
     text-decoration: underline;
 }
+
+/* ==========================================================================
+   Full-width-with-widgets template alignment
+   ========================================================================== */
+
+/* When this block is the main content of the "Full Width with Widgets and
+   Title" template, remove its top padding so the eyebrow/heading sits level
+   with the top of the sidebar background colour. */
+.page-with-widgets-container .page-main-content > .page-content > .wp-block-ihowz-join-now,
+.page-with-widgets-container .page-main-content > .page-content > .ihowz-join-now {
+    padding-top: 0;
+}

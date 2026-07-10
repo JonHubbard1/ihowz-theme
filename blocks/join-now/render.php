@@ -32,8 +32,7 @@ if (function_exists('IHowz_Membership_Module') || class_exists('IHowz_Membership
         global $wpdb;
         $membership_types = $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT id, name, slug, price, duration_months, description, benefits FROM %sihowz_membership_types WHERE is_active = %d AND is_join_visible = %d ORDER BY price ASC",
-                $wpdb->prefix,
+                "SELECT id, name, slug, price, duration_months, description, benefits FROM {$wpdb->prefix}ihowz_membership_types WHERE is_active = %d AND is_join_visible = %d ORDER BY price ASC",
                 1,
                 1
             )
