@@ -173,7 +173,7 @@ wp_enqueue_style('ihowz-join-now-style');
                         <div class="membership-type-options">
                             <?php foreach ($membership_types as $index => $type) : ?>
                                 <?php
-                                $is_selected = ($selected_type_id && $selected_type_id == $type->id) || (!$selected_type_id && $index === 0);
+                                $is_selected = ($selected_type_id && $selected_type_id == $type->id);
                                 $price = number_format(floatval($type->price), 2);
                                 $benefits = !empty($type->benefits) ? array_filter(array_map('trim', explode("\n", $type->benefits))) : array();
                                 ?>
@@ -210,7 +210,8 @@ wp_enqueue_style('ihowz-join-now-style');
                     </div>
                 <?php endif; ?>
 
-                <hr class="join-now-divider" aria-hidden="true">
+                <!-- Rest of the form is hidden until a membership type is selected. -->
+                <div class="join-now-form-body" <?php echo $selected_type_id ? '' : 'style="display:none;"'; ?>>
 
                 <!-- 2. Personal Details (name / contact / address) -->
                 <div class="join-now-field-group">
@@ -662,6 +663,7 @@ wp_enqueue_style('ihowz-join-now-style');
 
                 <!-- Messages -->
                 <div id="<?php echo esc_attr($form_id); ?>-messages" class="join-now-messages" role="status" aria-live="polite"></div>
+                </div><!-- /.join-now-form-body -->
             </form>
         </div>
     </div>

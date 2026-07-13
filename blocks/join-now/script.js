@@ -71,6 +71,9 @@
             phone: document.getElementById(formId + '-secondary-phone')
         };
 
+        // The main form body is hidden until a membership type is chosen.
+        var formBody = form.querySelector('.join-now-form-body');
+
         typeCards.forEach(function (card) {
             card.addEventListener('click', function () {
                 var radio = card.querySelector('input[type="radio"]');
@@ -83,7 +86,12 @@
 
         function updateSelection() {
             var selected = form.querySelector('input[name="membership_type_id"]:checked');
-            if (!selected) return;
+            if (!selected) {
+                if (formBody) formBody.style.display = 'none';
+                return;
+            }
+
+            if (formBody) formBody.style.display = '';
 
             // Switching membership type changes the price, so any previously
             // applied promo (computed against the old price) no longer applies.
@@ -132,6 +140,9 @@
                 }
             });
         }
+        // On initial load, do not pre-select a membership type or reveal the form body.
+        // If a server-side preselection exists (e.g. ?membership_type_id=), the markup
+        // already has the radio checked, so updateSelection() will reveal the body.
         updateSelection();
 
         // ==========================================
