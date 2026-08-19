@@ -1,0 +1,89 @@
+name: Deploy iHowz Theme Release to Pinot
+
+# Publishes a new iHowz theme release to the Pinot WordPress site.
+#
+# Triggered automatically when a release is published in this repo,
+# or manually from the Actions tab.
+#
+# Requires:
+#   - a self-hosted runner with the label `pinot-ihowz-theme` (installed on Pinot).
+#   - the PINOT_SSH_KEY repository secret (private key for root@100.119.221.53).
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'iHowz theme version (e.g. 1.8.4)'
+        required: false
+        type: string
+
+env:
+  STAGING_DIR: /tmp/ihowz-release-zips/${{ github.run_id }}
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, pinot-ihowz-theme]
+    permissions:
+      contents: read
+
+    steps:
+      - name: Determine version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            VERSION="${{ github.event.release.tag_name }}"
+            VERSION="${VERSION#v}"
+          else
+            VERSION="${{ inputs.version }}"
+          fi
+
+          # If still empty, fall back to the release tag that triggered the workflow.
+          if [ -z "$VERSION" ]; then
+            VERSION="${{ github.ref_name }}"
+            VERSION="${VERSION#v}"
+          fi
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Deploying iHowz theme version $VERSION"
+
+      - name: Download release zip
+        run: |
+          mkdir -p zips
+          VERSION="${{ steps.version.outputs.version }}"
+          ASSET_NAME="ihowz-theme-${VERSION}.zip"
+
+          echo "Downloading $ASSET_NAME..."
+
+          asset_id=$(curl -fsSL -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/JonHubbard1/ihowz-theme/releases/tags/v${VERSION}" | \
+            python3 -c "import json,sys; assets=json.load(sys.stdin)['assets']; print(next(a['id'] for a in assets if a['name']=='$ASSET_NAME'))")
+
+          curl -fsSL -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/octet-stream" \
+            "https://api.github.com/repos/JonHubbard1/ihowz-theme/releases/assets/$asset_id" \
+            -o "zips/$ASSET_NAME"
+
+          ls -lh zips/
+
+      - name: Copy zip to Pinot
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: 100.119.221.53
+          username: root
+          key: ${{ secrets.PINOT_SSH_KEY }}
+          source: "zips/*.zip"
+          target: "${{ env.STAGING_DIR }}/"
+          strip_components: 1
+          overwrite: true
+          rm: true
+
+      - name: Run deploy script on Pinot
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 100.119.221.53
+          username: root
+          key: ${{ secrets.PINOT_SSH_KEY }}
+          script: |
+            /data/coolify/applications/e24d561a6f38472e8b518834e9528bd3/deploy-ihowz.sh ${{ env.STAGING_DIR }}
