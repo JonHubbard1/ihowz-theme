@@ -540,7 +540,8 @@
 
 .post-thumbnail img {
     width: 100%;
-    height: 200px;
+    height: auto;
+    max-height: min(512px, 40vh);
     object-fit: cover;
 }
 
