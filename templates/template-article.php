@@ -27,8 +27,11 @@ get_header(); ?>
 
                 <header class="article-header">
                     <div class="article-meta">
-                        <span class="author"><?php _e('By', 'ihowz-theme'); ?> <?php the_author(); ?></span>
-                        <span class="date"><?php echo get_the_date(); ?></span>
+                        <span class="post-date">Published <?php echo get_the_date('jS F Y'); ?></span>
+                        <?php $category_breadcrumb = ihowz_theme_category_breadcrumb(); ?>
+                        <?php if ($category_breadcrumb) : ?>
+                            <span class="post-categories"> | <?php echo $category_breadcrumb; ?></span>
+                        <?php endif; ?>
                         <?php
                         $reading_time = get_field('reading_time');
                         if ($reading_time) : ?>

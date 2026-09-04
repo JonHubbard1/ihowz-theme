@@ -392,16 +392,48 @@ function ihowz_theme_pagination() {
 }
 
 /**
+ * Build a News -> Subcategory breadcrumb from the post's first category.
+ */
+function ihowz_theme_category_breadcrumb(): string
+{
+    $categories = get_the_category();
+    if (empty($categories)) {
+        return '';
+    }
+
+    // Prefer a non-News leaf category.
+    $leaf = null;
+    foreach ($categories as $category) {
+        if (strtolower($category->name) !== 'news') {
+            $leaf = $category;
+            break;
+        }
+    }
+
+    // Fall back to the first category if every term is "News".
+    if (! $leaf) {
+        $leaf = $categories[0];
+    }
+
+    $parts = [];
+    $current = $leaf;
+    while ($current && ! is_wp_error($current)) {
+        array_unshift($parts, esc_html($current->name));
+        $current = $current->parent ? get_category($current->parent) : null;
+    }
+
+    return implode(' &rarr; ', $parts);
+}
+
+/**
  * Custom post meta display
  */
 function ihowz_theme_post_meta() {
     echo '<div class="post-meta">';
-    echo '<span class="post-date">' . esc_html(get_the_date()) . '</span>';
-    if (get_the_author()) {
-        echo ' <span class="post-author">' . esc_html__('by', 'ihowz-theme') . ' ' . esc_html(get_the_author()) . '</span>';
-    }
-    if (get_the_category_list(', ')) {
-        echo ' <span class="post-categories">' . esc_html__('in', 'ihowz-theme') . ' ' . get_the_category_list(', ') . '</span>';
+    echo '<span class="post-date">Published ' . esc_html(get_the_date('jS F Y')) . '</span>';
+    $category_breadcrumb = ihowz_theme_category_breadcrumb();
+    if ($category_breadcrumb) {
+        echo ' | <span class="post-categories">' . $category_breadcrumb . '</span>';
     }
     echo '</div>';
 }
@@ -1187,7 +1219,7 @@ function ihowz_ajax_login() {
     // Verify nonce
     if (!isset($_POST['security']) || !wp_verify_nonce($_POST['security'], 'ajax-login-nonce')) {
         wp_send_json_error(array(
-            'message' => __('Security check failed. Please refresh the page and try again.', 'ihowz-theme'),
+            'message' => __('Your session has expired for security reasons. Please refresh the page and try again. Please refresh the page and try again.', 'ihowz-theme'),
         ));
     }
 
