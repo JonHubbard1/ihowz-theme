@@ -130,7 +130,7 @@ class IHowz_GitHub_Theme_Updater {
         }
 
         if (!isset($_GET['ihowz_nonce']) || !wp_verify_nonce($_GET['ihowz_nonce'], 'ihowz_check_theme_update')) {
-            wp_die(esc_html__('Security check failed.', 'ihowz-theme'));
+            wp_die(esc_html__('Your session has expired for security reasons. Please refresh the page and try again.', 'ihowz-theme'));
         }
 
         delete_transient($this->cache_key);

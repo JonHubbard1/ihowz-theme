@@ -166,6 +166,10 @@ wp_enqueue_style('ihowz-join-now-style');
             <form id="<?php echo esc_attr($form_id); ?>" class="join-now-form" method="post" novalidate>
                 <?php wp_nonce_field('ihowz_join_nonce', 'ihowz_join_nonce_field'); ?>
 
+                <div id="ihowz-join-timer-<?php echo esc_attr($form_id); ?>" style="text-align: right; font-size: 0.85rem; color: #d32f2f; margin-bottom: 10px; font-weight: 600;">
+                    <?php esc_html_e('Session expires in: 15:00', 'ihowz-theme'); ?>
+                </div>
+
                 <!-- 1. Membership Type Selection -->
                 <?php if (!empty($membership_types)) : ?>
                     <div class="join-now-field join-now-field-full">
@@ -668,3 +672,33 @@ wp_enqueue_style('ihowz-join-now-style');
         </div>
     </div>
 </section>
+
+<script>
+(function() {
+    var formId = '<?php echo esc_js($form_id); ?>';
+    var timerId = 'ihowz-join-timer-' + formId;
+    var submitBtnId = formId + '-submit';
+    var duration = 15 * 60;
+    var display = document.getElementById(timerId);
+    var submitBtn = document.getElementById(submitBtnId);
+    var timer = duration, minutes, seconds;
+
+    var interval = setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        display.textContent = '<?php esc_js(__('Session expires in: ', 'ihowz-theme')); ?>' + minutes + ':' + seconds;
+
+        if (--timer < 0) {
+            clearInterval(interval);
+            display.textContent = '<?php esc_js(__('Session expired. Please refresh the page.', 'ihowz-theme')); ?>';
+            display.style.color = '#d32f2f';
+            if (submitBtn) submitBtn.disabled = true;
+        } else if (timer < 300) {
+            display.style.color = '#d32f2f';
+            display.style.fontWeight = 'bold';
+        }
+    }, 1000);
+})();
+</script>
