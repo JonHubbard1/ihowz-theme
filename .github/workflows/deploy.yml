@@ -1,0 +1,502 @@
+# CaseMate pipeline kit — iHowz theme.
+#
+#   pull_request → Tests (required check)          nothing deploys
+#   push to main → Tests → Deploy → Staging (ihowz.makeapp.uk on VM1100)
+#   release:published → Tests → Deploy → Production (ihowz.uk on Pinot) + zip attached to the release
+#   workflow_dispatch → emergency override only (skip_tests exists for that)
+#
+# The production deploy happens ONLY when a GitHub release is published by a
+# human. The release tag must equal the Version header in style.css (the
+# leading "v" is ignored, e.g. tag v1.8.7 == Version: 1.8.7) or the deploy
+# fails loudly before touching the server. (The old release.yml auto-created
+# releases on every push to main — under this model that would have been an
+# automatic production deploy, which is precisely what we do not want.)
+#
+# The active theme is never switched by CI — deploying files for the ihowz
+# directory in place is safe whether or not it is currently active; choosing
+# which theme a site runs is an editorial decision.
+#
+# See .github/workflows/README.md in the plugin repo for the shared design;
+# .ploi/deploy-wp.sh is the same server-side installer (type=theme).
+#
+# SSH targets always log in as the `ploi` system user; per-repo-per-environment
+# ED25519 deploy keys are authorised in that user's authorized_keys.
+
+name: CI/CD
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Environment to deploy
+        type: choice
+        required: true
+        options:
+          - production
+          - staging
+      ref:
+        description: Branch, tag or commit SHA to deploy
+        required: true
+        default: main
+      skip_tests:
+        description: Skip the Tests gate (emergency override — only if you know what you are doing)
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-deploy-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref }}
+
+      - name: Set up PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          # Matches production (Pinot). This job only needs php for the syntax
+          # sweep — no WordPress PHPUnit harness exists for the theme.
+          php-version: '8.4'
+          coverage: none
+
+      - name: PHP syntax check
+        run: |
+          set -euo pipefail
+          git ls-files '*.php' | while read -r file; do
+            php -l "$file" > /dev/null
+          done
+          echo "php -l clean across $(git ls-files '*.php' | wc -l | tr -d ' ') files"
+
+      - name: Build installable theme zip
+        run: |
+          set -euo pipefail
+          VERSION="$(awk -F': ' '/^Version:/ {print $2; exit}' style.css)"
+          if [ -z "$VERSION" ]; then echo "::error::could not read Version from style.css"; exit 1; fi
+          STAGE="$(mktemp -d)"
+          mkdir -p "$STAGE/ihowz"
+          # Tracked files minus development infrastructure that must not ship
+          # (mirrors the old release-zip exclusions): CI configs, local helper
+          # docs, and stray logs/backups.
+          git ls-files \
+            | grep -vE '^(\.github/|\.ploi/|\.claude/|docs/screenshots/|session-management-(report|test-plan)\.md$|.*\.log$|.*\.backup)' \
+            | tar -cf - -T - | tar -xf - -C "$STAGE/ihowz"
+          mkdir -p dist
+          ( cd "$STAGE" && zip -qr "$OLDPWD/dist/ihowz-theme-$VERSION.zip" ihowz )
+          ls -l dist
+          echo "Deployed payload: ihowz-theme-$VERSION.zip"
+
+      - name: Upload theme artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: theme-zip
+          path: dist/*.zip
+          if-no-files-found: error
+
+  deploy-staging:
+    name: Deploy → Staging
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, linux, proxmox]
+    timeout-minutes: 30
+    environment:
+      name: staging
+      url: ${{ vars.STAGING_URL }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download theme artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: theme-zip
+          path: dist
+
+      - name: Configure SSH for this run
+        env:
+          TARGET_HOST: ${{ secrets.STAGING_HOST }}
+          TARGET_KEY: ${{ secrets.STAGING_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$TARGET_KEY" > "$RUNNER_TEMP/deploy_key"
+          chmod 600 "$RUNNER_TEMP/deploy_key"
+          {
+            echo "Host deploy-target"
+            echo "  HostName $TARGET_HOST"
+            echo "  User ploi"
+            echo "  IdentityFile $RUNNER_TEMP/deploy_key"
+            echo "  IdentitiesOnly yes"
+            echo "  StrictHostKeyChecking no"
+            echo "  UserKnownHostsFile /dev/null"
+          } > "$RUNNER_TEMP/ssh-config"
+          chmod 600 "$RUNNER_TEMP/ssh-config"
+
+      - name: Deploy
+        env:
+          TARGET_PATH: ${{ secrets.STAGING_PATH }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          ZIPS=(dist/*.zip)
+          if [ "${#ZIPS[@]}" -ne 1 ]; then
+            echo "::error::expected exactly one built artifact, found ${#ZIPS[@]}"
+            exit 1
+          fi
+          ZIP="${ZIPS[0]}"
+          VERSION="$(awk -F': ' '/^Version:/ {print $2; exit}' style.css)"
+          REMOTE_DIR="/home/ploi/.ihowz-deploy/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          ssh -F "$RUNNER_TEMP/ssh-config" deploy-target "mkdir -p '$REMOTE_DIR'"
+          scp -F "$RUNNER_TEMP/ssh-config" "$ZIP" .ploi/deploy-wp.sh "deploy-target:$REMOTE_DIR/"
+          ssh -F "$RUNNER_TEMP/ssh-config" deploy-target \
+            "bash '$REMOTE_DIR/deploy-wp.sh' theme '$REMOTE_DIR/$(basename "$ZIP")' '$GITHUB_SHA' '$VERSION' '$TARGET_PATH'"
+
+      - name: Verify deployed code
+        env:
+          TARGET_PATH: ${{ secrets.STAGING_PATH }}
+          ENV_LABEL: staging
+        run: |
+          set -euo pipefail
+          MARKER="$(ssh -F "$RUNNER_TEMP/ssh-config" deploy-target "cat '$TARGET_PATH/../.ihowz-pipeline/theme.marker'")"
+          printf '%s\n' "$MARKER"
+          DEPLOYED_SHA="$(printf '%s\n' "$MARKER" | sed -n 's/^sha=//p')"
+          DEPLOYED_VERSION="$(printf '%s\n' "$MARKER" | sed -n 's/^version=//p')"
+          VERSION="$(awk -F': ' '/^Version:/ {print $2; exit}' style.css)"
+          if [ "$DEPLOYED_SHA" != "$GITHUB_SHA" ]; then
+            echo "::error::$ENV_LABEL HEAD does not match the intended commit (marker says $DEPLOYED_SHA, expected $GITHUB_SHA)"
+            exit 1
+          fi
+          if [ "$DEPLOYED_VERSION" != "$VERSION" ]; then
+            echo "::error::$ENV_LABEL installed version mismatch (marker says $DEPLOYED_VERSION, expected $VERSION)"
+            exit 1
+          fi
+          echo "DEPLOYED_SHA=$DEPLOYED_SHA" >> "$GITHUB_ENV"
+
+      - name: Smoke test
+        env:
+          SMOKE_URL: ${{ vars.STAGING_URL }}
+          ENV_LABEL: staging
+        run: |
+          set -euo pipefail
+          # curl runs ON the target so the request takes the real public path
+          # (Cloudflare → tunnel → site) without depending on the runner's DNS.
+          for path in / /wp-login.php; do
+            ok=0
+            code=000
+            for attempt in 1 2 3 4 5 6; do
+              code="$(ssh -F "$RUNNER_TEMP/ssh-config" deploy-target \
+                "curl -sk -o /dev/null -w '%{http_code}' --max-time 30 '$SMOKE_URL$path'")" || code=000
+              if printf '%s' "$code" | grep -qE '^(2|3)'; then ok=1; break; fi
+              echo "Attempt $attempt for $path returned $code; retrying in 5s..."
+              sleep 5
+            done
+            if [ "$ok" -ne 1 ]; then
+              echo "::error::$ENV_LABEL smoke test failed for $path (last status: $code)"
+              exit 1
+            fi
+            echo "$path -> $code"
+          done
+          {
+            echo "## Deployed → $ENV_LABEL"
+            echo ""
+            echo "- URL: $SMOKE_URL"
+            echo "- Ref: $GITHUB_REF_NAME"
+            echo "- Deployed commit: $DEPLOYED_SHA"
+            echo "- Smoke paths: /, /wp-login.php (2xx/3xx)"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Clean up transfer directory
+        if: always()
+        run: |
+          ssh -F "$RUNNER_TEMP/ssh-config" deploy-target \
+            "rm -rf '/home/ploi/.ihowz-deploy/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT'" || true
+
+  deploy-production:
+    name: Deploy → Production
+    needs: test
+    if: github.event_name == 'release'
+    runs-on: [self-hosted, linux, proxmox]
+    timeout-minutes: 30
+    environment:
+      name: production
+      url: ${{ vars.PRODUCTION_URL }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Assert release tag matches theme version
+        run: |
+          set -euo pipefail
+          VERSION="$(awk -F': ' '/^Version:/ {print $2; exit}' style.css)"
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          if [ -z "$VERSION" ] || [ "$VERSION" != "$TAG_VERSION" ]; then
+            echo "::error::release '$GITHUB_REF_NAME' does not match Version '$VERSION' in style.css — the tag and the theme header must agree"
+            exit 1
+          fi
+          echo "Release $GITHUB_REF_NAME ↔ theme version $VERSION — OK"
+
+      - name: Download theme artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: theme-zip
+          path: dist
+
+      - name: Configure SSH for this run
+        env:
+          TARGET_HOST: ${{ secrets.PRODUCTION_HOST }}
+          TARGET_KEY: ${{ secrets.PRODUCTION_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$TARGET_KEY" > "$RUNNER_TEMP/deploy_key"
+          chmod 600 "$RUNNER_TEMP/deploy_key"
+          {
+            echo "Host deploy-target"
+            echo "  HostName $TARGET_HOST"
+            echo "  User ploi"
+            echo "  IdentityFile $RUNNER_TEMP/deploy_key"
+            echo "  IdentitiesOnly yes"
+            echo "  StrictHostKeyChecking no"
+            echo "  UserKnownHostsFile /dev/null"
+          } > "$RUNNER_TEMP/ssh-config"
+          chmod 600 "$RUNNER_TEMP/ssh-config"
+
+      - name: Deploy
+        env:
+          TARGET_PATH: ${{ secrets.PRODUCTION_PATH }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          ZIPS=(dist/*.zip)
+          if [ "${#ZIPS[@]}" -ne 1 ]; then
+            echo "::error::expected exactly one built artifact, found ${#ZIPS[@]}"
+            exit 1
+          fi
+          ZIP="${ZIPS[0]}"
+          VERSION="$(awk -F': ' '/^Version:/ {print $2; exit}' style.css)"
+          REMOTE_DIR="/home/ploi/.ihowz-deploy/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          ssh -F "$RUNNER_TEMP/ssh-config" deploy-target "mkdir -p '$REMOTE_DIR'"
+          scp -F "$RUNNER_TEMP/ssh-config" "$ZIP" .ploi/deploy-wp.sh "deploy-target:$REMOTE_DIR/"
+          ssh -F "$RUNNER_TEMP/ssh-config" deploy-target \
+            "bash '$REMOTE_DIR/deploy-wp.sh' theme '$REMOTE_DIR/$(basename "$ZIP")' '$GITHUB_SHA' '$VERSION' '$TARGET_PATH'"
+
+      - name: Verify deployed code
+        env:
+          TARGET_PATH: ${{ secrets.PRODUCTION_PATH }}
+          ENV_LABEL: production
+        run: |
+          set -euo pipefail
+          MARKER="$(ssh -F "$RUNNER_TEMP/ssh-config" deploy-target "cat '$TARGET_PATH/../.ihowz-pipeline/theme.marker'")"
+          printf '%s\n' "$MARKER"
+          DEPLOYED_SHA="$(printf '%s\n' "$MARKER" | sed -n 's/^sha=//p')"
+          DEPLOYED_VERSION="$(printf '%s\n' "$MARKER" | sed -n 's/^version=//p')"
+          VERSION="$(awk -F': ' '/^Version:/ {print $2; exit}' style.css)"
+          if [ "$DEPLOYED_SHA" != "$GITHUB_SHA" ]; then
+            echo "::error::$ENV_LABEL HEAD does not match the intended commit (marker says $DEPLOYED_SHA, expected $GITHUB_SHA)"
+            exit 1
+          fi
+          if [ "$DEPLOYED_VERSION" != "$VERSION" ]; then
+            echo "::error::$ENV_LABEL installed version mismatch (marker says $DEPLOYED_VERSION, expected $VERSION)"
+            exit 1
+          fi
+          echo "DEPLOYED_SHA=$DEPLOYED_SHA" >> "$GITHUB_ENV"
+
+      - name: Smoke test
+        env:
+          SMOKE_URL: ${{ vars.PRODUCTION_URL }}
+          ENV_LABEL: production
+        run: |
+          set -euo pipefail
+          # curl runs ON the target so the request takes the real public path
+          # (Cloudflare → origin) without depending on the runner's DNS.
+          for path in / /wp-login.php; do
+            ok=0
+            code=000
+            for attempt in 1 2 3 4 5 6; do
+              code="$(ssh -F "$RUNNER_TEMP/ssh-config" deploy-target \
+                "curl -sk -o /dev/null -w '%{http_code}' --max-time 30 '$SMOKE_URL$path'")" || code=000
+              if printf '%s' "$code" | grep -qE '^(2|3)'; then ok=1; break; fi
+              echo "Attempt $attempt for $path returned $code; retrying in 5s..."
+              sleep 5
+            done
+            if [ "$ok" -ne 1 ]; then
+              echo "::error::$ENV_LABEL smoke test failed for $path (last status: $code)"
+              exit 1
+            fi
+            echo "$path -> $code"
+          done
+          {
+            echo "## Deployed → $ENV_LABEL"
+            echo ""
+            echo "- URL: $SMOKE_URL"
+            echo "- Ref: $GITHUB_REF_NAME"
+            echo "- Deployed commit: $DEPLOYED_SHA"
+            echo "- Smoke paths: /, /wp-login.php (2xx/3xx)"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Clean up transfer directory
+        if: always()
+        run: |
+          ssh -F "$RUNNER_TEMP/ssh-config" deploy-target \
+            "rm -rf '/home/ploi/.ihowz-deploy/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT'" || true
+
+  publish-release-asset:
+    name: Publish Release Asset
+    needs: test
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Download theme artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: theme-zip
+          path: dist
+
+      - name: Attach zip to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$GITHUB_REF_NAME" dist/*.zip --clobber
+
+  manual-deploy:
+    name: Manual Deploy
+    needs: test
+    if: github.event_name == 'workflow_dispatch' && (github.event.inputs.skip_tests == 'true' || needs.test.result == 'success')
+    runs-on: [self-hosted, linux, proxmox]
+    timeout-minutes: 30
+    environment:
+      name: ${{ inputs.environment }}
+      url: ${{ inputs.environment == 'production' && vars.PRODUCTION_URL || vars.STAGING_URL }}
+    steps:
+      - name: Validate deploy ref
+        env:
+          DEPLOY_REF: ${{ inputs.ref }}
+        run: |
+          set -euo pipefail
+          if ! printf '%s' "$DEPLOY_REF" | grep -qE '^[A-Za-z0-9._/-]{1,255}$'; then
+            echo "::error::invalid ref '$DEPLOY_REF'"
+            exit 1
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Download theme artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: theme-zip
+          path: dist
+
+      - name: Configure SSH for this run
+        env:
+          TARGET_HOST: ${{ inputs.environment == 'production' && secrets.PRODUCTION_HOST || secrets.STAGING_HOST }}
+          TARGET_KEY: ${{ inputs.environment == 'production' && secrets.PRODUCTION_SSH_KEY || secrets.STAGING_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$TARGET_KEY" > "$RUNNER_TEMP/deploy_key"
+          chmod 600 "$RUNNER_TEMP/deploy_key"
+          {
+            echo "Host deploy-target"
+            echo "  HostName $TARGET_HOST"
+            echo "  User ploi"
+            echo "  IdentityFile $RUNNER_TEMP/deploy_key"
+            echo "  IdentitiesOnly yes"
+            echo "  StrictHostKeyChecking no"
+            echo "  UserKnownHostsFile /dev/null"
+          } > "$RUNNER_TEMP/ssh-config"
+          chmod 600 "$RUNNER_TEMP/ssh-config"
+
+      - name: Deploy
+        env:
+          TARGET_PATH: ${{ inputs.environment == 'production' && secrets.PRODUCTION_PATH || secrets.STAGING_PATH }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          ZIPS=(dist/*.zip)
+          if [ "${#ZIPS[@]}" -ne 1 ]; then
+            echo "::error::expected exactly one built artifact, found ${#ZIPS[@]}"
+            exit 1
+          fi
+          ZIP="${ZIPS[0]}"
+          VERSION="$(awk -F': ' '/^Version:/ {print $2; exit}' style.css)"
+          REMOTE_DIR="/home/ploi/.ihowz-deploy/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          ssh -F "$RUNNER_TEMP/ssh-config" deploy-target "mkdir -p '$REMOTE_DIR'"
+          scp -F "$RUNNER_TEMP/ssh-config" "$ZIP" .ploi/deploy-wp.sh "deploy-target:$REMOTE_DIR/"
+          ssh -F "$RUNNER_TEMP/ssh-config" deploy-target \
+            "bash '$REMOTE_DIR/deploy-wp.sh' theme '$REMOTE_DIR/$(basename "$ZIP")' '$GITHUB_SHA' '$VERSION' '$TARGET_PATH'"
+
+      - name: Verify deployed code
+        env:
+          TARGET_PATH: ${{ inputs.environment == 'production' && secrets.PRODUCTION_PATH || secrets.STAGING_PATH }}
+          ENV_LABEL: ${{ inputs.environment }}
+        run: |
+          set -euo pipefail
+          MARKER="$(ssh -F "$RUNNER_TEMP/ssh-config" deploy-target "cat '$TARGET_PATH/../.ihowz-pipeline/theme.marker'")"
+          printf '%s\n' "$MARKER"
+          DEPLOYED_SHA="$(printf '%s\n' "$MARKER" | sed -n 's/^sha=//p')"
+          DEPLOYED_VERSION="$(printf '%s\n' "$MARKER" | sed -n 's/^version=//p')"
+          VERSION="$(awk -F': ' '/^Version:/ {print $2; exit}' style.css)"
+          if [ "$DEPLOYED_SHA" != "$GITHUB_SHA" ]; then
+            echo "::error::$ENV_LABEL HEAD does not match the intended commit (marker says $DEPLOYED_SHA, expected $GITHUB_SHA)"
+            exit 1
+          fi
+          if [ "$DEPLOYED_VERSION" != "$VERSION" ]; then
+            echo "::error::$ENV_LABEL installed version mismatch (marker says $DEPLOYED_VERSION, expected $VERSION)"
+            exit 1
+          fi
+          echo "DEPLOYED_SHA=$DEPLOYED_SHA" >> "$GITHUB_ENV"
+
+      - name: Smoke test
+        env:
+          SMOKE_URL: ${{ inputs.environment == 'production' && vars.PRODUCTION_URL || vars.STAGING_URL }}
+          ENV_LABEL: ${{ inputs.environment }}
+        run: |
+          set -euo pipefail
+          for path in / /wp-login.php; do
+            ok=0
+            code=000
+            for attempt in 1 2 3 4 5 6; do
+              code="$(ssh -F "$RUNNER_TEMP/ssh-config" deploy-target \
+                "curl -sk -o /dev/null -w '%{http_code}' --max-time 30 '$SMOKE_URL$path'")" || code=000
+              if printf '%s' "$code" | grep -qE '^(2|3)'; then ok=1; break; fi
+              echo "Attempt $attempt for $path returned $code; retrying in 5s..."
+              sleep 5
+            done
+            if [ "$ok" -ne 1 ]; then
+              echo "::error::$ENV_LABEL smoke test failed for $path (last status: $code)"
+              exit 1
+            fi
+            echo "$path -> $code"
+          done
+          {
+            echo "## Deployed → $ENV_LABEL"
+            echo ""
+            echo "- URL: $SMOKE_URL"
+            echo "- Ref: $GITHUB_REF_NAME ($GITHUB_SHA)"
+            echo "- Deployed commit: $DEPLOYED_SHA"
+            echo "- Smoke paths: /, /wp-login.php (2xx/3xx)"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Clean up transfer directory
+        if: always()
+        run: |
+          ssh -F "$RUNNER_TEMP/ssh-config" deploy-target \
+            "rm -rf '/home/ploi/.ihowz-deploy/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT'" || true
