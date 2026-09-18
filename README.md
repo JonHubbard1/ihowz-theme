@@ -145,3 +145,11 @@ This theme is licensed under the GPL v2 or later.
 - Converted from Oxygen Builder design
 - Built with WordPress best practices
 - Responsive design principles
+## Deployment
+
+Merges to `main` run the test suite and then deploy automatically to staging
+(`https://ihowz.makeapp.uk`, on VM 1100) with a server-side commit-marker
+assertion and an on-target smoke test. Production (`https://ihowz.uk`, on
+Pinot) is deployed only by a published GitHub release whose tag matches the
+`Version` header in `style.css`. `workflow_dispatch` is the emergency override
+for both.
