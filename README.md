@@ -1,6 +1,6 @@
 # iHowz WordPress Theme
 
-A modern, responsive WordPress theme designed specifically for the iHowz website. This theme was created by converting from an Oxygen Builder layout to a traditional WordPress theme structure.
+A modern, responsive WordPress theme designed specifically for the iHowz website.
 
 ## Description
 
