@@ -73,4 +73,4 @@ ploi user's `authorized_keys`); delete branch on merge.
 
 `release.yml` (auto-release on every push) and `deploy-release.yml` (dead
 `pinot-ihowz-theme` runner label, root SSH to a retired Tailscale address,
-Coolify-path server script) are both deleted.
+legacy external-PaaS-path server script) are both deleted.
